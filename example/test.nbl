@@ -1,1 +1,14 @@
+// comment
+{()} // grouping
+
+!*+-/=<> <= == // operators
+
 (1 + 2) * 3 / 4
+
+<>{},.-+;/*
+
+> >= < <= = == != ! 
+
+txt "txt" 1
+
+and class else false fun for if nil or print return super this true var while

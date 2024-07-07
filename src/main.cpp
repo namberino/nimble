@@ -62,7 +62,6 @@ void run_file(const std::string& path)
     
     if (Error::has_error)
     {
-        std::cout << "error\n";
         exit(2);
     }
 }
