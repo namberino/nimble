@@ -1,6 +1,6 @@
 #include "error.hpp"
 
-bool Error::has_error = true;
+bool Error::has_error = false;
 
 void Error::report(int line, const std::string& where, const std::string& msg)
 {

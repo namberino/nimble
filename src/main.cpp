@@ -13,11 +13,22 @@ int main(int argc, char* argv[])
 {
     if (argc > 2) // too many arguments
     {
-        std::cout << "Usage: nimble <script>.nb\n";
+        std::cout << "Usage: nimble <script>.nbl\n";
         exit(1);
     }
     else if (argc == 2) // run script file
     {
+        char* point;
+
+        if((point = strrchr(argv[1], '.')) != NULL)
+        {
+            if(strcmp(point, ".nbl") != 0) // ends with nbl
+            {
+                std::cout << "Invalid file extension, please use '.nbl'\n";
+                exit(1);
+            }
+        }
+
         run_file(argv[1]);
     }
     else // run interactive mode
@@ -50,7 +61,10 @@ void run_file(const std::string& path)
     run(text);
     
     if (Error::has_error)
+    {
+        std::cout << "error\n";
         exit(2);
+    }
 }
 
 void run_prompt()
