@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <cstring>
 
 #include "scanner.hpp"
 #include "error.hpp"
+#include "parser.hpp"
+#include "ast_printer.hpp"
 
 void run(const std::string& text);
 void run_file(const std::string& filename);
@@ -47,10 +51,15 @@ int main(int argc, char* argv[])
 void run(const std::string& source)
 {
     Scanner scanner{source};
-    const auto tokens = scanner.scan_tokens();
+    std::vector<Token> tokens = scanner.scan_tokens();
 
-    for (const auto& token : tokens)
-        std::cout << token.to_string() + "\n";
+    Parser parser{tokens};
+    std::shared_ptr<Expr> expression = parser.parse();
+
+    if (Error::has_error) // syntax error
+        return;
+
+    std::cout << AstPrinter{}.print(expression) + "\n";
 }
 
 void run_file(const std::string& path)
@@ -66,9 +75,7 @@ void run_file(const std::string& path)
     run(file_content);
     
     if (Error::has_error)
-    {
         exit(2);
-    }
 }
 
 void run_prompt()

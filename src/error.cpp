@@ -12,3 +12,11 @@ void Error::error(int line, const std::string& msg)
 {
     report(line, "", msg);
 }
+
+void Error::error(const Token& token, std::string msg)
+{
+    if (token.type == TOKEN_EOF)
+        report(token.line, " at end", msg);
+    else
+        report(token.line, " at '" + token.lexeme + "'", msg);
+}

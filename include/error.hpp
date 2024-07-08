@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 
+#include "token.hpp"
+
 class Error
 {
     public:
@@ -12,6 +14,7 @@ class Error
 
         static void report(int line, const std::string& where, const std::string& msg);
         static void error(int line, const std::string& msg);
+        static void error(const Token& token, std::string msg);
 };
 
 #endif
