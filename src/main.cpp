@@ -18,15 +18,20 @@ int main(int argc, char* argv[])
     }
     else if (argc == 2) // run script file
     {
-        char* point;
+        char* point = strrchr(argv[1], '.');
 
-        if((point = strrchr(argv[1], '.')) != NULL)
+        if(point != NULL)
         {
             if(strcmp(point, ".nbl") != 0) // ends with nbl
             {
                 std::cout << "Invalid file extension, please use '.nbl'\n";
                 exit(1);
             }
+        }
+        else
+        {
+            std::cout << "Invalid file extension, please use '.nbl'\n";
+            exit(1);
         }
 
         run_file(argv[1]);
