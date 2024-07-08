@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
             std::make_shared<LiteralExpr>(3)
         ), // -123
         
-        Token{TokenType::MINUS, "-", nullptr, 1}, // multiply
+        Token{TokenType::STAR, "*", nullptr, 1}, // multiply
 
         std::make_shared<GroupingExpr>(
             std::make_shared<LiteralExpr>(5)
