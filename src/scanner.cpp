@@ -1,27 +1,7 @@
 #include "scanner.hpp"
 #include "error.hpp"
 
-Scanner::Scanner(std::string source) : source(std::move(source))
-{
-    keywords = {
-        {"and", TokenType::AND},
-        {"class", TokenType::CLASS},
-        {"else", TokenType::ELSE},
-        {"false", TokenType::FALSE},
-        {"for", TokenType::FOR},
-        {"fun", TokenType::FUN},
-        {"if", TokenType::IF},
-        {"nil", TokenType::NIL},
-        {"or", TokenType::OR},
-        {"print", TokenType::PRINT},
-        {"return", TokenType::RETURN},
-        {"super", TokenType::SUPER},
-        {"this", TokenType::THIS},
-        {"true", TokenType::TRUE},
-        {"var", TokenType::VAR},
-        {"while", TokenType::WHILE},
-    };
-}
+Scanner::Scanner(std::string source) : source(source) {}
 
 std::vector<Token> Scanner::scan_tokens()
 {
@@ -31,19 +11,18 @@ std::vector<Token> Scanner::scan_tokens()
         scan_token();
     }
 
-    tokens.emplace_back(TokenType::TOKEN_EOF, "", std::any{}, line);
+    tokens.emplace_back(TokenType::TOKEN_EOF, "", nullptr, line);
     return tokens;
 }
 
 bool Scanner::is_at_end() const
 {
-    return current >= static_cast<int>(source.size());
+    return current >= static_cast<int>(source.length());
 }
 
 char Scanner::advance()
 {
-    ++current;
-    return source.at(current - 1);
+    return source[current++];
 }
 
 bool Scanner::match(char expected)
@@ -51,7 +30,7 @@ bool Scanner::match(char expected)
     if (is_at_end())
         return false;
 
-    if (source.at(current) != expected)
+    if (source[current] != expected)
         return false;
 
     ++current;
@@ -64,15 +43,15 @@ char Scanner::peek()
     if (is_at_end())
         return '\0';
 
-    return source.at(current);
+    return source[current];
 }
 
 char Scanner::peek_next()
 {
-    if (current + 1 >= static_cast<int>(source.size()))
+    if (current + 1 >= static_cast<int>(source.length()))
         return '\0';
 
-    return source.at(current + 1);
+    return source[current + 1];
 }
 
 void Scanner::add_token(TokenType type, std::any literal)
@@ -82,7 +61,7 @@ void Scanner::add_token(TokenType type, std::any literal)
 
 void Scanner::add_token(TokenType type)
 {
-    add_token(type, std::any{});
+    add_token(type, nullptr);
 }
 
 void Scanner::string()
@@ -95,9 +74,12 @@ void Scanner::string()
         advance();
     }
 
-    // un-terminated string
+    // unterminated string
     if (is_at_end())
-        Error::error(line, "Un-terminated string");
+    {
+        Error::error(line, "Unterminated string");
+        return;
+    }
 
     advance(); // the closing '"'
 
@@ -115,8 +97,7 @@ void Scanner::number()
     // look for a decimal point
     if (peek() == '.' && std::isdigit(peek_next()))
     {
-        // consume the "."
-        advance();
+        advance(); // move pass the '.'
 
         while (std::isdigit(peek()))
             advance();
@@ -127,13 +108,14 @@ void Scanner::number()
 
 void Scanner::identifier()
 {
-    while (std::isdigit(peek()) || std::isalpha(peek()) || peek() == '_')
+    while (std::isdigit(peek()) || std::isalpha(peek()) || peek() == '_') // is alpha numeric
         advance();
 
     const auto text = source.substr(start, current - start);
+    const auto match = keywords.find(text);
 
-    if (const auto it = keywords.find(text); it != keywords.end())
-        add_token(it->second);
+    if (match != keywords.end())
+        add_token(match->second);
     else
         add_token(TokenType::IDENTIFIER);
 }
@@ -141,60 +123,29 @@ void Scanner::identifier()
 void Scanner::scan_token()
 {
     auto c = advance();
+
     switch (c)
     {
-        case '(':
-            add_token(TokenType::LEFT_PAREN);
-            break;
-
-        case ')':
-            add_token(TokenType::RIGHT_PAREN);
-            break;
-
-        case '{':
-            add_token(TokenType::LEFT_BRACE);
-            break;
-
-        case '}':
-            add_token(TokenType::RIGHT_BRACE);
-            break;
-
-        case ',':
-            add_token(TokenType::COMMA);
-            break;
-
-        case '.':
-            add_token(TokenType::DOT);
-            break;
-
-        case '-':
-            add_token(TokenType::MINUS);
-            break;
-
-        case '+':
-            add_token(TokenType::PLUS);
-            break;
-
-        case ';':
-            add_token(TokenType::SEMICOLON);
-            break;
-
-        case '*':
-            add_token(TokenType::STAR);
-            break;
+        case '(': add_token(TokenType::LEFT_PAREN); break;
+        case ')': add_token(TokenType::RIGHT_PAREN); break;
+        case '{': add_token(TokenType::LEFT_BRACE); break;
+        case '}': add_token(TokenType::RIGHT_BRACE); break;
+        case ',': add_token(TokenType::COMMA); break;
+        case '.': add_token(TokenType::DOT); break;
+        case '-': add_token(TokenType::MINUS); break;
+        case '+': add_token(TokenType::PLUS); break;
+        case ';': add_token(TokenType::SEMICOLON); break;
+        case '*': add_token(TokenType::STAR); break;
 
         case '!':
             add_token(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
             break;
-
         case '=':
             add_token(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
             break;
-
         case '<':
             add_token(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
             break;
-
         case '>':
             add_token(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
             break;
@@ -215,7 +166,7 @@ void Scanner::scan_token()
         case ' ':
         case '\r':
         case '\t':
-            break;// ignore whitespace
+            break; // ignore whitespace
 
         case '\n':
             line++;
@@ -236,3 +187,22 @@ void Scanner::scan_token()
             break;
     }
 }
+
+const std::map<std::string, TokenType> Scanner::keywords = {
+    {"and", TokenType::AND},
+    {"class", TokenType::CLASS},
+    {"else", TokenType::ELSE},
+    {"false", TokenType::FALSE},
+    {"for", TokenType::FOR},
+    {"fun", TokenType::FUN},
+    {"if", TokenType::IF},
+    {"nil", TokenType::NIL},
+    {"or", TokenType::OR},
+    {"print", TokenType::PRINT},
+    {"return", TokenType::RETURN},
+    {"super", TokenType::SUPER},
+    {"this", TokenType::THIS},
+    {"true", TokenType::TRUE},
+    {"var", TokenType::VAR},
+    {"while", TokenType::WHILE},
+};

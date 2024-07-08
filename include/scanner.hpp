@@ -5,13 +5,24 @@
 #include <vector>
 #include <string>
 #include <any>
-#include <unordered_map>
+#include <map>
 
 #include "token.hpp"
+#include "error.hpp"
 
 class Scanner
 {
     private:
+        // data
+        std::string source;
+        std::vector<Token> tokens;
+
+        static const std::map<std::string, TokenType> keywords;
+
+        int start = 0;
+        int current = 0;
+        int line = 1;
+
         bool is_at_end() const;
         char advance();
         bool match(char expected);
@@ -25,16 +36,6 @@ class Scanner
         void number();
         void identifier();
         void scan_token();
-
-        // data
-        std::string source;
-        std::vector<Token> tokens;
-
-        std::unordered_map<std::string, TokenType> keywords;
-
-        int start{0};
-        int current{0};
-        int line{1};
 
     public:
         Scanner(std::string source);

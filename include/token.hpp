@@ -28,6 +28,8 @@ enum TokenType
     TOKEN_EOF
 };
 
+extern std::string token_to_string(TokenType type);
+
 class Token
 {
     private:
@@ -39,10 +41,7 @@ class Token
     public:
         Token(TokenType type, std::string lexeme, std::any literal, int line);
 
-        const std::string& get_text() const;
-
         std::string to_string() const;
-        std::string literal_to_string() const;
 };
 
 #endif

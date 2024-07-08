@@ -44,9 +44,9 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void run(const std::string& text)
+void run(const std::string& source)
 {
-    Scanner scanner{text};
+    Scanner scanner{source};
     const auto tokens = scanner.scan_tokens();
 
     for (const auto& token : tokens)
@@ -58,12 +58,12 @@ void run_file(const std::string& path)
     std::cout << "Executing file: " + path + "\n";
     std::ifstream file{path};
     std::string line;
-    std::string text;
+    std::string file_content;
 
     while (std::getline(file, line))
-        text += line + "\n";
+        file_content += line + "\n";
 
-    run(text);
+    run(file_content);
     
     if (Error::has_error)
     {
@@ -74,7 +74,7 @@ void run_file(const std::string& path)
 void run_prompt()
 {
     std::string text;
-
+    
     while (true)
     {
         std::cout << "nimble% ";

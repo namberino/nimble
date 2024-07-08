@@ -3,25 +3,48 @@
 Token::Token(TokenType type, std::string lexeme, std::any literal, int line)
     : type(type), lexeme(lexeme), literal(literal), line(line) {}
 
-const std::string& Token::get_text() const
-{
-    return lexeme;
-}
-
 std::string Token::to_string() const
 {
-    return std::to_string(static_cast<int>(type)) + ", lexeme: '" + lexeme + "' , literal: '" + literal_to_string() + "'";
-}
+    std::string literal_text;
 
-std::string Token::literal_to_string() const
-{
     switch (type)
     {
-        case TokenType::STRING:
-            return std::any_cast<std::string>(literal);
-        case TokenType::NUMBER:
-            return std::to_string(std::any_cast<double>(literal));
+        case (IDENTIFIER):
+            literal_text = lexeme;
+            break;
+        case (STRING):
+            literal_text = std::any_cast<std::string>(literal);
+            break;
+        case (NUMBER):
+            literal_text = std::to_string(std::any_cast<double>(literal));
+            break;
+        case (TRUE):
+            literal_text = "true";
+            break;
+        case (FALSE):
+            literal_text = "false";
+            break;
         default:
-            return "";
+            literal_text = "nil";
     }
+
+    return "Type: " + ::token_to_string(type) + " | Lexeme: " + lexeme + " | Literal: " + literal_text;
+} 
+
+std::string token_to_string(TokenType type)
+{
+    static const std::string strings[] = {
+        "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE",
+        "COMMA", "DOT", "MINUS", "PLUS", "SEMICOLON", "SLASH", "STAR",
+        "BANG", "BANG_EQUAL",
+        "EQUAL", "EQUAL_EQUAL",
+        "GREATER", "GREATER_EQUAL",
+        "LESS", "LESS_EQUAL",
+        "IDENTIFIER", "STRING", "NUMBER",
+        "AND", "CLASS", "ELSE", "FALSE", "FUN", "FOR", "IF", "NIL", "OR",
+        "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "VAR", "WHILE",
+        "TOKEN_EOF"
+    };
+
+    return strings[static_cast<int>(type)];
 }
