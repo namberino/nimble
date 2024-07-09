@@ -34,6 +34,8 @@ Associativity:
 | Factor | /, * | Left |
 | Unary | !, - | Right |
 
+Parsing technique: **recursive descent**
+
 Grammar rule:
 ```
 expression -> equality
@@ -47,29 +49,20 @@ primary -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
 
 > Note: `*` means it can be repeated for 0 or more times
 
-Old grammar rule:
-```
-expression -> literal | unary | binary | grouping
-literal -> NUMBER | STRING | "true" | "false" | "nil"
-grouping -> "(" expression ")"
-unary -> ("-" | "!") expression
-binary -> expression operator expression
-operator -> "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/"
-```
-
-Parsing technique: **recursive descent**
-
 Statement grammar rule:
 ```
 program -> declaration* EOF
 declaration -> var_declaration | statement
-statement -> expr_statement | print_statement
+statement -> expression_statement | print_statement | block
 expr_statement -> expression ";"
 print_statement -> "print" expression ";"
 var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
+block -> "{" declaration* "}"
 ```
 
-Variable accessing rule:
+Variable rules:
 ```
 primary -> "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | IDENTIFIER 
+expression -> assignment
+assignment -> IDENTIFIER "=" assignment | equality
 ```
