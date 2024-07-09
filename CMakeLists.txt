@@ -12,7 +12,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "App
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(STATUS "Using GCC/G++ compiler")
 else()
-    message(WARNING "Unsupported compiler. Falling back to default compiler")
+    message(WARNING "Unsupported compiler")
 endif()
 
 # compile flags
