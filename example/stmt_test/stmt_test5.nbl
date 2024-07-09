@@ -1,0 +1,8 @@
+// no initializers
+var a;
+var b;
+
+a = "assigned";
+
+print(a); // works
+print(b); // error

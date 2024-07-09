@@ -131,7 +131,12 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
 
 std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
 {
-    return environment->get(expr->name);
+    std::any value = environment->get(expr->name);
+
+    if (value.type() == typeid(nullptr))
+        throw RuntimeError{expr->name, "Variable not initialized"};
+
+    return value;
 }
 
 
