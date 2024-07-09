@@ -30,7 +30,9 @@ std::shared_ptr<Stmt> Parser::statement()
 
 std::shared_ptr<Stmt> Parser::print_statement()
 {
+    consume(LEFT_PAREN, "Expected '(' after 'print' command");
     std::shared_ptr<Expr> value = expression();
+    consume(RIGHT_PAREN, "Missing ')' for 'print' command");
     consume(SEMICOLON, "Expected ';' after value");
     return std::make_shared<PrintStmt>(value);
 }

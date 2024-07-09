@@ -1,6 +1,6 @@
 var a = "hello";
-print a; // hello
+print(a); // hello
 var a = "world";
-print a; // world
+print(a); // world
 var c;
-print c; // "nil".
+print(c); // "nil".
