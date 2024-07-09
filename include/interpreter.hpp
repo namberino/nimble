@@ -29,6 +29,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
 
     public:
         void interpret(const std::vector<std::shared_ptr<Stmt>>& statements);
+        std::string interpret(const std::shared_ptr<Expr>& expr);
 
         std::any visitAssignExpr(std::shared_ptr<AssignExpr> expr) override;
         std::any visitBinaryExpr(std::shared_ptr<BinaryExpr> expr) override;

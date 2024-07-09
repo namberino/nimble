@@ -16,6 +16,27 @@ std::vector<std::shared_ptr<Stmt>> Parser::parse()
     return statements;
 }
 
+std::any Parser::parse_repl()
+{
+    allow_expression = true;
+    std::vector<std::shared_ptr<Stmt>> statements;
+
+    while (!is_at_end())
+    {
+        statements.push_back(declaration());
+
+        if (found_expression)
+        {
+            std::shared_ptr<Stmt> last = statements.back();
+            return std::dynamic_pointer_cast<ExpressionStmt>(last)->expression;
+        }
+
+        allow_expression = false;
+    }
+
+    return statements;
+}
+
 
 std::shared_ptr<Stmt> Parser::statement()
 {
@@ -40,7 +61,12 @@ std::shared_ptr<Stmt> Parser::print_statement()
 std::shared_ptr<Stmt> Parser::expression_statement()
 {
     std::shared_ptr<Expr> expr = expression();
-    consume(SEMICOLON, "Expected ';' after expression");
+
+    if (allow_expression && is_at_end())
+        found_expression = true;
+    else
+        consume(SEMICOLON, "Expected ';' after expression");
+
     return std::make_shared<ExpressionStmt>(expr);
 }
 

@@ -3,11 +3,14 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <any>
+#include <memory>
 
 #include "scanner.hpp"
 #include "error.hpp"
 #include "parser.hpp"
 #include "interpreter.hpp"
+#include "stmt.hpp"
 
 void run(const std::string& text);
 void run_file(const std::string& filename);
@@ -61,9 +64,6 @@ void run(const std::string& source)
     if (Error::has_error) // syntax error
         return;
 
-    if (Error::has_error) // resolution error
-        return;
-
     interpreter.interpret(statements);
 
     // std::cout << AstPrinter{}.print(expression) + "\n";
@@ -98,7 +98,31 @@ void run_prompt()
 
         if (std::getline(std::cin, text))
         {
-            run(text);
+            // run(text);
+            Scanner scanner{text};
+            std::vector<Token> tokens = scanner.scan_tokens();
+
+            Parser parser{tokens};
+            std::any syntax = parser.parse_repl();
+
+            if (Error::has_error) // syntax error
+            {
+                std::cout << "Invalid syntax error\n";
+                continue;
+            }
+
+            if (syntax.type() == typeid(std::vector<std::shared_ptr<Stmt>>))
+            {
+                interpreter.interpret(std::any_cast<std::vector<std::shared_ptr<Stmt>>>(syntax));
+            }
+            else if (syntax.type() == typeid(std::shared_ptr<Expr>))
+            {
+                std::string result = interpreter.interpret(std::any_cast<std::shared_ptr<Expr>>(syntax));
+
+                if (result != "")
+                    std::cout << result + "\n";
+            }
+
             Error::has_error = false;
         }
         else

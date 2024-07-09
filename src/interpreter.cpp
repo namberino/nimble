@@ -13,6 +13,21 @@ void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements
     }
 }
 
+std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
+{
+    try
+    {
+        std::any value = evaluate(expr);
+        return stringify(value);
+    }
+    catch(RuntimeError error)
+    {
+        Error::runtime_error(error);
+        return "";
+    }
+    
+}
+
 std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
     execute_block(stmt->statements, std::make_shared<Environment>(environment));

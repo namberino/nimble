@@ -24,6 +24,9 @@ class Parser
     int current = 0;
 
     private:
+        bool allow_expression;
+        bool found_expression = false;
+
         std::shared_ptr<Stmt> statement();
         std::shared_ptr<Stmt> print_statement();
         std::shared_ptr<Stmt> expression_statement();
@@ -54,6 +57,7 @@ class Parser
     public:
         Parser(const std::vector<Token>& tokens);
         std::vector<std::shared_ptr<Stmt>> parse();
+        std::any parse_repl();
 };
 
 #endif
