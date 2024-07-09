@@ -38,7 +38,10 @@ Parsing technique: **recursive descent**
 
 Grammar rule:
 ```
-expression -> equality
+expression -> assignment
+assignment -> IDENTIFIER "=" assignment | logic_or
+logic_or -> logic_and ( "or" logic_and )*
+logic_and -> equality ( "and" equality )*
 equality -> comparison ( ( "!=" | "==" ) comparison )*
 comparison -> term ( ( ">" | ">=" | "<" | "<=" ) term )*
 term -> factor ( ( "-" | "+" ) factor )*
@@ -53,11 +56,14 @@ Statement grammar rule:
 ```
 program -> declaration* EOF
 declaration -> var_declaration | statement
-statement -> expression_statement | print_statement | block
+statement -> expression_statement | print_statement | if_statement | for_statement | while_statement | block
 expr_statement -> expression ";"
 print_statement -> "print" expression ";"
 var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
 block -> "{" declaration* "}"
+if_statement -> "if" "(" expression ")" statement ( "else" statement )?
+for_statement -> "for" "(" ( var_declaration | expression_statement | ";" ) expression? ";" expression? ")" statement
+while_statement -> "while" "(" expression ")" statement
 ```
 
 Variable rules:

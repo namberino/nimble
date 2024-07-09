@@ -43,19 +43,97 @@ std::shared_ptr<Stmt> Parser::statement()
     if (match(PRINT))
         return print_statement();
 
+    if (match(IF))
+        return if_statement();
+
+    if (match(FOR))
+        return for_statement();
+
+    if (match(WHILE))
+        return while_statement();
+
     if (match(LEFT_BRACE))
         return std::make_shared<BlockStmt>(block());
-
+    
     return expression_statement();
 }
 
 std::shared_ptr<Stmt> Parser::print_statement()
 {
-    consume(LEFT_PAREN, "Expected '(' after 'print' command");
+    consume(LEFT_PAREN, "Expected '(' after 'print' statement");
+    // shared_ptr used here be cause it's accessing another shared_ptr object already created by expression()
     std::shared_ptr<Expr> value = expression();
-    consume(RIGHT_PAREN, "Missing ')' for 'print' command");
+    consume(RIGHT_PAREN, "Missing ')' for 'print' statement");
     consume(SEMICOLON, "Expected ';' after value");
+
+    // make_shared combines allocation of the object and control block into a single memory allocation
+    // more efficient and better exception safety
     return std::make_shared<PrintStmt>(value);
+}
+
+std::shared_ptr<Stmt> Parser::if_statement()
+{
+    consume(LEFT_PAREN, "Expected '(' after 'if' statement");
+    std::shared_ptr<Expr> condition = expression();
+    consume(RIGHT_PAREN, "Expected ')' after 'if' condition");
+
+    std::shared_ptr<Stmt> then_branch = statement();
+    std::shared_ptr<Stmt> else_branch = nullptr;
+
+    if (match(ELSE))
+        else_branch = statement();
+
+    return std::make_shared<IfStmt>(condition, then_branch, else_branch);
+}
+
+std::shared_ptr<Stmt> Parser::for_statement()
+{
+    consume(LEFT_PAREN, "Expected '(' after 'for' statement");
+    std::shared_ptr<Stmt> initializer;
+
+    if (match(SEMICOLON)) // initializer omitted
+        initializer = nullptr;
+    else if (match(VAR)) // variable declaration
+        initializer = var_declaration();
+    else // expression
+        initializer = expression_statement();
+
+    std::shared_ptr<Expr> condition = nullptr;
+    if (!check(SEMICOLON)) // clause not omitted
+        condition = expression();
+    consume(SEMICOLON, "Expected ';' after loop condition");
+    
+    std::shared_ptr<Expr> increment = nullptr;
+    if (!check(RIGHT_PAREN)) // clause not omitted
+        increment = expression();
+    consume(RIGHT_PAREN, "Expected ')' after 'for' clauses");
+
+    std::shared_ptr<Stmt> body = statement();
+    if (increment != nullptr)
+        // executes after the body in each iteration of the loop
+        // replace body with a block that contains the body with an expression statement that evaluates the increment
+        body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{body, std::make_shared<ExpressionStmt>(increment)});
+
+    if (condition == nullptr)
+        // true if condition is omitted
+        condition = std::make_shared<LiteralExpr>(true);
+    body = std::make_shared<WhileStmt>(condition, body); // build for loop with while loop
+
+    if (initializer != nullptr) // runs once
+        // replace statement with a block that runs the initializer and execute the loop
+        body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{initializer, body});
+
+    return body;
+}
+
+std::shared_ptr<Stmt> Parser::while_statement()
+{
+    consume(LEFT_PAREN, "Expected '(' after 'while' statement");
+    std::shared_ptr<Expr> condition = expression();
+    consume(RIGHT_PAREN, "Expected ')' after 'while' condition");
+    std::shared_ptr<Stmt> body = statement();
+
+    return std::make_shared<WhileStmt>(condition, body);
 }
 
 std::shared_ptr<Stmt> Parser::expression_statement()
@@ -78,6 +156,7 @@ std::vector<std::shared_ptr<Stmt>> Parser::block()
         statements.push_back(declaration());
 
     consume(RIGHT_BRACE, "Expected '}' after block");
+
     return statements;
 }
 
@@ -111,7 +190,7 @@ std::shared_ptr<Stmt> Parser::var_declaration()
 
 std::shared_ptr<Expr> Parser::assignment()
 {
-    std::shared_ptr<Expr> expr = equality();
+    std::shared_ptr<Expr> expr = or_expression();
 
     if (match(EQUAL))
     {
@@ -133,6 +212,34 @@ std::shared_ptr<Expr> Parser::assignment()
 std::shared_ptr<Expr> Parser::expression()
 {
     return assignment();
+}
+
+std::shared_ptr<Expr> Parser::or_expression()
+{
+    std::shared_ptr<Expr> expression = and_expression();
+
+    while (match(OR))
+    {
+        Token op = previous();
+        std::shared_ptr<Expr> right = and_expression();
+        expression = std::make_shared<LogicalExpr>(expression, std::move(op), right);
+    }
+
+    return expression;
+}
+
+std::shared_ptr<Expr> Parser::and_expression()
+{
+    std::shared_ptr<Expr> expression = equality();
+
+    while (match(AND))
+    {
+        Token op = previous();
+        std::shared_ptr<Expr> right = equality();
+        expression = std::make_shared<LogicalExpr>(expression, std::move(op), right);
+    }
+
+    return expression;
 }
 
 std::shared_ptr<Expr> Parser::equality()

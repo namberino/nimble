@@ -51,3 +51,12 @@ std::any VarExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitVarExpr(shared_from_this());
 }
+
+
+LogicalExpr::LogicalExpr(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right)
+    : left(std::move(left)), op(std::move(op)), right(std::move(right)) {}
+
+std::any LogicalExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitLogicalExpr(shared_from_this());
+}

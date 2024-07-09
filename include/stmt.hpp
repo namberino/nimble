@@ -14,6 +14,8 @@ struct BlockStmt;
 struct ExpressionStmt;
 struct PrintStmt;
 struct VarStmt;
+struct IfStmt;
+struct WhileStmt;
 
 struct StmtVisitor
 {
@@ -22,6 +24,8 @@ struct StmtVisitor
     virtual std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) = 0;
     virtual std::any visitPrintStmt(std::shared_ptr<PrintStmt> stmt) = 0;
     virtual std::any visitVarStmt(std::shared_ptr<VarStmt> stmt) = 0;
+    virtual std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) = 0;
+    virtual std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) = 0;
 };
 
 struct Stmt
@@ -60,6 +64,25 @@ struct VarStmt : Stmt, public std::enable_shared_from_this<VarStmt>
     const std::shared_ptr<Expr> initializer;
 
     VarStmt(Token name, std::shared_ptr<Expr> initializer);
+    std::any accept(StmtVisitor& visitor) override;
+};
+
+struct IfStmt : Stmt, public std::enable_shared_from_this<IfStmt>
+{
+    std::shared_ptr<Expr> condition;
+    std::shared_ptr<Stmt> then_branch;
+    std::shared_ptr<Stmt> else_branch;
+
+    IfStmt(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> then_branch, std::shared_ptr<Stmt> else_branch);
+    std::any accept(StmtVisitor& visitor) override;
+};
+
+struct WhileStmt : Stmt, public std::enable_shared_from_this<WhileStmt>
+{
+    std::shared_ptr<Expr> condition;
+    std::shared_ptr<Stmt> body;
+
+    WhileStmt(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> body);
     std::any accept(StmtVisitor& visitor) override;
 };
 

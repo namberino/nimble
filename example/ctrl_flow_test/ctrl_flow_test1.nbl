@@ -1,0 +1,2 @@
+print("this prints" or 2);
+print(nil or "this also prints");

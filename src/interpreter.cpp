@@ -55,6 +55,25 @@ std::any Interpreter::visitVarStmt(std::shared_ptr<VarStmt> stmt)
         value = evaluate(stmt->initializer);
 
     environment->define(stmt->name.lexeme, std::move(value));
+    
+    return {};
+}
+
+std::any Interpreter::visitIfStmt(std::shared_ptr<IfStmt> stmt)
+{
+    if (is_truthy(evaluate(stmt->condition)))
+        execute(stmt->then_branch);
+    else if (stmt->else_branch != nullptr)
+        execute(stmt->else_branch);
+    
+    return {};
+}
+
+std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
+{
+    while (is_truthy(evaluate(stmt->condition)))
+        execute(stmt->body);
+
     return {};
 }
 
@@ -152,6 +171,24 @@ std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
         throw RuntimeError{expr->name, "Variable not initialized"};
 
     return value;
+}
+
+std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
+{
+    std::any left = evaluate(expr->left);
+
+    if (expr->op.type == OR)
+    {
+        if (is_truthy(left))
+            return left;
+    }
+    else
+    {
+        if (!is_truthy(left))
+            return left;
+    }
+
+    return evaluate(expr->right);
 }
 
 
