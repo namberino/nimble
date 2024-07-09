@@ -7,11 +7,13 @@
 #include "scanner.hpp"
 #include "error.hpp"
 #include "parser.hpp"
-#include "ast_printer.hpp"
+#include "interpreter.hpp"
 
 void run(const std::string& text);
 void run_file(const std::string& filename);
 void run_prompt();
+
+Interpreter interpreter{};
 
 int main(int argc, char* argv[])
 {
@@ -59,7 +61,9 @@ void run(const std::string& source)
     if (Error::has_error) // syntax error
         return;
 
-    std::cout << AstPrinter{}.print(expression) + "\n";
+    interpreter.interpret(expression);
+
+    // std::cout << AstPrinter{}.print(expression) + "\n";
 }
 
 void run_file(const std::string& path)
@@ -76,6 +80,9 @@ void run_file(const std::string& path)
     
     if (Error::has_error)
         exit(2);
+    
+    if (Error::has_runtime_error)
+        exit(3);
 }
 
 void run_prompt()
