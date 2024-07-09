@@ -5,7 +5,7 @@ bool Error::has_runtime_error = false;
 
 void Error::report(int line, const std::string& where, const std::string& msg)
 {
-    std::cout << "Line: " + std::to_string(line) + ", Error " + where + ": " + msg + "\n";
+    std::cout << "On line: " + std::to_string(line) + ", Error" + where + ": " + msg + "\n";
     has_error = true;
 }
 
@@ -26,7 +26,7 @@ RuntimeError::RuntimeError(const Token& token, std::string msg)
     : std::runtime_error(msg.data()), token(token) {}
 
 
-void Error::runtimeError(const RuntimeError& error)
+void Error::runtime_error(const RuntimeError& error)
 {
     std::cout << error.what() << "\nOn line " << error.token.line << "\n";
     has_runtime_error = true;

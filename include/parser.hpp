@@ -6,10 +6,12 @@
 #include <string>
 #include <stdexcept>
 #include <cassert>
+#include <utility>
 
 #include "expr.hpp"
 #include "error.hpp"
 #include "token.hpp"
+#include "stmt.hpp"
 
 struct ParseError : public std::runtime_error
 {
@@ -18,10 +20,18 @@ struct ParseError : public std::runtime_error
 
 class Parser
 {
-    private:
-        const std::vector<Token>& tokens;
-        int current = 0;
+    const std::vector<Token>& tokens;
+    int current = 0;
 
+    private:
+        std::shared_ptr<Stmt> statement();
+        std::shared_ptr<Stmt> print_statement();
+        std::shared_ptr<Stmt> expression_statement();
+        std::vector<std::shared_ptr<Stmt>> block();
+        std::shared_ptr<Stmt> declaration();
+        std::shared_ptr<Stmt> var_declaration();
+
+        std::shared_ptr<Expr> assignment();
         std::shared_ptr<Expr> expression();
         std::shared_ptr<Expr> equality();
         std::shared_ptr<Expr> comparison();
@@ -43,7 +53,7 @@ class Parser
 
     public:
         Parser(const std::vector<Token>& tokens);
-        std::shared_ptr<Expr> parse();
+        std::vector<std::shared_ptr<Stmt>> parse();
 };
 
 #endif

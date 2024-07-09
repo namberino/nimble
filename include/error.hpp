@@ -25,7 +25,7 @@ class Error
         static void report(int line, const std::string& where, const std::string& msg);
         static void error(int line, const std::string& msg);
         static void error(const Token& token, std::string msg);
-        static void runtimeError(const RuntimeError& error);
+        static void runtime_error(const RuntimeError& error);
 };
 
 #endif

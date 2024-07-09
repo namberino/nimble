@@ -56,12 +56,15 @@ void run(const std::string& source)
     std::vector<Token> tokens = scanner.scan_tokens();
 
     Parser parser{tokens};
-    std::shared_ptr<Expr> expression = parser.parse();
+    std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
 
     if (Error::has_error) // syntax error
         return;
 
-    interpreter.interpret(expression);
+    if (Error::has_error) // resolution error
+        return;
+
+    interpreter.interpret(statements);
 
     // std::cout << AstPrinter{}.print(expression) + "\n";
 }

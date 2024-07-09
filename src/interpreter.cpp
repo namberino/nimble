@@ -1,16 +1,53 @@
 #include "interpreter.hpp"
 
-void Interpreter::interpret(std::shared_ptr<Expr> expression)
+void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
 {
     try
     {
-        std::any value = evaluate(expression);
-        std::cout << stringify(value) + "\n";
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
     }
     catch (RuntimeError error)
     {
-        Error::runtimeError(error);
+        Error::runtime_error(error);
     }
+}
+
+std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
+{
+    execute_block(stmt->statements, std::make_shared<Environment>(environment));
+    return {};
+}
+
+std::any Interpreter::visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt)
+{
+    evaluate(stmt->expression);
+    return {};
+}
+
+std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
+{
+    std::any value = evaluate(stmt->expression);
+    std::cout << stringify(value) + "\n";
+    return {};
+}
+
+std::any Interpreter::visitVarStmt(std::shared_ptr<VarStmt> stmt)
+{
+    std::any value = nullptr;
+
+    if (stmt->initializer != nullptr)
+        value = evaluate(stmt->initializer);
+
+    environment->define(stmt->name.lexeme, std::move(value));
+    return {};
+}
+
+std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
+{
+    std::any value = evaluate(expr->value);
+    environment->assign(expr->name, value);
+    return value;
 }
 
 std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
@@ -25,16 +62,16 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
         case BANG_EQUAL: return !is_equal(left, right);
         case EQUAL_EQUAL: return is_equal(left, right);
         case GREATER:
-            check_num_operand(expr->op, left, right);
+            check_num_operands(expr->op, left, right);
             return std::any_cast<double>(left) > std::any_cast<double>(right);
         case GREATER_EQUAL:
-            check_num_operand(expr->op, left, right);
+            check_num_operands(expr->op, left, right);
             return std::any_cast<double>(left) >= std::any_cast<double>(right);
         case LESS:
-            check_num_operand(expr->op, left, right);
+            check_num_operands(expr->op, left, right);
             return std::any_cast<double>(left) < std::any_cast<double>(right);
         case LESS_EQUAL:
-            check_num_operand(expr->op, left, right);
+            check_num_operands(expr->op, left, right);
             return std::any_cast<double>(left) <= std::any_cast<double>(right);
 
         // arithmetics
@@ -92,10 +129,41 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
     return {}; // unreachable, here to make the compiler happy
 }
 
+std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
+{
+    return environment->get(expr->name);
+}
+
+
 std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 {
     // sends expression back into interpreter's visitor implementation
     return expr->accept(*this);
+}
+
+void Interpreter::execute(std::shared_ptr<Stmt> stmt)
+{
+    stmt->accept(*this);
+}
+
+void Interpreter::execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment)
+{
+    std::shared_ptr<Environment> previous_env = this->environment;
+
+    try
+    {
+        this->environment = environment;
+
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
+    }
+    catch (...)
+    {
+        this->environment = previous_env;
+        throw;
+    }
+
+    this->environment = previous_env;
 }
 
 void Interpreter::check_num_operand(const Token& op, const std::any& operand)
@@ -106,7 +174,7 @@ void Interpreter::check_num_operand(const Token& op, const std::any& operand)
     throw RuntimeError{op, "Operand must be a number"};
 }
 
-void Interpreter::check_num_operand(const Token& op, const std::any& left, const std::any& right)
+void Interpreter::check_num_operands(const Token& op, const std::any& left, const std::any& right)
 {
     if (left.type() == typeid(double) && right.type() == typeid(double))
         return;

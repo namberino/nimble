@@ -9,24 +9,37 @@
 
 #include "token.hpp"
 
+struct AssignExpr;
 struct BinaryExpr;
 struct GroupingExpr;
 struct LiteralExpr;
 struct UnaryExpr;
+struct VarExpr;
 
 struct ExprVisitor
 {
     virtual ~ExprVisitor() = default;
+    virtual std::any visitAssignExpr(std::shared_ptr<AssignExpr> expr) = 0;
     virtual std::any visitBinaryExpr(std::shared_ptr<BinaryExpr> expr) = 0;
     virtual std::any visitGroupingExpr(std::shared_ptr<GroupingExpr> expr) = 0;
     virtual std::any visitLiteralExpr(std::shared_ptr<LiteralExpr> expr) = 0;
     virtual std::any visitUnaryExpr(std::shared_ptr<UnaryExpr> expr) = 0;
+    virtual std::any visitVarExpr(std::shared_ptr<VarExpr> expr) = 0;
 };
 
 struct Expr
 {
     virtual ~Expr() = default;
     virtual std::any accept(ExprVisitor& visitor) = 0;
+};
+
+struct AssignExpr : Expr, public std::enable_shared_from_this<AssignExpr>
+{
+    const Token name;
+    const std::shared_ptr<Expr> value;
+
+    AssignExpr(Token name, std::shared_ptr<Expr> value);
+    std::any accept(ExprVisitor& visitor) override;
 };
 
 struct BinaryExpr : Expr, public std::enable_shared_from_this<BinaryExpr>
@@ -61,6 +74,14 @@ struct UnaryExpr : Expr, public std::enable_shared_from_this<UnaryExpr>
     const std::shared_ptr<Expr> right;
 
     UnaryExpr(Token op, std::shared_ptr<Expr> right);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct VarExpr : Expr, public std::enable_shared_from_this<VarExpr>
+{
+    const Token name;
+
+    VarExpr(Token name);
     std::any accept(ExprVisitor& visitor) override;
 };
 

@@ -61,8 +61,15 @@ Parsing technique: **recursive descent**
 
 Statement grammar rule:
 ```
-program -> statement* EOF
+program -> declaration* EOF
+declaration -> var_declaration | statement
 statement -> expr_statement | print_statement
 expr_statement -> expression ";"
 print_statement -> "print" expression ";"
+var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
+```
+
+Variable accessing rule:
+```
+primary -> "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | IDENTIFIER 
 ```
