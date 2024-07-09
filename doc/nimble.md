@@ -57,4 +57,12 @@ binary -> expression operator expression
 operator -> "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/"
 ```
 
-Parsing technique: recursive descent
+Parsing technique: **recursive descent**
+
+Statement grammar rule:
+```
+program -> statement* EOF
+statement -> expr_statement | print_statement
+expr_statement -> expression ";"
+print_statement -> "print" expression ";"
+```
