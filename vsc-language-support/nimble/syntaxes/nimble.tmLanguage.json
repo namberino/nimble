@@ -1,0 +1,81 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "NIMBLE Programming Language",
+	"patterns": [
+		{
+            "include": "#comments"
+        },
+        {
+            "include": "#reserved-words"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        }
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+                {
+                    "name": "comment.line.double-slash.nimble",
+                    "begin": "//",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.nimble"
+                        }
+                    },
+                    "end": "\\n"
+			    }
+            ]
+		},
+        "reserved-words": {
+            "patterns": [
+				{
+					"name": "entity.name.function.member.nimble",
+                    "match": "\\b(print)\\b"
+				}
+			]
+        },
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.nimble",
+                    "match": "\\b(if|else|while|for|var|or|and)\\b"
+				}
+			]
+		},
+        "strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.nimble",
+                    "begin": "\"",
+                    "beginCaptures": {
+                        "0": {
+                        "name": "punctuation.definition.string.begin.nimble"
+                        }
+                    },
+                    "end": "\"",
+                    "endCaptures": {
+                        "0": {
+                        "name": "punctuation.definition.string.end.nimble"
+                        }
+                    }
+				}
+			]
+		},
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.nimble",
+                    "match": "\\b\\d+(\\.\\d+)?\\b"
+                }
+            ]
+        }
+	},
+	"scopeName": "source.nimble"
+}
