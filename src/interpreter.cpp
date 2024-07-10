@@ -3,8 +3,6 @@
 Interpreter::Interpreter()
 {
     globals->define("clock", std::shared_ptr<NativeClock>{});
-
-    environment = globals;
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
@@ -85,22 +83,22 @@ std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 }
 
 
-// std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
-// {
-//     auto function = std::make_shared<NblFunction>(stmt, environment);
-//     environment->define(stmt->name.lexeme, function);
-//     return {};
-// }
+std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
+{
+    auto function = std::make_shared<NblFunction>(stmt, environment);
+    environment->define(stmt->name.lexeme, function);
+    return {};
+}
 
-// std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
-// {
-//     std::any value = nullptr;
+std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
+{
+    std::any value = nullptr;
 
-//     if (stmt->value != nullptr)
-//         value = evaluate(stmt->value);
+    if (stmt->value != nullptr)
+        value = evaluate(stmt->value);
 
-//     throw NblReturn{value};
-// }
+    throw NblReturn{value};
+}
 
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {
@@ -227,11 +225,9 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
     // pointers in a std::any wrapper must be unwrapped before they can be cast
     std::shared_ptr<NblCallable> function;
 
-    // if (callee.type() == typeid(std::shared_ptr<NblFunction>))
-    //     function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
-    // else
-    //     throw RuntimeError(expr->paren, "Can only call functions and classes");
-    if (callee.type() == typeid(NativeClock))
+    if (callee.type() == typeid(std::shared_ptr<NblFunction>))
+        function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
+    else if (callee.type() == typeid(NativeClock))
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
     else
         throw RuntimeError(expr->paren, "Can only call functions");
@@ -342,8 +338,8 @@ std::string Interpreter::stringify(const std::any& obj)
     if (obj.type() == typeid(bool))
         return std::any_cast<bool>(obj) ? "true" : "false";
     
-    // if (obj.type() == typeid(std::shared_ptr<NblFunction>))
-    //     return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
+    if (obj.type() == typeid(std::shared_ptr<NblFunction>))
+        return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
 
     return "Error in stringify: Invalid object type";
 }

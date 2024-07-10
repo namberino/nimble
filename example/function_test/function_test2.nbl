@@ -1,0 +1,11 @@
+fun say_hi()
+{
+    print("Hello world");
+    print("This was printed from the say_hi function");
+}
+
+say_hi();
+
+print("This was printed from outside the say_hi function");
+
+say_hi();

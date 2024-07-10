@@ -54,18 +54,19 @@ std::any WhileStmt::accept(StmtVisitor& visitor)
 }
 
 
-// Function::Function(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body)
-//     : name{std::move(name)}, params{std::move(params)}, body{std::move(body)} {}
+FunctionStmt::FunctionStmt(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body)
+    : name{std::move(name)}, params{std::move(params)}, body{std::move(body)} {}
 
-// std::any Function::accept(StmtVisitor& visitor)
-// {
-//     return visitor.visitFunctionStmt(shared_from_this());
-// }
+std::any FunctionStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitFunctionStmt(shared_from_this());
+}
 
-// ReturnStmt::ReturnStmt(Token keyword, std::shared_ptr<Expr> value)
-//     : keyword{std::move(keyword)}, value{std::move(value)} {}
 
-// std::any ReturnStmt::accept(StmtVisitor& visitor)
-// {
-//     return visitor.visitReturnStmt(shared_from_this());
-// }
+ReturnStmt::ReturnStmt(Token keyword, std::shared_ptr<Expr> value)
+    : keyword{std::move(keyword)}, value{std::move(value)} {}
+
+std::any ReturnStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitReturnStmt(shared_from_this());
+}

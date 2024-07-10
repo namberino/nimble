@@ -15,13 +15,13 @@ class NativeClock : public NblCallable
 
         std::any call(Interpreter& interpreter, std::vector<std::any> args) override
         {
-            auto now = std::chrono::system_clock::now().time_since_epoch();
-            return static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(now).count());
+            auto ticks = std::chrono::system_clock::now().time_since_epoch();
+            return std::chrono::duration<double>{ticks}.count() / 1000.0;
         }
 
         std::string to_string() override
         {
-            return "Native clock";
+            return "<native clock>";
         }
 };
 

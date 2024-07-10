@@ -16,8 +16,8 @@ struct PrintStmt;
 struct VarStmt;
 struct IfStmt;
 struct WhileStmt;
-// struct FunctionStmt;
-// struct ReturnStmt;
+struct FunctionStmt;
+struct ReturnStmt;
 
 struct StmtVisitor
 {
@@ -28,8 +28,8 @@ struct StmtVisitor
     virtual std::any visitVarStmt(std::shared_ptr<VarStmt> stmt) = 0;
     virtual std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) = 0;
     virtual std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) = 0;
-    // virtual std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) = 0;
-    // virtual std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) = 0;
+    virtual std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) = 0;
+    virtual std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) = 0;
 };
 
 struct Stmt
@@ -90,23 +90,23 @@ struct WhileStmt : Stmt, public std::enable_shared_from_this<WhileStmt>
     std::any accept(StmtVisitor& visitor) override;
 };
 
-// struct FunctionStmt : Stmt, public std::enable_shared_from_this<FunctionStmt>
-// {
-//     const Token name;
-//     const std::vector<Token> params;
-//     const std::vector<std::shared_ptr<Stmt>> body;
+struct FunctionStmt : Stmt, public std::enable_shared_from_this<FunctionStmt>
+{
+    const Token name;
+    const std::vector<Token> params;
+    const std::vector<std::shared_ptr<Stmt>> body;
 
-//     FunctionStmt(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body);
-//     std::any accept(StmtVisitor& visitor) override;
-// };
+    FunctionStmt(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body);
+    std::any accept(StmtVisitor& visitor) override;
+};
 
-// struct ReturnStmt : Stmt, public std::enable_shared_from_this<ReturnStmt>
-// {
-//     const Token keyword;
-//     const std::shared_ptr<Expr> value;
+struct ReturnStmt : Stmt, public std::enable_shared_from_this<ReturnStmt>
+{
+    const Token keyword;
+    const std::shared_ptr<Expr> value;
 
-//     ReturnStmt(Token keyword, std::shared_ptr<Expr> value);
-//     std::any accept(StmtVisitor& visitor) override;
-// };
+    ReturnStmt(Token keyword, std::shared_ptr<Expr> value);
+    std::any accept(StmtVisitor& visitor) override;
+};
 
 #endif

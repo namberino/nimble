@@ -17,16 +17,16 @@
 #include "environment.hpp"
 #include "builtins.hpp"
 #include "nbl_callable.hpp"
+#include "nbl_function.hpp"
 
 class Interpreter : public ExprVisitor, public StmtVisitor
 {
-    private:
-        std::shared_ptr<Environment> globals{new Environment};
-        std::shared_ptr<Environment> environment;
+    public: std::shared_ptr<Environment> globals{new Environment};
+    private: std::shared_ptr<Environment> environment = globals;
 
+    private:
         std::any evaluate(std::shared_ptr<Expr> expr);
         void execute(std::shared_ptr<Stmt> stmt);
-        void execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment);
         void check_num_operand(const Token& op, const std::any& operand);
         void check_num_operands(const Token& op, const std::any& left, const std::any& right);
         bool is_truthy(const std::any& obj);
@@ -37,6 +37,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         Interpreter();
         void interpret(const std::vector<std::shared_ptr<Stmt>>& statements);
         std::string interpret(const std::shared_ptr<Expr>& expr);
+        void execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment);
 
         std::any visitAssignExpr(std::shared_ptr<AssignExpr> expr) override;
         std::any visitBinaryExpr(std::shared_ptr<BinaryExpr> expr) override;
@@ -53,8 +54,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitVarStmt(std::shared_ptr<VarStmt> stmt) override;
         std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) override;
         std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) override;
-        // std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) override;
-        // std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) override;
+        std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) override;
+        std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) override;
 };
 
 #endif
