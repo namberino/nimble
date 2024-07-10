@@ -1,5 +1,12 @@
 #include "interpreter.hpp"
 
+Interpreter::Interpreter()
+{
+    globals->define("clock", std::shared_ptr<NativeClock>{});
+
+    environment = globals;
+}
+
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
 {
     try
@@ -76,6 +83,24 @@ std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 
     return {};
 }
+
+
+// std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
+// {
+//     auto function = std::make_shared<NblFunction>(stmt, environment);
+//     environment->define(stmt->name.lexeme, function);
+//     return {};
+// }
+
+// std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
+// {
+//     std::any value = nullptr;
+
+//     if (stmt->value != nullptr)
+//         value = evaluate(stmt->value);
+
+//     throw NblReturn{value};
+// }
 
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {
@@ -191,6 +216,32 @@ std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
     return evaluate(expr->right);
 }
 
+std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
+{
+    std::any callee = evaluate(expr->callee);
+    std::vector<std::any> arguments;
+
+    for (const std::shared_ptr<Expr>& argument : expr->arguments)
+        arguments.push_back(evaluate(argument));
+
+    // pointers in a std::any wrapper must be unwrapped before they can be cast
+    std::shared_ptr<NblCallable> function;
+
+    // if (callee.type() == typeid(std::shared_ptr<NblFunction>))
+    //     function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
+    // else
+    //     throw RuntimeError(expr->paren, "Can only call functions and classes");
+    if (callee.type() == typeid(NativeClock))
+        function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
+    else
+        throw RuntimeError(expr->paren, "Can only call functions");
+
+    if (arguments.size() != function->arity())
+        throw RuntimeError(expr->paren, "Expected " + std::to_string(function->arity()) + " arguments but got " + std::to_string(arguments.size()));
+
+    return function->call(*this, std::move(arguments));
+}
+
 
 std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 {
@@ -290,6 +341,9 @@ std::string Interpreter::stringify(const std::any& obj)
 
     if (obj.type() == typeid(bool))
         return std::any_cast<bool>(obj) ? "true" : "false";
+    
+    // if (obj.type() == typeid(std::shared_ptr<NblFunction>))
+    //     return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
 
     return "Error in stringify: Invalid object type";
 }

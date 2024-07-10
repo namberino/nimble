@@ -16,6 +16,7 @@ struct LiteralExpr;
 struct UnaryExpr;
 struct VarExpr;
 struct LogicalExpr;
+struct CallExpr;
 
 struct ExprVisitor
 {
@@ -27,6 +28,7 @@ struct ExprVisitor
     virtual std::any visitUnaryExpr(std::shared_ptr<UnaryExpr> expr) = 0;
     virtual std::any visitVarExpr(std::shared_ptr<VarExpr> expr) = 0;
     virtual std::any visitLogicalExpr(std::shared_ptr<LogicalExpr> expr) = 0;
+    virtual std::any visitCallExpr(std::shared_ptr<CallExpr> expr) = 0;
 };
 
 struct Expr
@@ -94,6 +96,16 @@ struct LogicalExpr : Expr, public std::enable_shared_from_this<LogicalExpr>
     const std::shared_ptr<Expr> right;
 
     LogicalExpr(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct CallExpr : Expr, public std::enable_shared_from_this<CallExpr>
+{
+    std::shared_ptr<Expr> callee;
+    Token paren;
+    std::vector<std::shared_ptr<Expr>> arguments;
+
+    CallExpr(std::shared_ptr<Expr> callee, Token paren, std::vector<std::shared_ptr<Expr>> arguments);
     std::any accept(ExprVisitor& visitor) override;
 };
 

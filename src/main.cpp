@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
         if(point != NULL)
         {
-            if(strcmp(point, ".nbl") != 0) // ends with nbl
+            if(strcmp(point, ".nbl") != 0 && strcmp(point, ".nimble") != 0) // ends with nbl
             {
                 std::cout << "Invalid file extension, please use '.nbl'\n";
                 exit(1);

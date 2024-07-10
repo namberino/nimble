@@ -51,6 +51,9 @@ std::shared_ptr<Stmt> Parser::statement()
 
     if (match(WHILE))
         return while_statement();
+    
+    // if (match(RETURN))
+    //     return return_statement();
 
     if (match(LEFT_BRACE))
         return std::make_shared<BlockStmt>(block());
@@ -136,6 +139,18 @@ std::shared_ptr<Stmt> Parser::while_statement()
     return std::make_shared<WhileStmt>(condition, body);
 }
 
+// std::shared_ptr<Stmt> Parser::return_statement()
+// {
+//     Token keyword = previous();
+
+//     std::shared_ptr<Expr> value = nullptr;
+//     if (!check(SEMICOLON))
+//         value = expression();
+//     consume(SEMICOLON, "Expect ';' after return value");
+
+//     return std::make_shared<ReturnStmt>(keyword, value);
+// }
+
 std::shared_ptr<Stmt> Parser::expression_statement()
 {
     std::shared_ptr<Expr> expr = expression();
@@ -167,6 +182,9 @@ std::shared_ptr<Stmt> Parser::declaration()
         if (match(VAR))
             return var_declaration();
 
+        // if (match(FUN))
+        //     return function("function");
+
         return statement();
     }
     catch (ParseError error)
@@ -187,6 +205,30 @@ std::shared_ptr<Stmt> Parser::var_declaration()
     consume(SEMICOLON, "Expected ';' after variable declaration");
     return std::make_shared<VarStmt>(std::move(name), initializer);
 }
+
+// std::shared_ptr<FunctionStmt> Parser::function(std::string kind)
+// {
+//     Token name = consume(IDENTIFIER, "Expected " + kind + " name");
+
+//     consume(LEFT_PAREN, "Expected '(' after " + kind + " name");
+//     std::vector<Token> parameters;
+//     if (!check(RIGHT_PAREN))
+//     {
+//         do
+//         {
+//             if (parameters.size() >= 255)
+//                 error(peek(), "Can't have more than 255 parameters.");
+
+//             parameters.push_back(consume(IDENTIFIER, "Expected parameter name"));
+//         } while (match(COMMA));
+//     }
+//     consume(RIGHT_PAREN, "Expected ')' after parameters");
+
+//     consume(LEFT_BRACE, "Expected '{' before " + kind + " body");
+//     std::vector<std::shared_ptr<Stmt>> body = block();
+
+//     return std::make_shared<FunctionStmt>(std::move(name), std::move(parameters), std::move(body));
+// }
 
 std::shared_ptr<Expr> Parser::assignment()
 {
@@ -307,7 +349,42 @@ std::shared_ptr<Expr> Parser::unary()
         return std::make_shared<UnaryExpr>(std::move(op), right);
     }
 
-    return primary();
+    return call();
+}
+
+std::shared_ptr<Expr> Parser::finish_call(std::shared_ptr<Expr> callee)
+{
+    std::vector<std::shared_ptr<Expr>> arguments;
+
+    if (!check(RIGHT_PAREN))
+    {
+        do
+        {
+            if (arguments.size() >= 255)
+                error(peek(), "Can't have more than 255 arguments");
+
+            arguments.push_back(expression());
+        } while (match(COMMA));
+    }
+
+    Token paren = consume(RIGHT_PAREN, "Expected ')' after arguments");
+
+    return std::make_shared<CallExpr>(callee, std::move(paren), std::move(arguments));
+}
+
+std::shared_ptr<Expr> Parser::call()
+{
+    std::shared_ptr<Expr> expr = primary();
+
+    while (true)
+    {
+        if (match(LEFT_PAREN))
+            expr = finish_call(expr);
+        else
+            break;
+    }
+
+    return expr;
 }
 
 std::shared_ptr<Expr> Parser::primary()

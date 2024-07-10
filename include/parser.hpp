@@ -12,6 +12,7 @@
 #include "error.hpp"
 #include "token.hpp"
 #include "stmt.hpp"
+#include "builtins.hpp"
 
 struct ParseError : public std::runtime_error
 {
@@ -33,9 +34,11 @@ class Parser
         std::shared_ptr<Stmt> for_statement();
         std::shared_ptr<Stmt> while_statement();
         std::shared_ptr<Stmt> expression_statement();
+        std::shared_ptr<Stmt> return_statement();
         std::vector<std::shared_ptr<Stmt>> block();
         std::shared_ptr<Stmt> declaration();
         std::shared_ptr<Stmt> var_declaration();
+        // std::shared_ptr<FunctionStmt> function(std::string kind);
 
         std::shared_ptr<Expr> assignment();
         std::shared_ptr<Expr> expression();
@@ -46,6 +49,8 @@ class Parser
         std::shared_ptr<Expr> term();
         std::shared_ptr<Expr> factor();
         std::shared_ptr<Expr> unary();
+        std::shared_ptr<Expr> finish_call(std::shared_ptr<Expr> callee);
+        std::shared_ptr<Expr> call();
         std::shared_ptr<Expr> primary();
 
         template <class... T>

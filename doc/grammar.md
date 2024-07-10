@@ -49,11 +49,14 @@ primary -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
 Statement grammar rule:
 ```
 program -> declaration* EOF
-declaration -> var_declaration | statement
+declaration -> var_declaration | function_declaration | statement
 statement -> expression_statement | print_statement | if_statement | for_statement | while_statement | return_statement | block
 expr_statement -> expression ";"
 print_statement -> "print" expression ";"
 var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
+function_declaration -> "fun" function
+function -> IDENTIFIER "(" parameters? ")" block
+parameters -> IDENTIFIER ( "," IDENTIFIER )*
 block -> "{" declaration* "}"
 if_statement -> "if" "(" expression ")" statement ( "else" statement )?
 for_statement -> "for" "(" ( var_declaration | expression_statement | ";" ) expression? ";" expression? ")" statement
