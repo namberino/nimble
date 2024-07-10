@@ -98,6 +98,8 @@ void run_prompt()
 
         if (std::getline(std::cin, text))
         {
+            Error::has_error = false;
+            
             // run(text);
             Scanner scanner{text};
             std::vector<Token> tokens = scanner.scan_tokens();
@@ -122,8 +124,6 @@ void run_prompt()
                 if (result != "")
                     std::cout << result + "\n";
             }
-
-            Error::has_error = false;
         }
         else
         {
