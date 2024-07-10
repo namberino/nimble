@@ -2,3 +2,5 @@
 bin
 obj
 build
+src/*.tmp
+include/*.tmp
