@@ -18,5 +18,4 @@ fun loop()
 
 var n = loop();
 
-print("Output of the function: ");
-print(n);
+print("Output of the function: " + n);
