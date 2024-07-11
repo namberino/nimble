@@ -1,11 +1,17 @@
 fun say_hi()
 {
+    var n = 10;
+
     print("Hello world");
     print("This was printed from the say_hi function");
+
+    return n;
 }
 
-say_hi();
+var num = say_hi();
 
 print("This was printed from outside the say_hi function");
 
 say_hi();
+
+print(num);
