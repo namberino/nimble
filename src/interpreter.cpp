@@ -91,8 +91,9 @@ std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 
 std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 {
-    auto function = std::make_shared<NblFunction>(stmt, environment);
-    environment->define(stmt->name.lexeme, function);
+    std::string func_name = stmt->name.lexeme;
+    auto function = std::make_shared<NblFunction>(func_name, stmt->fn, environment);
+    environment->define(func_name, function);
     return {};
 }
 
@@ -254,6 +255,11 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
         throw RuntimeError(expr->paren, "Expected " + std::to_string(function->arity()) + " arguments but got " + std::to_string(arguments.size()));
 
     return function->call(*this, std::move(arguments));
+}
+
+std::any Interpreter::visitFunctionExpr(std::shared_ptr<FunctionExpr> expr)
+{
+    return std::make_shared<NblFunction>("", expr, environment);
 }
 
 

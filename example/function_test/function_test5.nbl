@@ -6,10 +6,7 @@ fun thrice(fn)
     }
 }
 
+// should print 1 2 3
 thrice(fun (a) {
     print(a);
 });
-
-// 1
-// 2
-// 3

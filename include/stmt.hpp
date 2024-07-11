@@ -94,11 +94,10 @@ struct WhileStmt : Stmt, public std::enable_shared_from_this<WhileStmt>
 
 struct FunctionStmt : Stmt, public std::enable_shared_from_this<FunctionStmt>
 {
-    const Token name;
-    const std::vector<Token> params;
-    const std::vector<std::shared_ptr<Stmt>> body;
+    Token name;
+    std::shared_ptr<FunctionExpr> fn;
 
-    FunctionStmt(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body);
+    FunctionStmt(Token name, std::shared_ptr<FunctionExpr> fn);
     std::any accept(StmtVisitor& visitor) override;
 };
 

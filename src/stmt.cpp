@@ -54,8 +54,8 @@ std::any WhileStmt::accept(StmtVisitor& visitor)
 }
 
 
-FunctionStmt::FunctionStmt(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body)
-    : name{std::move(name)}, params{std::move(params)}, body{std::move(body)} {}
+FunctionStmt::FunctionStmt(Token name, std::shared_ptr<FunctionExpr> fn)
+    : name{std::move(name)}, fn{std::move(fn)} {}
 
 std::any FunctionStmt::accept(StmtVisitor& visitor)
 {

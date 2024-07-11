@@ -9,6 +9,8 @@
 
 #include "token.hpp"
 
+struct Stmt;
+
 struct AssignExpr;
 struct BinaryExpr;
 struct GroupingExpr;
@@ -17,6 +19,7 @@ struct UnaryExpr;
 struct VarExpr;
 struct LogicalExpr;
 struct CallExpr;
+struct FunctionExpr;
 
 struct ExprVisitor
 {
@@ -29,6 +32,7 @@ struct ExprVisitor
     virtual std::any visitVarExpr(std::shared_ptr<VarExpr> expr) = 0;
     virtual std::any visitLogicalExpr(std::shared_ptr<LogicalExpr> expr) = 0;
     virtual std::any visitCallExpr(std::shared_ptr<CallExpr> expr) = 0;
+    virtual std::any visitFunctionExpr(std::shared_ptr<FunctionExpr> expr) = 0;
 };
 
 struct Expr
@@ -106,6 +110,15 @@ struct CallExpr : Expr, public std::enable_shared_from_this<CallExpr>
     std::vector<std::shared_ptr<Expr>> arguments;
 
     CallExpr(std::shared_ptr<Expr> callee, Token paren, std::vector<std::shared_ptr<Expr>> arguments);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct FunctionExpr : Expr, public std::enable_shared_from_this<FunctionExpr>
+{
+    std::vector<Token> parameters;
+    std::vector<std::shared_ptr<Stmt>> body;
+
+    FunctionExpr(std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body);
     std::any accept(ExprVisitor& visitor) override;
 };
 

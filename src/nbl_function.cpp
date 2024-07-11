@@ -2,20 +2,20 @@
 
 #include "nbl_function.hpp"
 
-NblFunction::NblFunction(std::shared_ptr<FunctionStmt> declaration, std::shared_ptr<Environment> closure)
-    : declaration(declaration), closure(closure) {}
+NblFunction::NblFunction(std::string name, std::shared_ptr<FunctionExpr> declaration, std::shared_ptr<Environment> closure)
+    : name(name), declaration(declaration), closure(closure) {}
 
 int NblFunction::arity()
 {
-    return declaration->params.size();
+    return declaration->parameters.size();
 }
 
 std::any NblFunction::call(Interpreter& interpreter, std::vector<std::any> arguments)
 {
     auto environment = std::make_shared<Environment>(closure);
 
-    for (int i = 0; i < declaration->params.size(); i++)
-        environment->define(declaration->params[i].lexeme, arguments[i]);
+    for (int i = 0; i < declaration->parameters.size(); i++)
+        environment->define(declaration->parameters[i].lexeme, arguments[i]);
 
     try
     {
@@ -31,5 +31,5 @@ std::any NblFunction::call(Interpreter& interpreter, std::vector<std::any> argum
 
 std::string NblFunction::to_string()
 {
-    return "<func " + declaration->name.lexeme + ">";
+    return name != "" ? "<func " + name + ">" : "<func lambda>";
 }

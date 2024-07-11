@@ -68,3 +68,12 @@ std::any CallExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitCallExpr(shared_from_this());
 }
+
+
+FunctionExpr::FunctionExpr(std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body)
+    : parameters(std::move(parameters)), body(std::move(body)) {}
+
+std::any FunctionExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitFunctionExpr(shared_from_this());
+}

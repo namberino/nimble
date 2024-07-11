@@ -243,7 +243,11 @@ std::shared_ptr<Stmt> Parser::var_declaration()
 std::shared_ptr<FunctionStmt> Parser::function(std::string kind)
 {
     Token name = consume(IDENTIFIER, "Expected " + kind + " name");
+    return std::make_shared<FunctionStmt>(name, function_body(kind));
+}
 
+std::shared_ptr<FunctionExpr> Parser::function_body(std::string kind)
+{
     consume(LEFT_PAREN, "Expected '(' after " + kind + " name");
 
     std::vector<Token> parameters;
@@ -262,7 +266,7 @@ std::shared_ptr<FunctionStmt> Parser::function(std::string kind)
     consume(LEFT_BRACE, "Expected '{' before " + kind + " body");
     std::vector<std::shared_ptr<Stmt>> body = block();
 
-    return std::make_shared<FunctionStmt>(std::move(name), std::move(parameters), std::move(body));
+    return std::make_shared<FunctionExpr>(std::move(parameters), std::move(body));
 }
 
 std::shared_ptr<Expr> Parser::assignment()
@@ -438,6 +442,9 @@ std::shared_ptr<Expr> Parser::primary()
 
     if (match(IDENTIFIER))
         return std::make_shared<VarExpr>(previous());
+
+    if (match(FUN))
+        return function_body("function");
 
     if (match(LEFT_PAREN))
     {
