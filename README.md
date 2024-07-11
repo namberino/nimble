@@ -9,3 +9,5 @@ For example programs, visit the [example](example/) directory
 This is still a work in progress.
 
 ![language](doc/img/language.png)
+
+![fib](doc/img/fib.png)

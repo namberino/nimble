@@ -1,17 +1,16 @@
-fun say_hi()
+// fibonacci function test
+
+fun fib(n)
 {
-    var n = 10;
+    if (n <= 1)
+    {
+        return n;
+    }
 
-    print("Hello world");
-    print("This was printed from the say_hi function");
-
-    return n;
+    return fib(n - 2) + fib(n - 1);
 }
 
-var num = say_hi();
-
-print("This was printed from outside the say_hi function");
-
-say_hi();
-
-print(num);
+for (var i = 0; i < 20; i = i + 1)
+{
+    print(fib(i))
+}
