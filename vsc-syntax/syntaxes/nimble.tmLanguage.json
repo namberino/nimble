@@ -9,6 +9,9 @@
             "include": "#reserved-words"
         },
         {
+            "include": "#language-constants"
+        },
+        {
             "include": "#keywords"
         },
         {
@@ -43,6 +46,21 @@
                     "match": "\\b(print|fun)\\b"
 				}
 			]
+        },
+        "language-constants": {
+            "patterns": [
+                {
+                    "match": "\\b(true|false)|(nil)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "constant.language.boolean.nimble"
+                        },
+                        "2": {
+                            "name": "constant.character.null.nimble"
+                        }
+                    }
+                }
+            ]
         },
 		"keywords": {
 			"patterns": [
