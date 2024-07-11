@@ -1,6 +1,6 @@
-.vscode
-bin
-obj
-build
-src/**/*.tmp
-include/**/*.tmp
+/.vscode/
+/bin/
+/obj/
+/build/
+/src/**/*.tmp
+/include/**/*.tmp
