@@ -2,7 +2,8 @@
 
 Interpreter::Interpreter()
 {
-    globals->define("clock", std::shared_ptr<NativeClock>{});
+    globals->define("clock", std::make_shared<NativeClock>());
+    globals->define("read", std::make_shared<Read>());
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
@@ -246,8 +247,10 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
 
     if (callee.type() == typeid(std::shared_ptr<NblFunction>))
         function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
-    else if (callee.type() == typeid(NativeClock))
+    else if (callee.type() == typeid(std::shared_ptr<NativeClock>))
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
+    else if (callee.type() == typeid(std::shared_ptr<Read>))
+        function = std::any_cast<std::shared_ptr<Read>>(callee);
     else
         throw RuntimeError(expr->paren, "Can only call functions");
 
@@ -367,6 +370,9 @@ std::string Interpreter::stringify(const std::any& obj)
     
     if (obj.type() == typeid(std::shared_ptr<NativeClock>))
         return std::any_cast<std::shared_ptr<NativeClock>>(obj)->to_string();
+    
+    if (obj.type() == typeid(std::shared_ptr<Read>))
+        return std::any_cast<std::shared_ptr<Read>>(obj)->to_string();
 
     return "Error in stringify: Invalid object type";
 }

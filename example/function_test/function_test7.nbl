@@ -1,0 +1,6 @@
+var name = read("Enter your name: ");
+var age = read("Enter your age: ");
+
+var birth_year = 2024 - age;
+
+print("Name: " + name + " | Birth year: " + birth_year);
