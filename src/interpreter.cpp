@@ -364,6 +364,9 @@ std::string Interpreter::stringify(const std::any& obj)
     
     if (obj.type() == typeid(std::shared_ptr<NblFunction>))
         return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
+    
+    if (obj.type() == typeid(std::shared_ptr<NativeClock>))
+        return std::any_cast<std::shared_ptr<NativeClock>>(obj)->to_string();
 
     return "Error in stringify: Invalid object type";
 }
