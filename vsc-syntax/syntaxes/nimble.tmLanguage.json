@@ -48,7 +48,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.nimble",
-                    "match": "\\b(if|else|while|for|var|or|and|return)\\b"
+                    "match": "\\b(if|else|while|for|var|or|and|return|break)\\b"
 				}
 			]
 		},
