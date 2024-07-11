@@ -8,12 +8,30 @@ int NativeClock::arity()
 std::any NativeClock::call(Interpreter& interpreter, std::vector<std::any> args)
 {
     auto ticks = std::chrono::system_clock::now().time_since_epoch();
-    return static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(ticks).count());
+    return std::chrono::duration<double>{ticks}.count() / 100.0;
 }
 
 std::string NativeClock::to_string()
 {
     return "<native clock>";
+}
+
+
+int NativeTime::arity()
+{
+    return 0;
+}
+
+std::any NativeTime::call(Interpreter& interpreter, std::vector<std::any> args)
+{
+    std::time_t current_time = std::time(nullptr);
+
+    return std::string(std::ctime(&current_time));
+}
+
+std::string NativeTime::to_string()
+{
+    return "<native time>";
 }
 
 

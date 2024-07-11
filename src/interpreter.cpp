@@ -3,6 +3,7 @@
 Interpreter::Interpreter()
 {
     globals->define("clock", std::make_shared<NativeClock>());
+    globals->define("time", std::make_shared<NativeTime>());
     globals->define("read", std::make_shared<Read>());
 }
 
@@ -249,6 +250,8 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
         function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
     else if (callee.type() == typeid(std::shared_ptr<NativeClock>))
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
+    else if (callee.type() == typeid(std::shared_ptr<NativeTime>))
+        function = std::any_cast<std::shared_ptr<NativeTime>>(callee);
     else if (callee.type() == typeid(std::shared_ptr<Read>))
         function = std::any_cast<std::shared_ptr<Read>>(callee);
     else
@@ -370,6 +373,9 @@ std::string Interpreter::stringify(const std::any& obj)
     
     if (obj.type() == typeid(std::shared_ptr<NativeClock>))
         return std::any_cast<std::shared_ptr<NativeClock>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeTime>))
+        return std::any_cast<std::shared_ptr<NativeTime>>(obj)->to_string();
     
     if (obj.type() == typeid(std::shared_ptr<Read>))
         return std::any_cast<std::shared_ptr<Read>>(obj)->to_string();
