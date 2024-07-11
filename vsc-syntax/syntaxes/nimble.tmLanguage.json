@@ -16,7 +16,10 @@
         },
         {
             "include": "#numbers"
-        }
+        },
+		{
+			"include": "#operators"
+		}
 	],
 	"repository": {
 		"comments": {
@@ -37,7 +40,7 @@
             "patterns": [
 				{
 					"name": "entity.name.function.member.nimble",
-                    "match": "\\b(print)\\b"
+                    "match": "\\b(print|fun)\\b"
 				}
 			]
         },
@@ -45,7 +48,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.nimble",
-                    "match": "\\b(if|else|while|for|var|or|and)\\b"
+                    "match": "\\b(if|else|while|for|var|or|and|return)\\b"
 				}
 			]
 		},
@@ -75,7 +78,23 @@
                     "match": "\\b\\d+(\\.\\d+)?\\b"
                 }
             ]
-        }
+        },
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.comparison.nimble",
+					"match": "(==|!=|<=|>=|<|>)"
+				},
+				{
+					"name": "keyword.operator.assignment.nimble",
+					"match": "(=)"
+				},
+				{
+					"name": "keyword.operator.arithmetic.nimble",
+					"match": "(\\+|\\-|\\*|/)"
+				}
+			]
+		}
 	},
 	"scopeName": "source.nimble"
 }

@@ -13,7 +13,7 @@
     "languages": [{
       "id": "nimble",
       "aliases": ["NIMBLE", "nimble"],
-      "extensions": [".nbl",".nimble"],
+      "extensions": [".nble",".nimble"],
       "configuration": "./language-configuration.json"
     }],
     "grammars": [{
