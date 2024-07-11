@@ -157,7 +157,7 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
             if (left.type() == typeid(double) && right.type() == typeid(std::string))
                 return std::to_string(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
 
-            throw RuntimeError{expr->op, "Operands must be 2 numbers or 2 strings"};
+            throw RuntimeError{expr->op, "Operands must be 2 numbers, 2 strings, or 1 number and 1 string"};
         case MINUS:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) - std::any_cast<double>(right);
