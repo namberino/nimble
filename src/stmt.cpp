@@ -70,3 +70,11 @@ std::any ReturnStmt::accept(StmtVisitor& visitor)
 {
     return visitor.visitReturnStmt(shared_from_this());
 }
+
+
+BreakStmt::BreakStmt() {}
+
+std::any BreakStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitBreakStmt(shared_from_this());
+}

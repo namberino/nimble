@@ -1,0 +1,17 @@
+var n = 10;
+
+while (true)
+{
+    if (n == 2)
+    {
+        break;
+    }
+
+    print(n);
+
+    n = n - 1;
+}
+
+print("End of loop");
+print(n);
+print(n);

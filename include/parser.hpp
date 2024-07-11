@@ -23,6 +23,7 @@ class Parser
 {
     const std::vector<Token>& tokens;
     int current = 0;
+    int loop_depth = 0; // track how many enclosing loops
 
     private:
         bool allow_expression;
@@ -33,8 +34,9 @@ class Parser
         std::shared_ptr<Stmt> if_statement();
         std::shared_ptr<Stmt> for_statement();
         std::shared_ptr<Stmt> while_statement();
-        std::shared_ptr<Stmt> expression_statement();
         std::shared_ptr<Stmt> return_statement();
+        std::shared_ptr<Stmt> break_statement();
+        std::shared_ptr<Stmt> expression_statement();
         std::vector<std::shared_ptr<Stmt>> block();
         std::shared_ptr<Stmt> declaration();
         std::shared_ptr<Stmt> var_declaration();

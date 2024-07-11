@@ -19,6 +19,12 @@
 #include "nbl_callable.hpp"
 #include "nbl_function.hpp"
 
+class BreakException : public std::runtime_error
+{
+    public:
+        BreakException() : std::runtime_error("break") {};
+};
+
 class Interpreter : public ExprVisitor, public StmtVisitor
 {
     public: std::shared_ptr<Environment> globals{new Environment};
@@ -56,6 +62,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) override;
         std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) override;
         std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) override;
+        std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) override;
 };
 
 #endif

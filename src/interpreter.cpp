@@ -76,12 +76,18 @@ std::any Interpreter::visitIfStmt(std::shared_ptr<IfStmt> stmt)
 
 std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 {
-    while (is_truthy(evaluate(stmt->condition)))
-        execute(stmt->body);
+    try
+    {
+        while (is_truthy(evaluate(stmt->condition)))
+            execute(stmt->body);
+    }
+    catch (BreakException* bex)
+    {
+        // pass
+    }
 
     return {};
 }
-
 
 std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 {
@@ -99,6 +105,12 @@ std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
 
     throw NblReturn{value};
 }
+
+std::any Interpreter::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
+{
+    throw new BreakException();
+}
+
 
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {

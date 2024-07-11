@@ -55,6 +55,9 @@ std::shared_ptr<Stmt> Parser::statement()
     if (match(RETURN))
         return return_statement();
 
+    if (match(BREAK))
+        return break_statement();
+
     if (match(LEFT_BRACE))
         return std::make_shared<BlockStmt>(block());
     
@@ -91,52 +94,74 @@ std::shared_ptr<Stmt> Parser::if_statement()
 
 std::shared_ptr<Stmt> Parser::for_statement()
 {
-    consume(LEFT_PAREN, "Expected '(' after 'for' statement");
-    std::shared_ptr<Stmt> initializer;
+    try 
+    {
+        consume(LEFT_PAREN, "Expected '(' after 'for' statement");
+        std::shared_ptr<Stmt> initializer;
 
-    if (match(SEMICOLON)) // initializer omitted
-        initializer = nullptr;
-    else if (match(VAR)) // variable declaration
-        initializer = var_declaration();
-    else // expression
-        initializer = expression_statement();
+        if (match(SEMICOLON)) // initializer omitted
+            initializer = nullptr;
+        else if (match(VAR)) // variable declaration
+            initializer = var_declaration();
+        else // expression
+            initializer = expression_statement();
 
-    std::shared_ptr<Expr> condition = nullptr;
-    if (!check(SEMICOLON)) // clause not omitted
-        condition = expression();
-    consume(SEMICOLON, "Expected ';' after loop condition");
-    
-    std::shared_ptr<Expr> increment = nullptr;
-    if (!check(RIGHT_PAREN)) // clause not omitted
-        increment = expression();
-    consume(RIGHT_PAREN, "Expected ')' after 'for' clauses");
+        std::shared_ptr<Expr> condition = nullptr;
+        if (!check(SEMICOLON)) // clause not omitted
+            condition = expression();
+        consume(SEMICOLON, "Expected ';' after loop condition");
+        
+        std::shared_ptr<Expr> increment = nullptr;
+        if (!check(RIGHT_PAREN)) // clause not omitted
+            increment = expression();
+        consume(RIGHT_PAREN, "Expected ')' after 'for' clauses");
 
-    std::shared_ptr<Stmt> body = statement();
-    if (increment != nullptr)
-        // executes after the body in each iteration of the loop
-        // replace body with a block that contains the body with an expression statement that evaluates the increment
-        body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{body, std::make_shared<ExpressionStmt>(increment)});
+        std::shared_ptr<Stmt> body = statement();
+        if (increment != nullptr)
+            // executes after the body in each iteration of the loop
+            // replace body with a block that contains the body with an expression statement that evaluates the increment
+            body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{body, std::make_shared<ExpressionStmt>(increment)});
 
-    if (condition == nullptr)
-        // true if condition is omitted
-        condition = std::make_shared<LiteralExpr>(true);
-    body = std::make_shared<WhileStmt>(condition, body); // build for loop with while loop
+        if (condition == nullptr)
+            // true if condition is omitted
+            condition = std::make_shared<LiteralExpr>(true);
+        body = std::make_shared<WhileStmt>(condition, body); // build for loop with while loop
 
-    if (initializer != nullptr) // runs once
-        // replace statement with a block that runs the initializer and execute the loop
-        body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{initializer, body});
+        if (initializer != nullptr) // runs once
+            // replace statement with a block that runs the initializer and execute the loop
+            body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{initializer, body});
 
-    return body;
+        return body;
+    }
+    catch (...) // throw error for trying to use break outside a loop
+    {
+        loop_depth--;
+        throw;
+    }
+
+    loop_depth--;
 }
 
 std::shared_ptr<Stmt> Parser::while_statement()
 {
-    consume(LEFT_PAREN, "Expected '(' after 'while' statement");
-    std::shared_ptr<Expr> condition = expression();
-    consume(RIGHT_PAREN, "Expected ')' after 'while' condition");
-    std::shared_ptr<Stmt> body = statement();
+    try
+    {
+        loop_depth++;
 
-    return std::make_shared<WhileStmt>(condition, body);
+        consume(LEFT_PAREN, "Expected '(' after 'while' statement");
+        std::shared_ptr<Expr> condition = expression();
+        consume(RIGHT_PAREN, "Expected ')' after 'while' condition");
+        std::shared_ptr<Stmt> body = statement();
+
+        return std::make_shared<WhileStmt>(condition, body);
+    }
+    catch (...) // throw error for trying to use break outside a loop
+    {
+        loop_depth--;
+        throw;
+    }
+
+    loop_depth--;
 }
 
 std::shared_ptr<Stmt> Parser::return_statement()
@@ -146,9 +171,18 @@ std::shared_ptr<Stmt> Parser::return_statement()
     
     if (!check(SEMICOLON))
         value = expression();
-    consume(SEMICOLON, "Expect ';' after return value");
+    consume(SEMICOLON, "Expected ';' after return value");
 
     return std::make_shared<ReturnStmt>(keyword, value);
+}
+
+std::shared_ptr<Stmt> Parser::break_statement()
+{
+    if (loop_depth == 0)
+        error(previous(), "Must be inside a loop to use 'break'");
+    consume(SEMICOLON, "Expected ';' after 'break'");
+
+    return std::make_shared<BreakStmt>();
 }
 
 std::shared_ptr<Stmt> Parser::expression_statement()
