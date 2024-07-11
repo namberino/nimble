@@ -1,6 +1,6 @@
 # NIMBLE: Nam's Interpreted Modular Basic Language Engine
 
-This is a super simple interpreter for my NIMBLE programming language
+This is the source code for my NIMBLE programming language's interpreter
 
 For documentation on the language, visit the [doc](doc/) directory
 
