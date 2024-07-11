@@ -1,0 +1,15 @@
+fun which_func(fn)
+{
+    print(fn);
+}
+
+which_func(fun (b) {
+    print(b);
+});
+
+fun func(a)
+{
+    print(a);
+}
+
+which_func(func);
