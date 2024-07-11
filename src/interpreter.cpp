@@ -4,7 +4,8 @@ Interpreter::Interpreter()
 {
     globals->define("clock", std::make_shared<NativeClock>());
     globals->define("time", std::make_shared<NativeTime>());
-    globals->define("read", std::make_shared<Read>());
+    globals->define("read", std::make_shared<NativeRead>());
+    globals->define("exit", std::make_shared<NativeExit>());
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
@@ -247,15 +248,31 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
     std::shared_ptr<NblCallable> function;
 
     if (callee.type() == typeid(std::shared_ptr<NblFunction>))
+    {
         function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
+    }
     else if (callee.type() == typeid(std::shared_ptr<NativeClock>))
+    {
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
+    }
     else if (callee.type() == typeid(std::shared_ptr<NativeTime>))
+    {
         function = std::any_cast<std::shared_ptr<NativeTime>>(callee);
-    else if (callee.type() == typeid(std::shared_ptr<Read>))
-        function = std::any_cast<std::shared_ptr<Read>>(callee);
+    }
+    else if (callee.type() == typeid(std::shared_ptr<NativeRead>))
+    {
+        function = std::any_cast<std::shared_ptr<NativeRead>>(callee);
+    }
+    else if (callee.type() == typeid(std::shared_ptr<NativeExit>))
+    {
+        std::shared_ptr<NativeExit> func = std::any_cast<std::shared_ptr<NativeExit>>(callee);
+        func->param_count = arguments.size() > 0 ? 1 : 0;
+        function = func;
+    }
     else
+    {
         throw RuntimeError(expr->paren, "Can only call functions");
+    }
 
     if (arguments.size() != function->arity())
         throw RuntimeError(expr->paren, "Expected " + std::to_string(function->arity()) + " arguments but got " + std::to_string(arguments.size()));
@@ -377,8 +394,11 @@ std::string Interpreter::stringify(const std::any& obj)
     if (obj.type() == typeid(std::shared_ptr<NativeTime>))
         return std::any_cast<std::shared_ptr<NativeTime>>(obj)->to_string();
     
-    if (obj.type() == typeid(std::shared_ptr<Read>))
-        return std::any_cast<std::shared_ptr<Read>>(obj)->to_string();
+    if (obj.type() == typeid(std::shared_ptr<NativeRead>))
+        return std::any_cast<std::shared_ptr<NativeRead>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeExit>))
+        return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
 
     return "Error in stringify: Invalid object type";
 }

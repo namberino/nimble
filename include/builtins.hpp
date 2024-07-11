@@ -25,9 +25,19 @@ class NativeTime : public NblCallable
         std::string to_string() override;
 };
 
-class Read : public NblCallable
+class NativeRead : public NblCallable
 {
     public:
+        int arity() override;
+        std::any call(Interpreter& interpreter, std::vector<std::any> args) override;
+        std::string to_string() override;
+};
+
+class NativeExit : public NblCallable
+{
+    public:
+        int param_count;
+        
         int arity() override;
         std::any call(Interpreter& interpreter, std::vector<std::any> args) override;
         std::string to_string() override;

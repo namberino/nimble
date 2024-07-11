@@ -25,7 +25,6 @@ int NativeTime::arity()
 std::any NativeTime::call(Interpreter& interpreter, std::vector<std::any> args)
 {
     std::time_t current_time = std::time(nullptr);
-
     return std::string(std::ctime(&current_time));
 }
 
@@ -35,12 +34,12 @@ std::string NativeTime::to_string()
 }
 
 
-int Read::arity()
+int NativeRead::arity()
 {
     return 1;
 }
 
-std::any Read::call(Interpreter& interpreter, std::vector<std::any> args)
+std::any NativeRead::call(Interpreter& interpreter, std::vector<std::any> args)
 {
     std::string prompt = std::any_cast<std::string>(args[0]);
     std::cout << prompt;
@@ -58,7 +57,26 @@ std::any Read::call(Interpreter& interpreter, std::vector<std::any> args)
     return result;
 }
 
-std::string Read::to_string()
+std::string NativeRead::to_string()
 {
     return "<native read>";
+}
+
+
+int NativeExit::arity()
+{
+    return param_count;
+}
+
+std::any NativeExit::call(Interpreter& interpreter, std::vector<std::any> args)
+{
+    if (args.size() > 0)
+        exit((int)std::any_cast<double>(args[0]));
+    else
+        exit(0);
+}
+
+std::string NativeExit::to_string()
+{
+    return "<native exit>";
 }
