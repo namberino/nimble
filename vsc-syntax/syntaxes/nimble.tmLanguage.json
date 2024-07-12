@@ -109,7 +109,7 @@
 				},
 				{
 					"name": "keyword.operator.arithmetic.nimble",
-					"match": "(\\+|\\-|\\*|/)"
+					"match": "(\\+|\\-|\\*|/|%)"
 				}
 			]
 		}
