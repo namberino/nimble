@@ -25,7 +25,7 @@ class NativeTime : public NblCallable
         std::string to_string() override;
 };
 
-class NativeRead : public NblCallable
+class NativeInput : public NblCallable
 {
     public:
         int arity() override;

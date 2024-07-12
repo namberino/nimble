@@ -43,7 +43,7 @@
             "patterns": [
 				{
 					"name": "entity.name.function.member.nimble",
-                    "match": "\\b(print|fun)\\b"
+                    "match": "\\b(print|fun|input|exit|clock|time)\\b"
 				}
 			]
         },

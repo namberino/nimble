@@ -34,12 +34,12 @@ std::string NativeTime::to_string()
 }
 
 
-int NativeRead::arity()
+int NativeInput::arity()
 {
     return 1;
 }
 
-std::any NativeRead::call(Interpreter& interpreter, std::vector<std::any> args)
+std::any NativeInput::call(Interpreter& interpreter, std::vector<std::any> args)
 {
     std::string prompt = std::any_cast<std::string>(args[0]);
     std::cout << prompt;
@@ -57,9 +57,9 @@ std::any NativeRead::call(Interpreter& interpreter, std::vector<std::any> args)
     return result;
 }
 
-std::string NativeRead::to_string()
+std::string NativeInput::to_string()
 {
-    return "<native read>";
+    return "<native input>";
 }
 
 

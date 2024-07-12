@@ -4,7 +4,7 @@ Interpreter::Interpreter()
 {
     globals->define("clock", std::make_shared<NativeClock>());
     globals->define("time", std::make_shared<NativeTime>());
-    globals->define("read", std::make_shared<NativeRead>());
+    globals->define("input", std::make_shared<NativeInput>());
     globals->define("exit", std::make_shared<NativeExit>());
 }
 
@@ -285,9 +285,9 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
     {
         function = std::any_cast<std::shared_ptr<NativeTime>>(callee);
     }
-    else if (callee.type() == typeid(std::shared_ptr<NativeRead>))
+    else if (callee.type() == typeid(std::shared_ptr<NativeInput>))
     {
-        function = std::any_cast<std::shared_ptr<NativeRead>>(callee);
+        function = std::any_cast<std::shared_ptr<NativeInput>>(callee);
     }
     else if (callee.type() == typeid(std::shared_ptr<NativeExit>))
     {
@@ -435,8 +435,8 @@ std::string Interpreter::stringify(const std::any& obj)
     if (obj.type() == typeid(std::shared_ptr<NativeTime>))
         return std::any_cast<std::shared_ptr<NativeTime>>(obj)->to_string();
     
-    if (obj.type() == typeid(std::shared_ptr<NativeRead>))
-        return std::any_cast<std::shared_ptr<NativeRead>>(obj)->to_string();
+    if (obj.type() == typeid(std::shared_ptr<NativeInput>))
+        return std::any_cast<std::shared_ptr<NativeInput>>(obj)->to_string();
 
     if (obj.type() == typeid(std::shared_ptr<NativeExit>))
         return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
