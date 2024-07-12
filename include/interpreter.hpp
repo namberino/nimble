@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <cmath>
 
 #include "expr.hpp"
 #include "error.hpp"

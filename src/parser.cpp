@@ -339,9 +339,23 @@ std::shared_ptr<Expr> Parser::equality()
 
 std::shared_ptr<Expr> Parser::comparison()
 {
-    std::shared_ptr<Expr> expr = term();
+    std::shared_ptr<Expr> expr = exponent();
 
     while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL))
+    {
+        Token op = previous();
+        std::shared_ptr<Expr> right = exponent();
+        expr = std::make_shared<BinaryExpr>(expr, std::move(op), right);
+    }
+
+    return expr;
+}
+
+std::shared_ptr<Expr> Parser::exponent()
+{
+    std::shared_ptr<Expr> expr = term();
+
+    while (match(TokenType::STAR_STAR))
     {
         Token op = previous();
         std::shared_ptr<Expr> right = term();

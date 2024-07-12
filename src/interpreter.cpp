@@ -164,6 +164,9 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
         case LESS_EQUAL:
             check_num_operands(expr->op, left, right);
             return std::any_cast<double>(left) <= std::any_cast<double>(right);
+        case STAR_STAR:
+            check_num_operands(expr->op, left, right);
+            return pow(std::any_cast<double>(left), std::any_cast<double>(right));
 
         // arithmetics
         case PLUS:
