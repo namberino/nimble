@@ -369,7 +369,7 @@ std::shared_ptr<Expr> Parser::factor()
 {
     std::shared_ptr<Expr> expr = unary();
 
-    while (match(SLASH, STAR))
+    while (match(SLASH, STAR, PERCENT))
     {
         Token op = previous();
         std::shared_ptr<Expr> right = unary();

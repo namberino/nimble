@@ -189,6 +189,9 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
         case SLASH:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) / std::any_cast<double>(right);
+        case PERCENT:
+            if (left.type() == typeid(double) && right.type() == typeid(double))
+                return fmod(std::any_cast<double>(left), std::any_cast<double>(right));
     
         default: break;
     }
