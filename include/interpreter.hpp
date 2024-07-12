@@ -27,10 +27,15 @@ class BreakException : public std::runtime_error
 
 class Interpreter : public ExprVisitor, public StmtVisitor
 {
-    public: std::shared_ptr<Environment> globals{new Environment};
-    private: std::shared_ptr<Environment> environment = globals;
+    public:
+        std::shared_ptr<Environment> globals{new Environment};
+    
+    private:
+        std::map<std::shared_ptr<Expr>, int> locals;
+        std::shared_ptr<Environment> environment = globals;
 
     private:
+        std::any lookup_var(const Token& name, std::shared_ptr<Expr> expr);
         std::any evaluate(std::shared_ptr<Expr> expr);
         void execute(std::shared_ptr<Stmt> stmt);
         void check_num_operand(const Token& op, const std::any& operand);
@@ -44,6 +49,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         void interpret(const std::vector<std::shared_ptr<Stmt>>& statements);
         std::string interpret(const std::shared_ptr<Expr>& expr);
         void execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment);
+        void resolve(std::shared_ptr<Expr> expr, int depth);
 
         std::any visitAssignExpr(std::shared_ptr<AssignExpr> expr) override;
         std::any visitBinaryExpr(std::shared_ptr<BinaryExpr> expr) override;

@@ -43,3 +43,23 @@ void Environment::define(const std::string& name, std::any value)
 {
     values[name] = std::move(value);
 }
+
+ std::shared_ptr<Environment> Environment::ancestor(int distance)
+ {
+    std::shared_ptr<Environment> environment = shared_from_this();
+
+    for (int i = 0; i < distance; i++)
+        environment = environment->enclosing;
+
+    return environment;
+ }
+
+std::any Environment::get_at(int distance, const std::string& name)
+{
+    return ancestor(distance)->values[name];
+}
+
+void Environment::assign_at(int distance, const Token& name, std::any value)
+{
+    ancestor(distance)->values[name.lexeme] = std::move(value);
+}

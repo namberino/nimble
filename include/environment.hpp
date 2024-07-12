@@ -23,6 +23,9 @@ class Environment : public std::enable_shared_from_this<Environment>
         std::any get(const Token& name);
         void assign(const Token& name, std::any value);
         void define(const std::string& name, std::any value);
+        std::shared_ptr<Environment> ancestor(int distance);
+        std::any get_at(int distance, const std::string& name);
+        void assign_at(int distance, const Token& name, std::any value);
 };
 
 #endif

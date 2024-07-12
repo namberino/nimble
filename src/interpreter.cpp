@@ -36,6 +36,11 @@ std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
     
 }
 
+void Interpreter::resolve(std::shared_ptr<Expr> expr, int depth)
+{
+    locals[expr] = depth;
+}
+
 std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
     execute_block(stmt->statements, std::make_shared<Environment>(environment));
@@ -119,7 +124,20 @@ std::any Interpreter::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {
     std::any value = evaluate(expr->value);
-    environment->assign(expr->name, value);
+    // environment->assign(expr->name, value);
+
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        environment->assign_at(distance, expr->name, value);
+    }
+    else
+    {
+        globals->assign(expr->name, value);
+    }
+
     return value;
 }
 
@@ -210,12 +228,14 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
 
 std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
 {
-    std::any value = environment->get(expr->name);
+    // std::any value = environment->get(expr->name);
 
-    if (value.type() == typeid(nullptr))
-        throw RuntimeError{expr->name, "Variable not initialized"};
+    // if (value.type() == typeid(nullptr))
+    //     throw RuntimeError{expr->name, "Variable not initialized"};
 
-    return value;
+    // return value;
+
+    return lookup_var(expr->name, expr);
 }
 
 std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
@@ -285,6 +305,21 @@ std::any Interpreter::visitFunctionExpr(std::shared_ptr<FunctionExpr> expr)
     return std::make_shared<NblFunction>("", expr, environment);
 }
 
+
+std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
+{
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        return environment->get_at(distance, name.lexeme);
+    }
+    else
+    {
+        return globals->get(name);
+    }
+}
 
 std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 {

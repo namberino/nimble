@@ -11,6 +11,7 @@
 #include "parser.hpp"
 #include "interpreter.hpp"
 #include "stmt.hpp"
+#include "resolver.hpp"
 
 void run(const std::string& text);
 void run_file(const std::string& filename);
@@ -62,6 +63,12 @@ void run(const std::string& source)
     std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
 
     if (Error::has_error) // syntax error
+        return;
+
+    Resolver resolver{interpreter};
+    resolver.resolve(statements);
+
+    if (Error::has_error) // resolution error
         return;
 
     interpreter.interpret(statements);
