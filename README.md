@@ -1,6 +1,6 @@
 # The NIMBLE Programming Language
 
-NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed, interpreted programming language. This is the source code for the NIMBLE interpreter
+NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed, interpreted programming language with C-like syntax. This is the source code for the NIMBLE interpreter
 
 For documentation on the language, visit the [doc](doc/) directory
 
