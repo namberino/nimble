@@ -43,3 +43,12 @@ If you're using `cmake`:
 # Documentation
 
 You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [example](example/) directory.
+
+# References
+
+- [Making a Programming Language & Interpreter in under 10 minutes](https://www.youtube.com/watch?v=A3gTw1ZkeK0)
+- [Writing An Interpreter In Go](https://www.amazon.com/Writing-Interpreter-Go-Thorsten-Ball/dp/3982016118)
+- [Crafting Interpreters](https://craftinginterpreters.com/)
+- [Make YOUR OWN Programming Language in Python](https://youtube.com/playlist?list=PLZQftyCk7_SdoVexSmwy_tBgs7P0b97yD&si=cr5N8m9Ybknj0Pvr)
+- [Let's Write an Interpreter (in 168 Lines of Python)](https://www.youtube.com/watch?v=LgsW0eGk-6U)
+- [My First Language Frontend with LLVM Tutorial](https://www.llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html)
