@@ -31,7 +31,7 @@ Parsing technique: **recursive descent**
 Grammar rule:
 ```
 expression -> assignment
-assignment -> IDENTIFIER "=" assignment | logic_or
+assignment -> ( call "." )? IDENTIFIER "=" assignment | logic_or
 logic_or -> logic_and ( "or" logic_and )*
 logic_and -> equality ( "and" equality )*
 equality -> comparison ( ( "!=" | "==" ) comparison )*
@@ -40,7 +40,7 @@ exponent -> term ( "**" term )*
 term -> factor ( ( "-" | "+" ) factor )*
 factor -> unary ( ( "/" | "*" | "%" ) unary )*
 unary -> ( "!" | "-" ) unary | call
-call -> primary ( "(" arguments? ")" )*
+call -> primary ( "(" arguments? ")" | "." IDENTIFIER )*
 arguments -> expression ( "," expression )*
 primary -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
 ```

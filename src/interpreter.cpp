@@ -100,7 +100,7 @@ std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 {
     std::string func_name = stmt->name.lexeme;
-    auto function = std::make_shared<NblFunction>(func_name, stmt->fn, environment);
+    auto function = std::make_shared<NblFunction>(func_name, stmt->fn, environment, false);
     environment->define(func_name, function);
     return {};
 }
@@ -118,6 +118,24 @@ std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
 std::any Interpreter::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
 {
     throw new BreakException();
+}
+
+std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
+{
+    environment->define(stmt->name.lexeme, nullptr);
+    std::map<std::string, std::shared_ptr<NblFunction>> methods;
+
+    for (std::shared_ptr<FunctionStmt> method : stmt->methods)
+    {
+        bool is_method_init = method->name.lexeme == "init";
+        auto function = std::make_shared<NblFunction>(stmt->name.lexeme, method->fn, environment, is_method_init);
+        methods[method->name.lexeme] = function;
+    }
+
+    auto klass = std::make_shared<NblClass>(stmt->name.lexeme, methods);
+    environment->assign(stmt->name, std::move(klass));
+
+    return {};
 }
 
 
@@ -277,6 +295,10 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
     {
         function = std::any_cast<std::shared_ptr<NblFunction>>(callee);
     }
+    else if (callee.type() == typeid(std::shared_ptr<NblClass>))
+    {
+        function = std::any_cast<std::shared_ptr<NblClass>>(callee);
+    }
     else if (callee.type() == typeid(std::shared_ptr<NativeClock>))
     {
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
@@ -308,7 +330,35 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
 
 std::any Interpreter::visitFunctionExpr(std::shared_ptr<FunctionExpr> expr)
 {
-    return std::make_shared<NblFunction>("", expr, environment);
+    return std::make_shared<NblFunction>("", expr, environment, false);
+}
+
+std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
+{
+    std::any object = evaluate(expr->object);
+
+    if (object.type() == typeid(std::shared_ptr<NblInstance>))
+        return std::any_cast<std::shared_ptr<NblInstance>>(object)->get(expr->name);
+
+    throw RuntimeError(expr->name, "Only instances have properties");
+}
+
+std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
+{
+    std::any object = evaluate(expr->object);
+
+    if (object.type() != typeid(std::shared_ptr<NblInstance>))
+        throw RuntimeError(expr->name, "Only instances have fields");
+
+    std::any value = evaluate(expr->value);
+    std::any_cast<std::shared_ptr<NblInstance>>(object)->set(expr->name, value);
+
+    return value;
+}
+
+std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
+{
+    return lookup_var(expr->keyword, expr);
 }
 
 
@@ -428,6 +478,12 @@ std::string Interpreter::stringify(const std::any& obj)
     
     if (obj.type() == typeid(std::shared_ptr<NblFunction>))
         return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NblClass>))
+        return std::any_cast<std::shared_ptr<NblClass>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NblInstance>))
+        return std::any_cast<std::shared_ptr<NblInstance>>(obj)->to_string();
     
     if (obj.type() == typeid(std::shared_ptr<NativeClock>))
         return std::any_cast<std::shared_ptr<NativeClock>>(obj)->to_string();

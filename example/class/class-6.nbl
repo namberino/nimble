@@ -1,4 +1,4 @@
-class Back
+class Stuff
 {
     get_callback()
     {
@@ -11,5 +11,5 @@ class Back
     }
 }
 
-var callback = Back().get_callback();
+var callback = Stuff().get_callback();
 callback();

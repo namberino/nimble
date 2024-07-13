@@ -2,7 +2,7 @@ class Cake
 {
     eat()
     {
-        print "The " + this.cake_type + " cake is delicious !";
+        print("The " + this.cake_type + " cake is delicious");
     }
 }
 

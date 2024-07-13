@@ -77,3 +77,30 @@ std::any FunctionExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitFunctionExpr(shared_from_this());
 }
+
+
+GetExpr::GetExpr(std::shared_ptr<Expr> object, Token name)
+    : object(std::move(object)), name(std::move(name)) {}
+
+std::any GetExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitGetExpr(shared_from_this());
+}
+
+
+SetExpr::SetExpr(std::shared_ptr<Expr> object, Token name, std::shared_ptr<Expr> value)
+    : object(std::move(object)), name(std::move(name)), value(std::move(value)) {}
+
+std::any SetExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitSetExpr(shared_from_this());
+}
+
+
+ThisExpr::ThisExpr(Token keyword)
+    : keyword(std::move(keyword)) {}
+
+std::any ThisExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitThisExpr(shared_from_this());
+}

@@ -20,6 +20,9 @@ struct VarExpr;
 struct LogicalExpr;
 struct CallExpr;
 struct FunctionExpr;
+struct GetExpr;
+struct SetExpr;
+struct ThisExpr;
 
 struct ExprVisitor
 {
@@ -33,6 +36,9 @@ struct ExprVisitor
     virtual std::any visitLogicalExpr(std::shared_ptr<LogicalExpr> expr) = 0;
     virtual std::any visitCallExpr(std::shared_ptr<CallExpr> expr) = 0;
     virtual std::any visitFunctionExpr(std::shared_ptr<FunctionExpr> expr) = 0;
+    virtual std::any visitGetExpr(std::shared_ptr<GetExpr> expr) = 0;
+    virtual std::any visitSetExpr(std::shared_ptr<SetExpr> expr) = 0;
+    virtual std::any visitThisExpr(std::shared_ptr<ThisExpr> expr) = 0;
 };
 
 struct Expr
@@ -119,6 +125,33 @@ struct FunctionExpr : Expr, public std::enable_shared_from_this<FunctionExpr>
     std::vector<std::shared_ptr<Stmt>> body;
 
     FunctionExpr(std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct GetExpr : Expr, public std::enable_shared_from_this<GetExpr>
+{
+    const std::shared_ptr<Expr> object;
+    const Token name;
+
+    GetExpr(std::shared_ptr<Expr> object, Token name);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct SetExpr : Expr, public std::enable_shared_from_this<SetExpr>
+{
+    const std::shared_ptr<Expr> object;
+    const Token name;
+    const std::shared_ptr<Expr> value;
+
+    SetExpr(std::shared_ptr<Expr> object, Token name, std::shared_ptr<Expr> value);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct ThisExpr : Expr, public std::enable_shared_from_this<ThisExpr>
+{
+    const Token keyword;
+
+    ThisExpr(Token keyword);
     std::any accept(ExprVisitor& visitor) override;
 };
 

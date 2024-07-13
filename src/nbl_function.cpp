@@ -2,8 +2,15 @@
 
 #include "nbl_function.hpp"
 
-NblFunction::NblFunction(std::string name, std::shared_ptr<FunctionExpr> declaration, std::shared_ptr<Environment> closure)
-    : name(name), declaration(declaration), closure(closure) {}
+NblFunction::NblFunction(std::string name, std::shared_ptr<FunctionExpr> declaration, std::shared_ptr<Environment> closure, bool is_initializer)
+    : name(name), declaration(declaration), closure(closure), is_initializer(is_initializer) {}
+
+std::shared_ptr<NblFunction> NblFunction::bind(std::shared_ptr<NblInstance> instance)
+{
+    auto environment = std::make_shared<Environment>(closure);
+    environment->define("this", instance);
+    return std::make_shared<NblFunction>(name, declaration, environment, is_initializer);
+}
 
 int NblFunction::arity()
 {
@@ -23,9 +30,13 @@ std::any NblFunction::call(Interpreter& interpreter, std::vector<std::any> argum
     }
     catch(NblReturn r)
     {
+        if (is_initializer)
+            return closure->get_at(0, "this");
         return r.value;
     }
     
+    if (is_initializer)
+        return closure->get_at(0, "this");
     return nullptr;
 }
 

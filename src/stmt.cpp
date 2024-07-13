@@ -78,3 +78,12 @@ std::any BreakStmt::accept(StmtVisitor& visitor)
 {
     return visitor.visitBreakStmt(shared_from_this());
 }
+
+
+ClassStmt::ClassStmt(Token name, std::vector<std::shared_ptr<FunctionStmt>> methods)
+    : name(std::move(name)), methods(std::move(methods)) {}
+
+std::any ClassStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitClassStmt(shared_from_this());
+}

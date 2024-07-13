@@ -219,6 +219,9 @@ std::shared_ptr<Stmt> Parser::declaration()
         if (match(FUN))
             return function("function");
 
+        if (match(CLASS))
+            return class_declaration();
+
         return statement();
     }
     catch (ParseError error)
@@ -269,6 +272,20 @@ std::shared_ptr<FunctionExpr> Parser::function_body(std::string kind)
     return std::make_shared<FunctionExpr>(std::move(parameters), std::move(body));
 }
 
+std::shared_ptr<Stmt> Parser::class_declaration()
+{
+    Token name = consume(IDENTIFIER, "Expected class name");
+    consume(LEFT_BRACE, "Expected '{' before class body");
+    std::vector<std::shared_ptr<FunctionStmt>> methods;
+
+    while (!check(RIGHT_BRACE) && !is_at_end())
+        methods.push_back(function("method"));
+
+    consume(RIGHT_BRACE, "Expected '}' after class body");
+
+    return std::make_shared<ClassStmt>(std::move(name), std::move(methods));
+}
+
 std::shared_ptr<Expr> Parser::assignment()
 {
     std::shared_ptr<Expr> expr = or_expression();
@@ -282,6 +299,10 @@ std::shared_ptr<Expr> Parser::assignment()
         {
             Token name = e->name;
             return std::make_shared<AssignExpr>(std::move(name), value);
+        }
+        else if (GetExpr* g = dynamic_cast<GetExpr*>(expr.get()))
+        {
+            return std::make_shared<SetExpr>(g->object, g->name, value);
         }
 
         Error::error(std::move(equals), "Invalid assignment target");
@@ -432,9 +453,18 @@ std::shared_ptr<Expr> Parser::call()
     while (true)
     {
         if (match(LEFT_PAREN))
+        {
             expr = finish_call(expr);
+        }
+        else if (match(DOT))
+        {
+            Token name = consume(IDENTIFIER, "Expected property name after '.'");
+            expr = std::make_shared<GetExpr>(expr, std::move(name));
+        }
         else
+        {
             break;
+        }
     }
 
     return expr;
@@ -459,6 +489,9 @@ std::shared_ptr<Expr> Parser::primary()
 
     if (match(FUN))
         return function_body("function");
+
+    if (match(THIS))
+        return std::make_shared<ThisExpr>(previous());
 
     if (match(LEFT_PAREN))
     {

@@ -79,6 +79,31 @@ std::any Resolver::visitFunctionExpr(std::shared_ptr<FunctionExpr> expr)
     return {};
 }
 
+std::any Resolver::visitGetExpr(std::shared_ptr<GetExpr> expr)
+{
+    resolve(expr->object);
+    return {};
+}
+
+std::any Resolver::visitSetExpr(std::shared_ptr<SetExpr> expr)
+{
+    resolve(expr->value);
+    resolve(expr->object);
+    return {};
+}
+
+std::any Resolver::visitThisExpr(std::shared_ptr<ThisExpr> expr)
+{
+    if (current_class == ClassType::NONE)
+    {
+        Error::error(expr->keyword, "Can't use 'this' outside of a class");
+        return {};
+    }
+    resolve_local(expr, expr->keyword);
+
+    return {};
+}
+
 
 std::any Resolver::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
@@ -144,14 +169,44 @@ std::any Resolver::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
         Error::error(stmt->keyword, "Can't return from top-level code");
 
     if (stmt->value != nullptr)
+    {
+        if (current_func == FunctionType::INITIALIZER)
+            Error::error(stmt->keyword, "Can't return a value from an initializer");
         resolve(stmt->value);
+    }
 
-    return nullptr;
+    return {};
 }
 
 std::any Resolver::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
 {
-    return nullptr;
+    return {};
+}
+
+std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
+{
+    ClassType enclosing_class = current_class;
+    current_class = ClassType::CLASS;
+
+    declare(stmt->name);
+    define(stmt->name);
+
+    begin_scope();
+    scopes.back()["this"] = true;
+    for (std::shared_ptr<FunctionStmt> method : stmt->methods)
+    {
+        FunctionType declaration = FunctionType::METHOD;
+
+        if (method->name.lexeme == "init")
+            declaration = FunctionType::INITIALIZER;
+
+        resolve_function(method->fn, declaration);
+    }
+    end_scope();
+
+    current_class = enclosing_class;
+
+    return {};
 }
 
 

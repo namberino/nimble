@@ -13,7 +13,15 @@
 enum class FunctionType
 {
     NONE,
-    FUNCTION
+    FUNCTION,
+    INITIALIZER,
+    METHOD
+};
+
+enum class ClassType
+{
+    NONE,
+    CLASS
 };
 
 class Resolver : public ExprVisitor, public StmtVisitor
@@ -22,6 +30,7 @@ class Resolver : public ExprVisitor, public StmtVisitor
         Interpreter& interpreter;
         std::vector<std::map<std::string, bool>> scopes;
         FunctionType current_func = FunctionType::NONE;
+        ClassType current_class = ClassType::NONE;
 
         void resolve(std::shared_ptr<Stmt> stmt);
         void resolve(std::shared_ptr<Expr> expr);
@@ -45,6 +54,9 @@ class Resolver : public ExprVisitor, public StmtVisitor
         std::any visitLogicalExpr(std::shared_ptr<LogicalExpr> expr) override;
         std::any visitCallExpr(std::shared_ptr<CallExpr> expr) override;
         std::any visitFunctionExpr(std::shared_ptr<FunctionExpr> expr) override;
+        std::any visitGetExpr(std::shared_ptr<GetExpr> expr) override;
+        std::any visitSetExpr(std::shared_ptr<SetExpr> expr) override;
+        std::any visitThisExpr(std::shared_ptr<ThisExpr> expr) override;
 
         std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) override;
         std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) override;
@@ -55,6 +67,7 @@ class Resolver : public ExprVisitor, public StmtVisitor
         std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) override;
         std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) override;
         std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) override;
+        std::any visitClassStmt(std::shared_ptr<ClassStmt> stmt) override;
 };
 
 #endif
