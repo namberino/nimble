@@ -599,6 +599,20 @@ void Parser::synchronize()
             case PRINT:
             case RETURN:
                 return;
+
+            // this is just here to make the compiler happy, it won't reach here
+            case LEFT_PAREN: case RIGHT_PAREN: case LEFT_BRACE: case RIGHT_BRACE:
+            case COMMA: case DOT: case MINUS: case PLUS: case SEMICOLON: case SLASH: case STAR: case PERCENT: case COLON:
+            case BANG: case BANG_EQUAL:
+            case EQUAL: case EQUAL_EQUAL:
+            case GREATER: case GREATER_EQUAL:
+            case LESS: case LESS_EQUAL:
+            case STAR_STAR:
+            case IDENTIFIER: case STRING: case NUMBER:
+            case AND: case BREAK: case ELSE: case FALSE: case NIL: case OR:
+            case SUPER: case THIS: case TRUE:
+            case TOKEN_EOF:
+                break;
         }
 
         advance();
