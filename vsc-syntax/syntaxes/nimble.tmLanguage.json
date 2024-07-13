@@ -46,7 +46,7 @@
             "patterns": [
 				{
 					"name": "entity.name.function.member.nimble",
-                    "match": "\\b(print|fun|input|exit|clock|time|init)\\b"
+                    "match": "\\b(print|fun|input|exit|clock|time|init|super)\\b"
 				}
 			]
         },
@@ -116,7 +116,7 @@
 				},
 				{
 					"name": "keyword.operator.assignment.nimble",
-					"match": "(=)"
+					"match": "(=|:)"
 				},
 				{
 					"name": "keyword.operator.arithmetic.nimble",
