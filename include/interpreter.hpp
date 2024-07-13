@@ -1,6 +1,7 @@
 #ifndef INTERPRETER_HPP
 #define INTERPRETER_HPP
 
+#pragma once
 #include <iostream>
 #include <utility>
 #include <vector>

@@ -1,6 +1,7 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
+#pragma once
 #include <vector>
 #include <memory>
 #include <string>

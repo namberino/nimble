@@ -1,6 +1,7 @@
 #ifndef BUILTINS_HPP
 #define BUILTINS_HPP
 
+#pragma once
 #include <chrono>
 #include <iostream>
 #include <sstream>

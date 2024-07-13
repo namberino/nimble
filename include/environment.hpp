@@ -1,6 +1,7 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
+#pragma once
 #include <memory>
 #include <any>
 #include <string>
