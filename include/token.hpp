@@ -9,7 +9,7 @@ enum TokenType
 {
     // single character tokens
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR, PERCENT,
+    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR, PERCENT, COLON,
 
     // 1 or 2 characters tokens
     BANG, BANG_EQUAL,

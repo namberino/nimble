@@ -6,7 +6,7 @@
 #include <any>
 #include <memory>
 
-#include "scanner.hpp"
+#include "lexer.hpp"
 #include "error.hpp"
 #include "parser.hpp"
 #include "interpreter.hpp"
@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
 
 void run(const std::string& source)
 {
-    Scanner scanner{source};
-    std::vector<Token> tokens = scanner.scan_tokens();
+    Lexer lexer{source};
+    std::vector<Token> tokens = lexer.scan_tokens();
 
     Parser parser{tokens};
     std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
@@ -108,8 +108,8 @@ void run_prompt()
             Error::has_error = false;
             
             // run(text);
-            Scanner scanner{text};
-            std::vector<Token> tokens = scanner.scan_tokens();
+            Lexer lexer{text};
+            std::vector<Token> tokens = lexer.scan_tokens();
 
             Parser parser{tokens};
             std::any syntax = parser.parse_repl();

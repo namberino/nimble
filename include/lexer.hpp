@@ -1,5 +1,5 @@
-#ifndef SCANNER_HPP
-#define SCANNER_HPP
+#ifndef LEXER_HPP
+#define LEXER_HPP
 
 #pragma once
 #include <vector>
@@ -10,7 +10,7 @@
 #include "token.hpp"
 #include "error.hpp"
 
-class Scanner
+class Lexer
 {
     private:
         // data
@@ -38,7 +38,7 @@ class Scanner
         void scan_token();
 
     public:
-        Scanner(std::string source);
+        Lexer(std::string source);
         std::vector<Token> scan_tokens();
 };
 

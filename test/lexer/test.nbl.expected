@@ -1,4 +1,4 @@
-Executing file: test/scanner/test.nbl
+Executing file: test/lexer/test.nbl
 On line: 2, Error at ')': Expected an expression
 On line: 8, Error at '/': Expected an expression
 On line: 14, Error at 'class': Expected an expression

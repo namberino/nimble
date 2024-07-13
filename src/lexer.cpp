@@ -1,9 +1,9 @@
-#include "scanner.hpp"
+#include "lexer.hpp"
 #include "error.hpp"
 
-Scanner::Scanner(std::string source) : source(source) {}
+Lexer::Lexer(std::string source) : source(source) {}
 
-std::vector<Token> Scanner::scan_tokens()
+std::vector<Token> Lexer::scan_tokens()
 {
     while (!is_at_end())
     {
@@ -15,17 +15,17 @@ std::vector<Token> Scanner::scan_tokens()
     return tokens;
 }
 
-bool Scanner::is_at_end() const
+bool Lexer::is_at_end() const
 {
     return current >= static_cast<int>(source.length());
 }
 
-char Scanner::advance()
+char Lexer::advance()
 {
     return source[current++];
 }
 
-bool Scanner::match(char expected)
+bool Lexer::match(char expected)
 {
     if (is_at_end())
         return false;
@@ -38,7 +38,7 @@ bool Scanner::match(char expected)
     return true;
 }
 
-char Scanner::peek()
+char Lexer::peek()
 {
     if (is_at_end())
         return '\0';
@@ -46,7 +46,7 @@ char Scanner::peek()
     return source[current];
 }
 
-char Scanner::peek_next()
+char Lexer::peek_next()
 {
     if (current + 1 >= static_cast<int>(source.length()))
         return '\0';
@@ -54,17 +54,17 @@ char Scanner::peek_next()
     return source[current + 1];
 }
 
-void Scanner::add_token(TokenType type, std::any literal)
+void Lexer::add_token(TokenType type, std::any literal)
 {
     tokens.emplace_back(type, source.substr(start, current - start), literal, line);
 }
 
-void Scanner::add_token(TokenType type)
+void Lexer::add_token(TokenType type)
 {
     add_token(type, nullptr);
 }
 
-void Scanner::string()
+void Lexer::string()
 {
     while (peek() != '"' && !is_at_end())
     {
@@ -87,7 +87,7 @@ void Scanner::string()
     add_token(TokenType::STRING, source.substr(start + 1, current - start - 2));
 }
 
-void Scanner::number()
+void Lexer::number()
 {
     while (std::isdigit(peek()))
     {
@@ -106,7 +106,7 @@ void Scanner::number()
     add_token(TokenType::NUMBER, std::stod(source.substr(start, current - start)));
 }
 
-void Scanner::identifier()
+void Lexer::identifier()
 {
     while (std::isdigit(peek()) || std::isalpha(peek()) || peek() == '_') // is alpha numeric
         advance();
@@ -120,7 +120,7 @@ void Scanner::identifier()
         add_token(TokenType::IDENTIFIER);
 }
 
-void Scanner::scan_token()
+void Lexer::scan_token()
 {
     auto c = advance();
 
@@ -191,7 +191,7 @@ void Scanner::scan_token()
     }
 }
 
-const std::map<std::string, TokenType> Scanner::keywords = {
+const std::map<std::string, TokenType> Lexer::keywords = {
     {"and", TokenType::AND},
     {"break", TokenType::BREAK},
     {"class", TokenType::CLASS},
