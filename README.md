@@ -13,7 +13,7 @@ This was a giant learning project for me. The interpreter is not very optimized 
 Before compilation, you'll need to have these tools installed first:
 - [Clang](https://clang.llvm.org/) or [GCC](https://gcc.gnu.org/) (I built this with Clang but GCC works just fine)
 - [GNU Make](https://www.gnu.org/software/make/)
-- [CMake](https://cmake.org/) (I'm planning to migrate this project to CMake soon)
+- [CMake](https://cmake.org/) (I'm planning to migrate this project to CMake some time in the future)
 
 # Project structure
 
