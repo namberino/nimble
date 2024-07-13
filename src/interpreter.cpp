@@ -122,9 +122,24 @@ std::any Interpreter::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
 
 std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
 {
-    environment->define(stmt->name.lexeme, nullptr);
-    std::map<std::string, std::shared_ptr<NblFunction>> methods;
+    std::any superclass;
+    if (stmt->superclass != nullptr)
+    {
+        superclass = evaluate(stmt->superclass);
 
+        if (superclass.type() != typeid(std::shared_ptr<NblClass>))
+            throw RuntimeError(stmt->superclass->name, "Superclass must be a class");
+    }
+
+    environment->define(stmt->name.lexeme, nullptr);
+
+    if (stmt->superclass != nullptr)
+    {
+        environment = std::make_shared<Environment>(environment);
+        environment->define("super", superclass);
+    }
+
+    std::map<std::string, std::shared_ptr<NblFunction>> methods;
     for (std::shared_ptr<FunctionStmt> method : stmt->methods)
     {
         bool is_method_init = method->name.lexeme == "init";
@@ -132,7 +147,15 @@ std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
         methods[method->name.lexeme] = function;
     }
 
-    auto klass = std::make_shared<NblClass>(stmt->name.lexeme, methods);
+    std::shared_ptr<NblClass> superklass = nullptr;
+    if (superclass.type() == typeid(std::shared_ptr<NblClass>))
+        superklass = std::any_cast<std::shared_ptr<NblClass>>(superclass);
+
+    auto klass = std::make_shared<NblClass>(stmt->name.lexeme, superklass, methods);
+
+    if (superklass != nullptr)
+        environment = environment->enclosing;
+
     environment->assign(stmt->name, std::move(klass));
 
     return {};

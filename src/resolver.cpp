@@ -191,6 +191,21 @@ std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
     declare(stmt->name);
     define(stmt->name);
 
+    if (stmt->superclass != nullptr && stmt->name.lexeme == stmt->superclass->name.lexeme)
+        Error::error(stmt->superclass->name, "Classes can't inherit from themselves");
+    
+    if (stmt->superclass != nullptr)
+    {
+        current_class = ClassType::SUBCLASS;
+        resolve(stmt->superclass);
+    }
+
+    if (stmt->superclass != nullptr)
+    {
+        begin_scope();
+        scopes.back()["super"] = true;
+    }
+
     begin_scope();
     scopes.back()["this"] = true;
     for (std::shared_ptr<FunctionStmt> method : stmt->methods)

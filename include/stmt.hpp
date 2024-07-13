@@ -121,9 +121,10 @@ struct BreakStmt : Stmt, public std::enable_shared_from_this<BreakStmt>
 struct ClassStmt : Stmt, public std::enable_shared_from_this<ClassStmt>
 {
     const Token name;
+    const std::shared_ptr<VarExpr> superclass;
     const std::vector<std::shared_ptr<FunctionStmt>> methods;
 
-    ClassStmt(Token name, std::vector<std::shared_ptr<FunctionStmt>> methods);
+    ClassStmt(Token name, std::shared_ptr<VarExpr> superclass, std::vector<std::shared_ptr<FunctionStmt>> methods);
     std::any accept(StmtVisitor& visitor) override;
 };
 

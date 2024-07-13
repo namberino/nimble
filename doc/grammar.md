@@ -42,7 +42,7 @@ factor -> unary ( ( "/" | "*" | "%" ) unary )*
 unary -> ( "!" | "-" ) unary | call
 call -> primary ( "(" arguments? ")" | "." IDENTIFIER )*
 arguments -> expression ( "," expression )*
-primary -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
+primary -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "nil" | "this" | "(" expression ")" | "super" "." IDENTIFIER
 ```
 
 > Note: `*` means it can be repeated for 0 or more times

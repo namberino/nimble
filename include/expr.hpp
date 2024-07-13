@@ -23,6 +23,7 @@ struct FunctionExpr;
 struct GetExpr;
 struct SetExpr;
 struct ThisExpr;
+struct SuperExpr;
 
 struct ExprVisitor
 {
@@ -39,6 +40,7 @@ struct ExprVisitor
     virtual std::any visitGetExpr(std::shared_ptr<GetExpr> expr) = 0;
     virtual std::any visitSetExpr(std::shared_ptr<SetExpr> expr) = 0;
     virtual std::any visitThisExpr(std::shared_ptr<ThisExpr> expr) = 0;
+    virtual std::any visitSuperExpr(std::shared_ptr<SuperExpr> expr) = 0;
 };
 
 struct Expr
@@ -152,6 +154,15 @@ struct ThisExpr : Expr, public std::enable_shared_from_this<ThisExpr>
     const Token keyword;
 
     ThisExpr(Token keyword);
+    std::any accept(ExprVisitor& visitor) override;
+};
+
+struct SuperExpr : Expr, public std::enable_shared_from_this<SuperExpr>
+{
+    const Token keyword;
+    const Token method;
+
+    SuperExpr(Token keyword, Token method);
     std::any accept(ExprVisitor& visitor) override;
 };
 

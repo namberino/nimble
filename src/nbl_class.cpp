@@ -1,7 +1,7 @@
 #include "nbl_class.hpp"
 
 NblClass::NblClass(std::string name, std::map<std::string, std::shared_ptr<NblFunction>> methods)
-    : name(std::move(name)), methods(std::move(methods)) {}
+    : name(std::move(name)), superclass(std::move(superclass)), methods(std::move(methods)) {}
 
 std::shared_ptr<NblFunction> NblClass::find_method(const std::string& name)
 {
@@ -9,6 +9,9 @@ std::shared_ptr<NblFunction> NblClass::find_method(const std::string& name)
     
     if (element != methods.end())
         return element->second;
+
+    if (superclass != nullptr)
+        return superclass->find_method(name);
 
     return nullptr;
 }

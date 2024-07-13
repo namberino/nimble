@@ -80,8 +80,8 @@ std::any BreakStmt::accept(StmtVisitor& visitor)
 }
 
 
-ClassStmt::ClassStmt(Token name, std::vector<std::shared_ptr<FunctionStmt>> methods)
-    : name(std::move(name)), methods(std::move(methods)) {}
+ClassStmt::ClassStmt(Token name, std::shared_ptr<VarExpr> superclass, std::vector<std::shared_ptr<FunctionStmt>> methods)
+    : name(std::move(name)), superclass(std::move(superclass)), methods(std::move(methods)) {}
 
 std::any ClassStmt::accept(StmtVisitor& visitor)
 {
