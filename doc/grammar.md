@@ -56,7 +56,7 @@ expr_statement -> expression ";"
 print_statement -> "print" expression ";"
 var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
 function_declaration -> "fun" function
-class_declaration -> "class" IDENTIFIER "{" function* "}"
+class_declaration -> "class" IDENTIFIER ( ":" IDENTIFIER )? "{" function* "}"
 function -> IDENTIFIER "(" parameters? ")" block
 parameters -> IDENTIFIER ( "," IDENTIFIER )*
 block -> "{" declaration* "}"
