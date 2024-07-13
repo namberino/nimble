@@ -1,0 +1,18 @@
+class Dog
+{
+    say()
+    {
+        print("Woof");
+    }
+
+    say_name()
+    {
+        print(this.name);
+    }
+}
+
+var doggo1 = Dog();
+doggo1.name = "Walter";
+
+var method = doggo1.say_name;
+method();

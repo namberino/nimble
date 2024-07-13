@@ -50,12 +50,13 @@ primary -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
 Statement grammar rule:
 ```
 program -> declaration* EOF
-declaration -> var_declaration | function_declaration | statement
+declaration -> var_declaration | function_declaration | class_declaration | statement
 statement -> expression_statement | print_statement | if_statement | for_statement | while_statement | break_statement | return_statement | block
 expr_statement -> expression ";"
 print_statement -> "print" expression ";"
 var_declaration -> "var" IDENTIFIER ( "=" expression )? ";"
 function_declaration -> "fun" function
+class_declaration -> "class" IDENTIFIER "{" function* "}"
 function -> IDENTIFIER "(" parameters? ")" block
 parameters -> IDENTIFIER ( "," IDENTIFIER )*
 block -> "{" declaration* "}"

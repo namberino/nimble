@@ -1,0 +1,11 @@
+class Initial
+{
+    init()
+    {
+        print(this);
+    }
+}
+
+var initial = Initial();
+
+print(initial.init());

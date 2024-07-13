@@ -1,0 +1,12 @@
+class Animal 
+{
+    say()
+    {
+        print("I'm an animal");
+    }
+}
+
+Animal().say();
+
+var method = Animal().say();
+method();

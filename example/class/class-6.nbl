@@ -1,0 +1,15 @@
+class Back
+{
+    get_callback()
+    {
+        fun local_func()
+        {
+            print(this);
+        }
+
+        return local_func;
+    }
+}
+
+var callback = Back().get_callback();
+callback();

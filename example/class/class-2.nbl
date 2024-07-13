@@ -1,0 +1,5 @@
+class Donut {}
+
+var donut = Donut();
+
+print(donut);

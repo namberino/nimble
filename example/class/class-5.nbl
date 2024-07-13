@@ -1,0 +1,12 @@
+class Cake
+{
+    eat()
+    {
+        print "The " + this.cake_type + " cake is delicious !";
+    }
+}
+
+var cake = Cake();
+cake.cake_type = "Chocolate";
+
+cake.eat();
