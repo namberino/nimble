@@ -136,6 +136,7 @@ void Lexer::scan_token()
         case '+': add_token(TokenType::PLUS); break;
         case ';': add_token(TokenType::SEMICOLON); break;
         case '%': add_token(TokenType::PERCENT); break;
+        case ':': add_token(TokenType::COLON); break;
 
         case '*':
             add_token(match('*') ? TokenType::STAR_STAR : TokenType::STAR);

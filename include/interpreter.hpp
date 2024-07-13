@@ -67,6 +67,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitGetExpr(std::shared_ptr<GetExpr> expr) override;
         std::any visitSetExpr(std::shared_ptr<SetExpr> expr) override;
         std::any visitThisExpr(std::shared_ptr<ThisExpr> expr) override;
+        std::any visitSuperExpr(std::shared_ptr<SuperExpr> expr) override;
 
         std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) override;
         std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) override;

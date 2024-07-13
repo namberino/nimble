@@ -1,0 +1,26 @@
+class Pizza
+{
+    taste()
+    {
+        print("Absolutely delicious");
+    }
+}
+
+class NYPizza : Pizza {}
+
+class SFPizza : Pizza
+{
+    taste()
+    {
+        super.taste();
+        print("Pretty nice");
+    }
+}
+
+print("NY Pizza:");
+NYPizza().taste();
+
+print("");
+
+print("SF Pizza:");
+SFPizza().taste();

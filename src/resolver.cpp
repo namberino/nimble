@@ -105,6 +105,18 @@ std::any Resolver::visitThisExpr(std::shared_ptr<ThisExpr> expr)
 }
 
 
+std::any Resolver::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
+{
+    // check if we're currently in a scope where super is allowed
+    if (current_class == ClassType::NONE)
+        Error::error(expr->keyword, "Can't use 'super' outside a class");
+    else if (current_class != ClassType::SUBCLASS)
+        Error::error(expr->keyword, "Can't use 'super' in a class with no superclass");
+
+    resolve_local(expr, expr->keyword);
+    return {};
+}
+
 std::any Resolver::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
     begin_scope();
@@ -218,6 +230,9 @@ std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
         resolve_function(method->fn, declaration);
     }
     end_scope();
+
+    if (stmt->superclass != nullptr)
+        end_scope(); // end superclass scope
 
     current_class = enclosing_class;
 

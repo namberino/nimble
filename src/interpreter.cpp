@@ -384,6 +384,19 @@ std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
     return lookup_var(expr->keyword, expr);
 }
 
+std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
+{
+    int distance = locals[expr];
+    auto superclass = std::any_cast<std::shared_ptr<NblClass>>(environment->get_at(distance, "super"));
+    auto obj = std::any_cast<std::shared_ptr<NblInstance>>(environment->get_at(distance - 1, "this"));
+    std::shared_ptr<NblFunction> method = superclass->find_method(expr->method.lexeme);
+
+    if (method == nullptr) // can't find method
+        throw RuntimeError(expr->method, "Undefined property '" + expr->method.lexeme + "'");
+
+    return method->bind(obj);
+}
+
 
 std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
 {

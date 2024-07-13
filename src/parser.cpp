@@ -501,6 +501,14 @@ std::shared_ptr<Expr> Parser::primary()
     if (match(THIS))
         return std::make_shared<ThisExpr>(previous());
 
+    if (match(SUPER))
+    {
+        Token keyword = previous();
+        consume(DOT, "Expected '.' after 'super'");
+        Token method = consume(IDENTIFIER, "Expected superclass method name");
+        return std::make_shared<SuperExpr>(std::move(keyword), std::move(method));
+    }
+
     if (match(LEFT_PAREN))
     {
         std::shared_ptr<Expr> expr = expression();

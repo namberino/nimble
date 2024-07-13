@@ -14,6 +14,8 @@
 
 class Environment : public std::enable_shared_from_this<Environment>
 {
+    friend class Interpreter;
+
     std::shared_ptr<Environment> enclosing;
     std::map<std::string, std::any> values;
 

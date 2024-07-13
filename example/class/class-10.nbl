@@ -1,0 +1,3 @@
+var FakeClass = "This is not a class";
+
+class Class : FakeClass {} // error

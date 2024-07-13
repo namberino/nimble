@@ -1,6 +1,6 @@
 #include "nbl_class.hpp"
 
-NblClass::NblClass(std::string name, std::map<std::string, std::shared_ptr<NblFunction>> methods)
+NblClass::NblClass(std::string name, std::shared_ptr<NblClass> superclass, std::map<std::string, std::shared_ptr<NblFunction>> methods)
     : name(std::move(name)), superclass(std::move(superclass)), methods(std::move(methods)) {}
 
 std::shared_ptr<NblFunction> NblClass::find_method(const std::string& name)
