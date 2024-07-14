@@ -34,7 +34,7 @@ std::string Token::to_string() const
 std::string token_to_string(TokenType type)
 {
     static const std::string strings[] = {
-        "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE",
+        "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", "LEFT_BRACKET", "RIGHT_BRACKET",
         "COMMA", "DOT", "MINUS", "PLUS", "SEMICOLON", "SLASH", "STAR", "PERCENT", "COLON",
         "BANG", "BANG_EQUAL",
         "EQUAL", "EQUAL_EQUAL",
