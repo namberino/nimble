@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     tags:
-      - '*'
+      - 'v[0-9].*'
   workflow_dispatch:
 
 jobs:
@@ -52,8 +52,6 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      deployments: write
 
     steps:
       - name: Checkout repository
@@ -68,6 +66,10 @@ jobs:
         with:
           name: nimble-macos.tar.gz
           path: .
+
+      - name: Set variables
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
       - name: Create GitHub Release
         id: create_release
