@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.tag }}
-          release_name: Release ${{ env.tag }}
+          release_name: ${{ env.tag }}
           body: |
             NIMBLE release. Version ${{ env.tag }}
           draft: false
