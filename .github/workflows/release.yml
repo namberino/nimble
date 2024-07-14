@@ -52,6 +52,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
 
     steps:
       - name: Checkout repository
