@@ -57,7 +57,7 @@ jobs:
 
       - name: Rename binary on Windows
         if: matrix.os == 'windows-latest'
-        run: mv bin/nimble.exe ${{ matrix.bin_name }}
+        run: mv bin/nimble ${{ matrix.bin_name }}
         shell: bash
 
       - name: Archive binary on Linux/macOS
