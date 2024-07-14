@@ -5,7 +5,7 @@ CPP_SRC = $(wildcard src/*.cpp)
 HEADERS = $(wildcard include/*.hpp)
 OBJ = $(patsubst src/%.cpp, obj/%.o, $(CPP_SRC))
 
-NBL_FILES = $(shell find tests -name '*.nbl')
+NBL_FILES = $(shell find test -name '*.nbl')
 EXPECTED_FILES = $(patsubst %.nbl, %.nbl.expected, $(NBL_FILES))
 
 CFLAGS = -g -std=c++20 -Wall -pedantic -Iinclude
