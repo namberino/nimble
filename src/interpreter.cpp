@@ -407,6 +407,32 @@ std::any Interpreter::visitListExpr(std::shared_ptr<ListExpr> expr)
     return list;
 }
 
+std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
+{
+    std::any name = evaluate(expr->name);
+    std::any index = evaluate(expr->index);
+
+    if (name.type() == typeid(std::shared_ptr<ListType>))
+    {
+        if (index.type() == typeid(double))
+        {
+            std::shared_ptr<ListType> list_name = std::any_cast<std::shared_ptr<ListType>>(name);
+            int casted_index = std::any_cast<double>(index);
+            return list_name->get_element_at((int)casted_index);
+        }
+        else
+        {
+            throw RuntimeError{expr->paren, "Index should be of type int"};
+        }
+    }
+    else
+    {
+        throw RuntimeError{expr->paren, "Only lists can be subscripted"};
+    }
+
+    return {};
+}
+
 
 std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
 {

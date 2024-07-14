@@ -60,6 +60,7 @@ class Resolver : public ExprVisitor, public StmtVisitor
         std::any visitThisExpr(std::shared_ptr<ThisExpr> expr) override;
         std::any visitSuperExpr(std::shared_ptr<SuperExpr> expr) override;
         std::any visitListExpr(std::shared_ptr<ListExpr> expr) override;
+        std::any visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr) override;
 
         std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) override;
         std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) override;

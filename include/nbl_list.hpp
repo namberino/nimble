@@ -12,6 +12,7 @@ struct ListType
     std::vector<std::any> elements;
 
     void append(std::any value);
+    std::any get_element_at(int index);
 };
 
 #endif
