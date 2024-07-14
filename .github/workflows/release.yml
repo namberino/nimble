@@ -60,15 +60,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: tar -a -c -f ${{ matrix.archive_name }} ${{ matrix.bin_name }}
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ matrix.archive_name }}
-          asset_name: ${{ matrix.archive_name }}
-          asset_content_type: application/gzip
+          name: ${{ matrix.archive_name }}
+          path: ${{ matrix.archive_name }}
 
   release:
     needs: build
@@ -77,6 +73,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nimble-linux.tar.gz
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: nimble-macos.tar.gz
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: nimble-windows.zip
+          path: .
 
       - name: Create GitHub Release
         id: create_release
@@ -90,3 +100,33 @@ jobs:
             NIMBLE release. Version ${{ github.ref }}.
           draft: false
           prerelease: false
+
+      - name: Upload Linux binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nimble-linux.tar.gz
+          asset_name: nimble-linux.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload macOS binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nimble-macos.tar.gz
+          asset_name: nimble-macos.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Windows binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nimble-windows.zip
+          asset_name: nimble-windows.zip
+          asset_content_type: application/zip
