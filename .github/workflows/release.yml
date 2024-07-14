@@ -69,7 +69,7 @@ jobs:
 
       - name: Set variables
         id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+        run: echo "tag=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -77,10 +77,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.tag }}
+          release_name: Release ${{ env.tag }}
           body: |
-            NIMBLE release. Version ${{ github.ref }}.
+            NIMBLE release. Version ${{ env.tag }}
           draft: false
           prerelease: false
 
