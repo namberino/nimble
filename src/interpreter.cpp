@@ -416,9 +416,13 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
     {
         if (index.type() == typeid(double))
         {
-            std::shared_ptr<ListType> list_name = std::any_cast<std::shared_ptr<ListType>>(name);
+            std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(name);
             int casted_index = std::any_cast<double>(index);
-            return list_name->get_element_at((int)casted_index);
+
+            if (casted_index >= list->get_length() || casted_index < 0)
+                throw RuntimeError(expr->paren, "Index out of array bound");
+
+            return list->get_element_at(casted_index);
         }
         else
         {

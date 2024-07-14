@@ -9,3 +9,8 @@ std::any ListType::get_element_at(int index)
 {
     return elements.at(index);
 }
+
+int ListType::get_length()
+{
+    return elements.size();
+}
