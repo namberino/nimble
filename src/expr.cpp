@@ -113,3 +113,12 @@ std::any SuperExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitSuperExpr(shared_from_this());
 }
+
+
+ListExpr::ListExpr(std::vector<std::shared_ptr<Expr>> elements)
+    : elements(std::move(elements)) {}
+
+std::any ListExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitListExpr(shared_from_this());
+}

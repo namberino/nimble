@@ -117,6 +117,13 @@ std::any Resolver::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
     return {};
 }
 
+std::any Resolver::visitListExpr(std::shared_ptr<ListExpr> expr)
+{
+    for (std::shared_ptr<Expr> element : expr->elements)
+        resolve(element);
+    return {};
+}
+
 std::any Resolver::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
     begin_scope();

@@ -397,6 +397,16 @@ std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
     return method->bind(obj);
 }
 
+std::any Interpreter::visitListExpr(std::shared_ptr<ListExpr> expr)
+{
+    std::vector<std::any> elements;
+
+    for (std::shared_ptr<Expr>& element : expr->elements)
+        elements.push_back(evaluate(element));
+
+    return elements;
+}
+
 
 std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
 {
@@ -532,6 +542,27 @@ std::string Interpreter::stringify(const std::any& obj)
 
     if (obj.type() == typeid(std::shared_ptr<NativeExit>))
         return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::vector<std::any>))
+    {
+        std::string result = "[";
+        std::vector<std::any> list = std::any_cast<std::vector<std::any>>(obj);
+
+        for (std::any element : list)
+        {
+            result.append(stringify(element));
+            result.append(", ");
+        }
+
+        if (list.size() >= 1) // remove last comma if there's elements
+        {
+            result.pop_back();
+            result.pop_back();
+        }
+
+        result.append("]");
+        return result;
+    }
 
     return "Error in stringify: Invalid object type";
 }

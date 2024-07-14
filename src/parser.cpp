@@ -324,6 +324,30 @@ std::shared_ptr<Expr> Parser::expression()
     return assignment();
 }
 
+std::shared_ptr<Expr> Parser::list_expression()
+{
+    std::vector<std::shared_ptr<Expr>> values;
+
+    if (!match(RIGHT_BRACKET))
+    {
+        do
+        {
+            if (values.size() >= 255)
+                error(peek(), "Can't have more than 255 elements in a list");
+
+            std::shared_ptr<Expr> value = or_expression();
+            values.push_back(value);
+        } while (match(COMMA));
+    }
+    else
+    {
+        return std::make_shared<ListExpr>(values);
+    }
+
+    consume(RIGHT_BRACKET, "Expected ']' at the end of a list");
+    return std::make_shared<ListExpr>(values);
+}
+
 std::shared_ptr<Expr> Parser::or_expression()
 {
     std::shared_ptr<Expr> expression = and_expression();
@@ -500,6 +524,9 @@ std::shared_ptr<Expr> Parser::primary()
 
     if (match(THIS))
         return std::make_shared<ThisExpr>(previous());
+
+    if (match(LEFT_BRACKET))
+        return list_expression();
 
     if (match(SUPER))
     {
