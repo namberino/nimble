@@ -122,3 +122,12 @@ std::any ListExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitListExpr(shared_from_this());
 }
+
+
+SubscriptExpr::SubscriptExpr(std::shared_ptr<Expr> name, Token paren, std::shared_ptr<Expr> index)
+    : name(std::move(name)), paren(std::move(paren)), index(std::move(index)) {}
+
+std::any SubscriptExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitSubscriptExpr(shared_from_this());
+}

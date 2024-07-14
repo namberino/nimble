@@ -55,6 +55,8 @@ class Parser
         std::shared_ptr<Expr> term();
         std::shared_ptr<Expr> factor();
         std::shared_ptr<Expr> unary();
+        std::shared_ptr<Expr> finish_subscript(std::shared_ptr<Expr> name);
+        std::shared_ptr<Expr> subscript();
         std::shared_ptr<Expr> finish_call(std::shared_ptr<Expr> callee);
         std::shared_ptr<Expr> call();
         std::shared_ptr<Expr> list_expression();

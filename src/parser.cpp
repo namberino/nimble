@@ -434,6 +434,28 @@ std::shared_ptr<Expr> Parser::unary()
     return call();
 }
 
+std::shared_ptr<Expr> Parser::finish_subscript(std::shared_ptr<Expr> name)
+{
+    std::shared_ptr<Expr> index = or_expression();
+    Token paren = consume(RIGHT_BRACKET, "Expected ']' after arguments");
+    return std::make_shared<SubscriptExpr>(name, paren, index);
+}
+
+std::shared_ptr<Expr> Parser::subscript()
+{
+    std::shared_ptr<Expr> expr = primary();
+
+    while (true)
+    {
+        if (match(LEFT_BRACKET))
+            expr = finish_subscript(expr);
+        else
+            break;
+    }
+
+    return expr;
+}
+
 std::shared_ptr<Expr> Parser::finish_call(std::shared_ptr<Expr> callee)
 {
     std::vector<std::shared_ptr<Expr>> arguments;
@@ -456,7 +478,7 @@ std::shared_ptr<Expr> Parser::finish_call(std::shared_ptr<Expr> callee)
 
 std::shared_ptr<Expr> Parser::call()
 {
-    std::shared_ptr<Expr> expr = primary();
+    std::shared_ptr<Expr> expr = subscript();
 
     while (true)
     {
