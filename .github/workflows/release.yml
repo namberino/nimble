@@ -28,7 +28,7 @@ jobs:
 
       - name: Set up C++ environment
         if: matrix.os != 'windows-latest'
-        uses: actions/setup-cpp@v2
+        uses: aminya/setup-cpp@v2
         with:
           compiler: clang
 
