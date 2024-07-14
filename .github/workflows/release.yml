@@ -4,14 +4,13 @@ on:
   push:
     tags:
       - 'v[0-9].*'
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
             bin_name: nimble-linux
@@ -19,6 +18,9 @@ jobs:
           - os: macos-latest
             bin_name: nimble-macos
             archive_name: nimble-macos.tar.gz
+          - os: windows-latest
+            bin_name: nimble-windows.exe
+            archive_name: nimble-windows.zip
 
     steps:
       - name: Checkout repository
@@ -32,16 +34,31 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: xcode-select --install || true
 
+      - name: Set up C++ environment on Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          choco install visualstudio2019community --includeOptional --params "'--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive'"
+          choco install visualstudio2019buildtools
+          choco install windows-sdk-10.0
+        shell: powershell
+
       - name: Build the project
         run: make compile
+        shell: ${{ matrix.os == 'windows-latest' && 'bash' || 'cmd' }}
 
       - name: Rename binary
         run: mv bin/nimble ${{ matrix.bin_name }}
-        shell: bash
+        shell: ${{ matrix.os == 'windows-latest' && 'bash' || 'cmd' }}
 
-      - name: Archive binary
+      - name: Archive binary on Linux/macOS
+        if: matrix.os != 'windows-latest'
         run: tar -czvf ${{ matrix.archive_name }} ${{ matrix.bin_name }}
         shell: bash
+
+      - name: Archive binary on Windows
+        if: matrix.os == 'windows-latest'
+        run: Compress-Archive -Path ${{ matrix.bin_name }} -DestinationPath ${{ matrix.archive_name }}
+        shell: powershell
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
@@ -57,14 +74,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Download artifacts
+      - name: Download Linux artifact
         uses: actions/download-artifact@v3
         with:
           name: nimble-linux.tar.gz
           path: .
-      - uses: actions/download-artifact@v3
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v3
         with:
           name: nimble-macos.tar.gz
+          path: .
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nimble-windows.zip
           path: .
 
       - name: Set variables
@@ -103,3 +126,13 @@ jobs:
           asset_path: ./nimble-macos.tar.gz
           asset_name: nimble-macos.tar.gz
           asset_content_type: application/gzip
+
+      - name: Upload Windows binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nimble-windows.zip
+          asset_name: nimble-windows.zip
+          asset_content_type: application/zip
