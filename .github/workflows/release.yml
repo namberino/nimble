@@ -1,9 +1,9 @@
-name: Create release
+name: Create Release
 
 on:
   push:
     tags:
-      - 'v[0-9]+.*'
+      - '*'
 
 jobs:
   build:
@@ -26,19 +26,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up C++ environment
-        if: matrix.os != 'windows-latest'
-        uses: aminya/setup-cpp@v2
-        with:
-          compiler: clang
+      - name: Set up C++ environment on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y clang make
 
-      - name: Install dependencies on Linux and macOS
-        if: matrix.os != 'windows-latest'
-        run: sudo apt-get update && sudo apt-get install -y make
+      - name: Set up C++ environment on macOS
+        if: matrix.os == 'macos-latest'
+        run: brew install clang make
 
-      - name: Install dependencies on Windows
+      - name: Set up C++ environment on Windows
         if: matrix.os == 'windows-latest'
-        run: choco install make
+        run: choco install llvm make
 
       - name: Build the project on Linux and macOS
         if: matrix.os != 'windows-latest'
@@ -88,6 +86,6 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            NIMBLE release. Version ${{ github.ref }}
+            NIMBLE release. Version ${{ github.ref }}.
           draft: false
           prerelease: false
