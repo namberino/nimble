@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v[0-9].*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -37,9 +38,8 @@ jobs:
       - name: Set up C++ environment on Windows
         if: matrix.os == 'windows-latest'
         run: |
-          choco install visualstudio2019community --includeOptional --params "'--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --passive'"
-          choco install visualstudio2019buildtools
-          choco install windows-sdk-10.0
+          choco install make
+          choco install mingw
         shell: powershell
 
       - name: Build the project on Linux/macOS
