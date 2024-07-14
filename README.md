@@ -1,12 +1,34 @@
 # The NIMBLE Programming Language
 
-NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed, interpreted programming language with C-like syntax. This repository contains the source code for the NIMBLE programming language's interpreter.
+![logo](doc/img/logo.png)
 
-![fib](doc/img/fib.png)
+NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed, interpreted programming language with C-like syntax. This repository contains the source code for the NIMBLE programming language's interpreter.
 
 I started this project at the beginning of June 2024 with the goal of learning more about programming language design and practicing my C++ skills. It then gradually became one of my biggest projects yet. 
 
 This was a gigantic learning project for me. The interpreter is not very optimized and there may be some bugs that I didn't catch, but I'm quite happy with how it turned out. I'll definitely continute working on when I have the time.
+
+# Syntax
+
+```nimble
+// fibonacci sequence program
+fun fib(n)
+{
+    if (n <= 1)
+    {
+        return n;
+    }
+
+    return fib(n - 2) + fib(n - 1);
+}
+
+for (var i = 0; i < 20; i = i + 1)
+{
+    print(fib(i))
+}
+```
+
+NIMBLE is a dynamically typed programming language, featuring C-like syntax with class support and C++ inheritance syntax. It has a very "*fun*" syntax (because the function key word is *fun*)
 
 # Requirements
 
