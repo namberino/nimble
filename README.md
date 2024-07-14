@@ -4,7 +4,7 @@ NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed,
 
 ![fib](doc/img/fib.png)
 
-I started this project at the beginning of June 2024. I started this project with the goal of learning more about programming language design and practicing my C++ skills. It then gradually became one of my biggest projects yet. 
+I started this project at the beginning of June 2024 with the goal of learning more about programming language design and practicing my C++ skills. It then gradually became one of my biggest projects yet. 
 
 This was a giant learning project for me. The interpreter is not very optimized and there may be some bugs that I didn't catch, but I'm quite happy with how it turned out. I'll definitely continute working on when I have the time.
 
