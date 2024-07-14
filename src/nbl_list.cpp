@@ -14,3 +14,8 @@ int ListType::get_length()
 {
     return elements.size();
 }
+
+void ListType::set_element_at(int index, std::any value)
+{
+    elements.insert(elements.begin() + index, value);
+}

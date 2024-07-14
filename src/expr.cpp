@@ -131,3 +131,12 @@ std::any SubscriptExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitSubscriptExpr(shared_from_this());
 }
+
+
+ListSetExpr::ListSetExpr(std::shared_ptr<Expr> name, std::shared_ptr<Expr> index, std::shared_ptr<Expr> value)
+    : name(std::move(name)), index(std::move(index)), value(std::move(value)) {}
+
+std::any ListSetExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitListSetExpr(shared_from_this());
+}

@@ -13,6 +13,7 @@ struct ListType
 
     void append(std::any value);
     std::any get_element_at(int index);
+    void set_element_at(int index, std::any value);
     int get_length();
 };
 

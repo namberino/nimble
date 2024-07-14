@@ -131,6 +131,14 @@ std::any Resolver::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
     return {};
 }
 
+std::any Resolver::visitListSetExpr(std::shared_ptr<ListSetExpr> expr)
+{
+    resolve(expr->name);
+    resolve(expr->index);
+    resolve(expr->value);
+    return {};
+}
+
 std::any Resolver::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
     begin_scope();

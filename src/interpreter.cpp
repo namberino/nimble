@@ -437,6 +437,25 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
     return {};
 }
 
+std::any Interpreter::visitListSetExpr(std::shared_ptr<ListSetExpr> expr)
+{
+    std::any name = evaluate(expr->name);
+    std::any index = evaluate(expr->index);
+    std::any value = evaluate(expr->value);
+
+    if (name.type() == typeid(std::shared_ptr<ListType>))
+    {
+        if (index.type() == typeid(double))
+        {
+            std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(name);
+            int casted_index = std::any_cast<double>(index);
+            list->set_element_at(casted_index, value);
+        }
+    }
+
+    return value;
+}
+
 
 std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
 {

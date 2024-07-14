@@ -312,6 +312,12 @@ std::shared_ptr<Expr> Parser::assignment()
         {
             return std::make_shared<SetExpr>(g->object, g->name, value);
         }
+        else if (SubscriptExpr* s = dynamic_cast<SubscriptExpr*>(expr.get()))
+        {
+            std::shared_ptr<Expr> name = s->name;
+            std::shared_ptr<Expr> index = s->index;
+            return std::make_shared<ListSetExpr>(name, index, value);
+        }
 
         Error::error(std::move(equals), "Invalid assignment target");
     }
