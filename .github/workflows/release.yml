@@ -3,7 +3,7 @@ name: Create release
 on:
   push:
     tags:
-      - 'nimble-*'
+      - 'v[0-9]+.*'
 
 jobs:
   build:
