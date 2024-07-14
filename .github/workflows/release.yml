@@ -1,0 +1,93 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            bin_name: nimble-linux
+            archive_name: nimble-linux.tar.gz
+          - os: macos-latest
+            bin_name: nimble-macos
+            archive_name: nimble-macos.tar.gz
+          - os: windows-latest
+            bin_name: nimble.exe
+            archive_name: nimble-windows.zip
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up C++ environment
+        if: matrix.os != 'windows-latest'
+        uses: actions/setup-cpp@v2
+        with:
+          compiler: clang
+
+      - name: Install dependencies on Linux and macOS
+        if: matrix.os != 'windows-latest'
+        run: sudo apt-get update && sudo apt-get install -y make
+
+      - name: Install dependencies on Windows
+        if: matrix.os == 'windows-latest'
+        run: choco install make
+
+      - name: Build the project on Linux and macOS
+        if: matrix.os != 'windows-latest'
+        run: make compile
+
+      - name: Build the project on Windows
+        if: matrix.os == 'windows-latest'
+        run: mingw32-make compile
+
+      - name: Rename binary
+        run: mv bin/nimble ${{ matrix.bin_name }}
+        shell: bash
+
+      - name: Archive binary on Linux and macOS
+        if: matrix.os != 'windows-latest'
+        run: tar -czvf ${{ matrix.archive_name }} ${{ matrix.bin_name }}
+        shell: bash
+
+      - name: Archive binary on Windows
+        if: matrix.os == 'windows-latest'
+        run: tar -a -c -f ${{ matrix.archive_name }} ${{ matrix.bin_name }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ matrix.archive_name }}
+          asset_name: ${{ matrix.archive_name }}
+          asset_content_type: application/gzip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            NIMBLE release. Version ${{ github.ref }}
+          draft: false
+          prerelease: false
