@@ -16,13 +16,13 @@ run: compile
 compile: bin/nimble
 
 bin/nimble: $(OBJ) | bin
-	$(CC) -o $@ $(OBJ)
+	"$(CC)" -o $@ $(OBJ)
 
 bin:
 	mkdir -p bin
 
 obj/%.o: src/%.cpp $(HEADERS) | obj
-	${CC} $(CFLAGS) -c $< -o $@
+	"${CC}" $(CFLAGS) -c $< -o $@
 
 obj:
 	mkdir -p obj
