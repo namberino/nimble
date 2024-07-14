@@ -34,9 +34,9 @@ test: compile
 	@failed=0; \
 	for nbl in $(NBL_FILES); do \
 		expected=$${nbl}.expected; \
-		echo "Testing $$nbl..."; \
+		echo "Running test case $$nbl..."; \
 		if ! ./bin/nimble $$nbl | diff -u --color $$expected -; then \
-			echo "Test $$nbl failed!"; \
+			echo "Test case $$nbl failed!"; \
 			failed=$$((failed + 1)); \
 		fi; \
 	done; \
