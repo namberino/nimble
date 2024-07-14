@@ -22,6 +22,7 @@
 #include "nbl_function.hpp"
 #include "nbl_class.hpp"
 #include "nbl_instance.hpp"
+#include "nbl_list.hpp"
 
 class BreakException : public std::runtime_error
 {

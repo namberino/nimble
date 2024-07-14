@@ -399,12 +399,12 @@ std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
 
 std::any Interpreter::visitListExpr(std::shared_ptr<ListExpr> expr)
 {
-    std::vector<std::any> elements;
+    auto list = std::make_shared<ListType>();
 
-    for (std::shared_ptr<Expr>& element : expr->elements)
-        elements.push_back(evaluate(element));
+    for (std::shared_ptr<Expr>& value : expr->elements)
+        list->append(evaluate(value));
 
-    return elements;
+    return list;
 }
 
 
@@ -543,21 +543,20 @@ std::string Interpreter::stringify(const std::any& obj)
     if (obj.type() == typeid(std::shared_ptr<NativeExit>))
         return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
 
-    if (obj.type() == typeid(std::vector<std::any>))
+    if (obj.type() == typeid(std::shared_ptr<ListType>))
     {
         std::string result = "[";
-        std::vector<std::any> list = std::any_cast<std::vector<std::any>>(obj);
+        std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(obj);
+        std::vector<std::any> elements = list->elements;
 
-        for (std::any element : list)
+        for (auto i = elements.begin(); i != elements.end(); i++)
         {
-            result.append(stringify(element));
-            result.append(", ");
-        }
+            auto next = i + 1;
 
-        if (list.size() >= 1) // remove last comma if there's elements
-        {
-            result.pop_back();
-            result.pop_back();
+            result.append(stringify(*i));
+
+            if (next != elements.end())
+                result.append(", ");
         }
 
         result.append("]");
