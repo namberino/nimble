@@ -128,14 +128,10 @@ std::any Resolver::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
 {
     resolve(expr->name);
     resolve(expr->index);
-    return {};
-}
 
-std::any Resolver::visitListSetExpr(std::shared_ptr<ListSetExpr> expr)
-{
-    resolve(expr->name);
-    resolve(expr->index);
-    resolve(expr->value);
+    if (expr->value != nullptr)
+        resolve(expr->value);
+
     return {};
 }
 

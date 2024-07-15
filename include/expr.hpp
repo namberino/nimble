@@ -26,7 +26,6 @@ struct ThisExpr;
 struct SuperExpr;
 struct ListExpr;
 struct SubscriptExpr;
-struct ListSetExpr;
 
 struct ExprVisitor
 {
@@ -46,7 +45,6 @@ struct ExprVisitor
     virtual std::any visitSuperExpr(std::shared_ptr<SuperExpr> expr) = 0;
     virtual std::any visitListExpr(std::shared_ptr<ListExpr> expr) = 0;
     virtual std::any visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr) = 0;
-    virtual std::any visitListSetExpr(std::shared_ptr<ListSetExpr> expr) = 0;
 };
 
 struct Expr
@@ -185,18 +183,9 @@ struct SubscriptExpr : Expr, public std::enable_shared_from_this<SubscriptExpr>
     std::shared_ptr<Expr> name;
     Token paren;
     std::shared_ptr<Expr> index;
-
-    SubscriptExpr(std::shared_ptr<Expr> name, Token paren, std::shared_ptr<Expr> index);
-    std::any accept(ExprVisitor& visitor) override;
-};
-
-struct ListSetExpr : Expr, public std::enable_shared_from_this<ListSetExpr>
-{
-    std::shared_ptr<Expr> name;
-    std::shared_ptr<Expr> index;
     std::shared_ptr<Expr> value;
 
-    ListSetExpr(std::shared_ptr<Expr> name, std::shared_ptr<Expr> index, std::shared_ptr<Expr> value);
+    SubscriptExpr(std::shared_ptr<Expr> name, Token paren, std::shared_ptr<Expr> index, std::shared_ptr<Expr> value);
     std::any accept(ExprVisitor& visitor) override;
 };
 

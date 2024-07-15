@@ -419,41 +419,33 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
             std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(name);
             int casted_index = std::any_cast<double>(index);
 
-            if (casted_index >= list->get_length() || casted_index < 0)
-                throw RuntimeError(expr->paren, "Index out of array bound");
+            if (expr->value != nullptr)
+            {
+                std::any value = evaluate(expr->value);
 
-            return list->get_element_at(casted_index);
+                if (list->set_element_at(casted_index, value))
+                    return {};
+                else
+                    throw RuntimeError(expr->paren, "Index out of range");
+            }
+            else
+            {
+                if (casted_index >= list->get_length() || casted_index < 0)
+                    throw RuntimeError(expr->paren, "Index out of bound");
+                return list->get_element_at(casted_index);
+            }
         }
         else
         {
-            throw RuntimeError{expr->paren, "Index should be of type int"};
+            throw RuntimeError(expr->paren, "Index should be of type int");
         }
     }
     else
     {
-        throw RuntimeError{expr->paren, "Only lists can be subscripted"};
+        throw RuntimeError(expr->paren, "Only lists can be subscripted");
     }
 
     return {};
-}
-
-std::any Interpreter::visitListSetExpr(std::shared_ptr<ListSetExpr> expr)
-{
-    std::any name = evaluate(expr->name);
-    std::any index = evaluate(expr->index);
-    std::any value = evaluate(expr->value);
-
-    if (name.type() == typeid(std::shared_ptr<ListType>))
-    {
-        if (index.type() == typeid(double))
-        {
-            std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(name);
-            int casted_index = std::any_cast<double>(index);
-            list->set_element_at(casted_index, value);
-        }
-    }
-
-    return value;
 }
 
 

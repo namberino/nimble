@@ -124,19 +124,10 @@ std::any ListExpr::accept(ExprVisitor& visitor)
 }
 
 
-SubscriptExpr::SubscriptExpr(std::shared_ptr<Expr> name, Token paren, std::shared_ptr<Expr> index)
-    : name(std::move(name)), paren(std::move(paren)), index(std::move(index)) {}
+SubscriptExpr::SubscriptExpr(std::shared_ptr<Expr> name, Token paren, std::shared_ptr<Expr> index, std::shared_ptr<Expr> value)
+    : name(std::move(name)), paren(std::move(paren)), index(std::move(index)), value(std::move(value)) {}
 
 std::any SubscriptExpr::accept(ExprVisitor& visitor)
 {
     return visitor.visitSubscriptExpr(shared_from_this());
-}
-
-
-ListSetExpr::ListSetExpr(std::shared_ptr<Expr> name, std::shared_ptr<Expr> index, std::shared_ptr<Expr> value)
-    : name(std::move(name)), index(std::move(index)), value(std::move(value)) {}
-
-std::any ListSetExpr::accept(ExprVisitor& visitor)
-{
-    return visitor.visitListSetExpr(shared_from_this());
 }

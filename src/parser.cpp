@@ -316,7 +316,7 @@ std::shared_ptr<Expr> Parser::assignment()
         {
             std::shared_ptr<Expr> name = s->name;
             std::shared_ptr<Expr> index = s->index;
-            return std::make_shared<ListSetExpr>(name, index, value);
+            return std::make_shared<SubscriptExpr>(name, s->paren, index, value);
         }
 
         Error::error(std::move(equals), "Invalid assignment target");
@@ -444,7 +444,7 @@ std::shared_ptr<Expr> Parser::finish_subscript(std::shared_ptr<Expr> name)
 {
     std::shared_ptr<Expr> index = or_expression();
     Token paren = consume(RIGHT_BRACKET, "Expected ']' after arguments");
-    return std::make_shared<SubscriptExpr>(name, paren, index);
+    return std::make_shared<SubscriptExpr>(name, paren, index, nullptr);
 }
 
 std::shared_ptr<Expr> Parser::subscript()
