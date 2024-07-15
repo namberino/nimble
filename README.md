@@ -58,12 +58,7 @@ If you're using `make`:
 - `make run` to run the program
 - `make clean` to clean up the object and binary files
 - `make test` to run test cases
-
-If you're using `cmake`:
-- `mkdir build` and `cd build` to create a `build/` directory and go into it
-- `cmake ..` to generate build files
-- `make` to compile
-- `make clean_all` to clean up the `build/` directory
+- `make bench` to run benchmarks
 
 ## Benchmark
 
