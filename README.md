@@ -81,6 +81,10 @@ Average elapsed time of computationally intensive programs:
 
 You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [example](example/) directory.
 
+# VSCode syntax support
+
+I've created a VSCode extension for the language. You can checkout the extension [here](https://github.com/namberino/nimble-vscode)
+
 # References
 
 - [Making a Programming Language & Interpreter in under 10 minutes](https://www.youtube.com/watch?v=A3gTw1ZkeK0)
