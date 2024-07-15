@@ -21,10 +21,14 @@ fun fib(n)
     return fib(n - 2) + fib(n - 1);
 }
 
+var li = [];
+
 for (var i = 0; i < 20; i = i + 1)
 {
-    print(fib(i))
+    li[i] = fib(i);
 }
+
+print(li);
 ```
 
 NIMBLE is a dynamically typed programming language, featuring C-like syntax with class support and C++ inheritance syntax. It has a very "*fun*" syntax (because the function keyword is *fun*)
