@@ -49,6 +49,7 @@ Before compilation, you'll need to have these tools installed first:
 | [include](include/) | Header files |
 | [src](src/) | Source code |
 | [test](test/) | Test cases |
+| [tool](tool/) | Useful tools and scripts |
 | [vsc-syntax](vsc-syntax/) | VScode syntax support extension |
 
 # Compiling
