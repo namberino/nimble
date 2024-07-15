@@ -27,7 +27,7 @@ for (var i = 0; i < 20; i = i + 1)
 }
 ```
 
-NIMBLE is a dynamically typed programming language, featuring C-like syntax with class support and C++ inheritance syntax. It has a very "*fun*" syntax (because the function key word is *fun*)
+NIMBLE is a dynamically typed programming language, featuring C-like syntax with class support and C++ inheritance syntax. It has a very "*fun*" syntax (because the function keyword is *fun*)
 
 # Requirements
 
