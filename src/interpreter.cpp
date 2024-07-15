@@ -424,7 +424,7 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
                 std::any value = evaluate(expr->value);
 
                 if (list->set_element_at(casted_index, value))
-                    return {};
+                    return value;
                 else
                     throw RuntimeError(expr->paren, "Index out of range");
             }
