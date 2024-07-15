@@ -1,2 +1,2 @@
-Executing file: test/resolver/test-2.nbl
+Executing file: tests/resolver/test-2.nbl
 On line: 3, Error at 'test': Can't read local variable in its initializer

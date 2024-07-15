@@ -1,2 +1,2 @@
-Executing file: test/resolver/test-4.nbl
+Executing file: tests/resolver/test-4.nbl
 On line: 1, Error at 'return': Can't return from top-level code

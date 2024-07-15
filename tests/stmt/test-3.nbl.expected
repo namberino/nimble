@@ -1,4 +1,4 @@
-Executing file: test/stmt/test-3.nbl
+Executing file: tests/stmt/test-3.nbl
 outer a
 outer b
 global c
