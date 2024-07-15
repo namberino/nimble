@@ -11,7 +11,6 @@ This was a gigantic learning project for me. The interpreter is not very optimiz
 # Syntax
 
 ```nimble
-// fibonacci sequence program
 fun fib(n)
 {
     if (n <= 1)
