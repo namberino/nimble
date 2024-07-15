@@ -64,6 +64,13 @@ If you're using `cmake`:
 - `make` to compile
 - `make clean_all` to clean up the `build/` directory
 
+# Benchmark
+
+| Program | Average Elapsed time |
+| --- | :---: |
+| bintree.nbl | 82s |
+| fibonacci.nbl | 77s |
+
 # Documentation
 
 You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [example](example/) directory.
