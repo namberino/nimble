@@ -8,10 +8,8 @@ OBJ = $(patsubst src/%.cpp, obj/%.o, $(CPP_SRC))
 NBL_FILES = $(shell find tests -name '*.nbl')
 EXPECTED_FILES = $(patsubst %.nbl, %.nbl.expected, $(NBL_FILES))
 
-CFLAGS = -g -std=c++20 -Wall -pedantic -Iinclude
-
-run: compile
-	./bin/nimble
+DEBUG_FLAG = -g
+CFLAGS = -std=c++20 -Wall -Werror -pedantic -Iinclude
 
 compile: bin/nimble
 
@@ -27,6 +25,9 @@ obj/%.o: src/%.cpp $(HEADERS) | obj
 obj:
 	mkdir -p obj
 
+run: compile
+	./bin/nimble
+
 clean:
 	rm -f bin/* obj/*.o
 
@@ -36,4 +37,4 @@ test: compile
 bench: compile
 	./tools/bench.sh
 
-.PHONY: run compile clean test bench
+.PHONY: compile run clean test bench
