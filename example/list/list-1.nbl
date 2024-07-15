@@ -1,0 +1,9 @@
+var li = [];
+print(li);
+print(li[0]);
+
+var li = [1, 2, 3];
+print(li);
+print(li[0]);
+print(li[1]);
+print(li[2]);
