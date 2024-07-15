@@ -8,7 +8,7 @@ I started this project at the beginning of June 2024 with the goal of learning m
 
 This was a gigantic learning project for me. The interpreter is not very optimized and there may be some bugs that I overlooked, but I'm quite happy with how it turned out. I'll definitely continute working on when I have the time.
 
-# Syntax
+## Syntax
 
 ```nimble
 fun fib(n)
@@ -33,13 +33,13 @@ print(li);
 
 NIMBLE is a dynamically typed programming language, featuring C-like syntax with class support and C++ inheritance syntax. It has a very "*fun*" syntax (because the function keyword is *fun*)
 
-# Requirements
+## Requirements
 
 Before compilation, you'll need to have these tools installed first:
 - [Clang](https://clang.llvm.org/) or [GCC](https://gcc.gnu.org/) (I built this with Clang but GCC works just fine)
 - [GNU Make](https://www.gnu.org/software/make/)
 
-# Project structure
+## Project structure
 
 | Directory | Description |
 | --- | --- |
@@ -52,7 +52,7 @@ Before compilation, you'll need to have these tools installed first:
 | [tool](tool/) | Useful tools and scripts |
 | [vsc-syntax](vsc-syntax/) | VScode syntax support extension |
 
-# Compiling
+## Compiling
 
 If you're using `make`:
 - `make compile` to compile the program into the `bin/` directory
@@ -66,7 +66,7 @@ If you're using `cmake`:
 - `make` to compile
 - `make clean_all` to clean up the `build/` directory
 
-# Benchmark
+## Benchmark
 
 Average elapsed time of computationally intensive programs:
 
@@ -77,15 +77,15 @@ Average elapsed time of computationally intensive programs:
 | fibonacci.nbl | 77s |
 | prime.nbl | 35s | 
 
-# Documentation
+## Documentation
 
 You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [example](example/) directory.
 
-# VSCode syntax support
+## VSCode syntax support
 
 I've created a VSCode extension for the language. You can checkout the extension [here](https://github.com/namberino/nimble-vscode)
 
-# References
+## References
 
 - [Making a Programming Language & Interpreter in under 10 minutes](https://www.youtube.com/watch?v=A3gTw1ZkeK0)
 - [Writing An Interpreter In Go](https://www.amazon.com/Writing-Interpreter-Go-Thorsten-Ball/dp/3982016118)
