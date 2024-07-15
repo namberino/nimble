@@ -1,0 +1,3 @@
+[submodule "nimble-vscode"]
+	path = nimble-vscode
+	url = git@github.com:namberino/nimble-vscode.git
