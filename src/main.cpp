@@ -13,6 +13,10 @@
 #include "stmt.hpp"
 #include "resolver.hpp"
 
+#define ANSI_RED "\033[0;31m"
+#define ANSI_CYAN "\033[0;36m"
+#define ANSI_RESET "\033[0m"
+
 void run(const std::string& text);
 void run_file(const std::string& filename);
 void run_prompt();
@@ -101,7 +105,7 @@ void run_prompt()
     
     while (true)
     {
-        std::cout << "nimble% ";
+        std::cout << ANSI_CYAN << "nimble" << ANSI_RED << "> " << ANSI_RESET;
 
         if (std::getline(std::cin, text))
         {
