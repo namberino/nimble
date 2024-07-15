@@ -40,7 +40,8 @@ exponent -> term ( "**" term )*
 term -> factor ( ( "-" | "+" ) factor )*
 factor -> unary ( ( "/" | "*" | "%" ) unary )*
 unary -> ( "!" | "-" ) unary | call
-call -> primary ( "(" arguments? ")" | "." IDENTIFIER )*
+call -> subscript ( "(" arguments? ")" | "." IDENTIFIER )*
+subscript -> primary ( "[" arguments? "]" )*
 arguments -> expression ( "," expression )*
 primary -> NUMBER | STRING | IDENTIFIER | "true" | "false" | "nil" | "this" | "(" expression ")" | "super" "." IDENTIFIER | "[" (expression)* "]"
 ```
