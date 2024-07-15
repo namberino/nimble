@@ -431,7 +431,8 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
             else
             {
                 if (casted_index >= list->get_length() || casted_index < 0)
-                    throw RuntimeError(expr->paren, "Index out of bound");
+                    // throw RuntimeError(expr->paren, "Index out of bound");
+                    return nullptr;
                 return list->get_element_at(casted_index);
             }
         }

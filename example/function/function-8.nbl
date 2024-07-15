@@ -1,0 +1,83 @@
+fun sizeof(list)
+{
+    var size = 0;
+
+    for (var i = 0; list[i]; i = i + 1)
+    {
+        size = size + 1;
+    }
+
+    return size;
+}
+
+fun append(list, element)
+{
+    list[sizeof[list]] = element;
+}
+
+fun prepend(list, element)
+{
+    var result = [element];
+
+    for (var i = 0; i < sizeof(list); i = i + 1)
+    {
+        result[i + 1] = list[i];
+    }
+    
+    return result;
+}
+
+fun foldl(oper, initial, list)
+{
+    for (var i = 0; list[i]; i = i + 1)
+    {
+        initial = oper(initial, list[i]);
+    }
+
+    return initial;
+}
+
+fun foldr(oper, initial, list)
+{
+    var last = sizeof(list) - 1;
+
+    for (var i = last; i >= 0; i = i - 1)
+    {
+        initial = oper(list[i], initial);
+    }
+
+    return initial;
+}
+
+fun map(proc, list)
+{
+    fun maphelper(first, result)
+    {
+        return prepend(result, proc(first));
+    }
+
+    return foldr(maphelper, [], list);
+}
+
+fun filter(pred, list)
+{
+    fun helper(first, result)
+    {
+        if (pred(first))
+        {
+            return prepend(result, first);
+        }
+        else
+        {
+            return result;
+        }
+    }
+
+    return foldr(helper, [], list);
+}
+
+var result = map(fun (num) { return num * num; }, [1, 2, 3, 4, 5]);
+
+var greater = filter(fun (num) { return num > 2; }, [1, 2, 3, 4, 5]);
+
+

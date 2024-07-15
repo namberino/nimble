@@ -17,3 +17,10 @@ for (var i = 0; i < 20; i = i + 1)
 }
 
 print(li);
+
+var test = [1, 2, 3];
+
+for (var i = 0; i < 4; i = i + 1)
+{
+    print(test[i]);
+}
