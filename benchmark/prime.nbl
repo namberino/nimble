@@ -1,0 +1,20 @@
+fun is_prime(n)
+{
+    for (var i = 2; i < n / 2 + 1; i = i + 1)
+    {
+        if (n % i == 0)
+            return 0;
+    }
+    return 1;
+}
+
+var start = clock();
+var num_primes = 0;
+
+for (var i = 2; i < 10001; i = i + 1)
+{
+    num_primes = num_primes + is_prime(i);
+}
+
+print(num_primes);
+print("Elapsed: " + (clock() - start));

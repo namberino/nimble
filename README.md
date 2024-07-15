@@ -66,10 +66,13 @@ If you're using `cmake`:
 
 # Benchmark
 
+Average elapsed time of computationally intensive programs:
+
 | Program | AET |
 | --- | :---: |
 | bintree.nbl | 82s |
 | fibonacci.nbl | 77s |
+| prime.nbl | 35s |
 
 # Documentation
 
