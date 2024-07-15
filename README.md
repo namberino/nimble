@@ -66,7 +66,7 @@ If you're using `cmake`:
 
 # Benchmark
 
-| Program | Average Elapsed time |
+| Program | AET |
 | --- | :---: |
 | bintree.nbl | 82s |
 | fibonacci.nbl | 77s |
