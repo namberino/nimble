@@ -20,6 +20,7 @@
 void run(const std::string& text);
 void run_file(const std::string& filename);
 void run_prompt();
+void prompt_load(std::string path);
 
 Interpreter interpreter{};
 
@@ -53,6 +54,7 @@ int main(int argc, char* argv[])
     else // run interactive mode
     {
         run_prompt();
+        // prompt_load("./example/function/function-8.nbl");
     }
 
     return 0;
@@ -141,4 +143,10 @@ void run_prompt()
             break;
         }
     }
+}
+
+void prompt_load(std::string path)
+{
+    run_file(path);
+    run_prompt();
 }
