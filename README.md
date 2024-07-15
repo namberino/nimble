@@ -43,6 +43,7 @@ Before compilation, you'll need to have these tools installed first:
 
 | Directory | Description |
 | --- | --- |
+| [benchmark](benchmark/) | Benchmark programs |
 | [doc](doc/) | Documentation |
 | [example](example/) | Example programs |
 | [include](include/) | Header files |
