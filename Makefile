@@ -33,7 +33,7 @@ clean:
 test: compile
 	./tool/test.sh
 
-benchmark: compile
+bench: compile
 	./tool/bench.sh
 
-.PHONY: run compile clean test
+.PHONY: run compile clean test bench
