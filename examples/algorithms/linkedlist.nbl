@@ -1,0 +1,30 @@
+class Node {
+    init(data) {
+        this.data = data;
+        this.next = nil;
+    }
+}
+
+class LinkedList {
+    init() {
+        this.head = nil;
+    }
+
+    print_list() {
+        var value = this.head;
+
+        while (value != nil) {
+            print(value.data);
+            value = value.next;
+        }
+    }
+}
+
+var ll = LinkedList();
+ll.head = Node(1);
+var second = Node(2);
+var third = Node(3);
+
+ll.head.next = second;
+second.next = third;
+ll.print_list();
