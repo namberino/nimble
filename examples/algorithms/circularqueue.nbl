@@ -1,0 +1,136 @@
+class CircularQueue
+{
+    init(length)
+    {
+        this.length = length;
+        this.queue = [];
+
+        this.head = -1;
+        this.tail = -1;
+    }
+
+    enqueue(data)
+    {
+        if (this.is_empty())
+        {
+            this.head = 0;
+        }
+
+        this.tail = (this.tail + 1) % this.length;
+        this.queue[this.tail] = data;
+    }
+
+    dequeue()
+    {
+        // if there's 1 element
+        if (this.head == this.tail)
+        {
+            this.head = -1;
+            this.tail = -1;
+        }
+
+        this.head = (this.head + 1) % this.length;
+    }
+
+    print_cqueue()
+    {
+        if (this.head == -1) // empty queue
+        {
+            print("No element in the circular queue");
+        }
+        else if (this.tail >= this.head) // normal order
+        {
+            for (var i = this.head; i < this.tail + 1; i = i + 1)
+            {
+                print(this.queue[i]);
+            }
+        }
+        else // circular order
+        {
+            for (var i = this.head; i < this.length; i = i + 1)
+            {
+                print(this.queue[i]);
+            }
+
+            for (var i = 0; i < this.tail + 1; i = i + 1)
+            {
+                print(this.queue[i]);
+            }
+        }
+    }
+
+    front()
+    {
+        if (this.is_empty())
+        {
+            return -1;
+        }
+
+        return this.queue[this.head];
+    }
+
+    rear()
+    {
+        if (this.is_empty())
+        {
+            return -1;
+        }
+
+        return this.queue[this.tail];
+    }
+
+    is_empty()
+    {
+        return this.head == -1;
+    }
+
+    is_full()
+    {
+        return ((this.tail + 1) % this.length) == this.head;
+    }
+}
+
+var cqueue = CircularQueue(6);
+cqueue.enqueue("A");
+cqueue.enqueue("B");
+cqueue.enqueue("C");
+
+print("Initial queue:");
+cqueue.print_cqueue();
+
+var front = cqueue.front();
+var rear = cqueue.rear();
+print("Front: " + front + ", Rear: " + rear);
+print("");
+
+cqueue.enqueue("D");
+
+print("Queue with 'E' added:");
+cqueue.print_cqueue();
+
+front = cqueue.front();
+rear = cqueue.rear();
+print("Front: " + front + ", Rear: " + rear);
+print("");
+
+cqueue.dequeue();
+cqueue.dequeue();
+
+print("Dequeued twice:");
+cqueue.print_cqueue();
+
+front = cqueue.front();
+rear = cqueue.rear();
+print("Front: " + front + ", Rear: " + rear);
+
+cqueue.enqueue("A");
+cqueue.enqueue("B");
+cqueue.enqueue("E");
+cqueue.enqueue("F");
+
+print("Enqueued 4 times:");
+cqueue.print_cqueue();
+
+front = cqueue.front();
+rear = cqueue.rear();
+print("Front: " + front + ", Rear: " + rear);
