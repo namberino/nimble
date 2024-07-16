@@ -1,0 +1,92 @@
+// doublely linked list
+class Node
+{
+    init(data)
+    {
+        this.data = data;
+        this.next = nil;
+        this.prev = nil;
+    }
+}
+
+class DoublelyLinkedList
+{
+    init()
+    {
+        this.head = nil;
+    }
+
+    // insert at the beginning of the list
+    push(new_data)
+    {
+        var new_node = Node(new_data);
+        new_node.next = this.head;
+
+        if (this.head != nil)
+        {
+            this.head.prev = new_node;
+        }
+
+        this.head = new_node;
+    }
+
+    remove(value)
+    {
+        var current_node = this.head;
+
+        while (current_node != nil)
+        {
+            if (current_node.data == value)
+            {
+                if (current_node.prev != nil and current_node.next != nil)
+                {
+                    current_node.prev.next = current_node.next;
+                    current_node.next.prev = current_node.prev;
+                }
+                else
+                {
+                    this.head = current_node.next;
+                }
+
+                break;
+            }
+
+            current_node = current_node.next;
+        }
+    }
+
+    bottom_iterate()
+    {
+        print("Checking from bottom up:");
+        
+        var current_node = this.head;
+
+        while (current_node.next != nil)
+        {
+            current_node = current_node.next;
+        }
+
+        while (current_node != nil)
+        {
+            print("Checked " + current_node.data);
+            current_node = current_node.prev;
+        }
+    }
+}
+
+var dll = DoublelyLinkedList();
+
+dll.push(1);
+dll.push(2);
+dll.push(3);
+dll.push(4);
+dll.push(5);
+
+dll.bottom_iterate();
+print("");
+
+print("Removing node '3'");
+dll.remove(3);
+print("");
+
+dll.bottom_iterate();
