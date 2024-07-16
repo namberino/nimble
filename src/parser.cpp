@@ -497,6 +497,10 @@ std::shared_ptr<Expr> Parser::call()
             Token name = consume(IDENTIFIER, "Expected property name after '.'");
             expr = std::make_shared<GetExpr>(expr, std::move(name));
         }
+        else if (match(LEFT_BRACKET)) // handle subscript
+        {
+            expr = finish_subscript(expr);
+        }
         else
         {
             break;
