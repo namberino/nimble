@@ -45,11 +45,11 @@ Before compilation, you'll need to have these tools installed first:
 | --- | --- |
 | [benchmark](benchmark/) | Benchmark programs |
 | [doc](doc/) | Documentation |
-| [example](example/) | Example programs |
+| [examples](examples/) | Example programs |
 | [include](include/) | Header files |
 | [src](src/) | Source code |
-| [test](test/) | Test cases |
-| [tool](tool/) | Useful tools and scripts |
+| [tests](tests/) | Test cases |
+| [tools](tools/) | Useful tools and scripts |
 
 ## Compiling
 
