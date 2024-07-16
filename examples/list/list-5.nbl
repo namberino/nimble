@@ -5,3 +5,8 @@ var li2 = [
 ];
 
 print(li2);
+print(li2[0][0]);
+print(li2[1][1]);
+
+li2[0][0] = 10;
+print(li2);

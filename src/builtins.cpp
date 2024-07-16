@@ -90,7 +90,7 @@ int NativeFloorDiv::arity()
 std::any NativeFloorDiv::call(Interpreter& interpreter, std::vector<std::any> args)
 {
     double div_res = std::any_cast<double>(args[0]) / std::any_cast<double>(args[1]);
-    return std::to_string((int)div_res); 
+    return floor(div_res);
 }
 
 std::string NativeFloorDiv::to_string()

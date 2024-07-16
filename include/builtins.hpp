@@ -7,6 +7,7 @@
 #include <sstream>
 #include <ctime>
 #include <cstring>
+#include <cmath>
 
 #include "nbl_callable.hpp"
 
