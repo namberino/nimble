@@ -44,4 +44,12 @@ class NativeExit : public NblCallable
         std::string to_string() override;
 };
 
+class NativeFloorDiv : public NblCallable
+{
+    public:
+        int arity() override;
+        std::any call(Interpreter& interpreter, std::vector<std::any> args) override;
+        std::string to_string() override;
+};
+
 #endif

@@ -80,3 +80,20 @@ std::string NativeExit::to_string()
 {
     return "<native exit>";
 }
+
+
+int NativeFloorDiv::arity()
+{
+    return 2;
+}
+
+std::any NativeFloorDiv::call(Interpreter& interpreter, std::vector<std::any> args)
+{
+    double div_res = std::any_cast<double>(args[0]) / std::any_cast<double>(args[1]);
+    return std::to_string((int)div_res); 
+}
+
+std::string NativeFloorDiv::to_string()
+{
+    return "<native floordiv>";
+}

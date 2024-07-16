@@ -6,6 +6,7 @@ Interpreter::Interpreter()
     globals->define("time", std::make_shared<NativeTime>());
     globals->define("input", std::make_shared<NativeInput>());
     globals->define("exit", std::make_shared<NativeExit>());
+    globals->define("floordiv", std::make_shared<NativeFloorDiv>());
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
@@ -340,6 +341,10 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
         func->param_count = arguments.size() > 0 ? 1 : 0;
         function = func;
     }
+    else if (callee.type() == typeid(std::shared_ptr<NativeFloorDiv>))
+    {
+        function = std::any_cast<std::shared_ptr<NativeFloorDiv>>(callee);
+    }
     else
     {
         throw RuntimeError(expr->paren, "Can only call functions");
@@ -584,6 +589,9 @@ std::string Interpreter::stringify(const std::any& obj)
 
     if (obj.type() == typeid(std::shared_ptr<NativeExit>))
         return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeFloorDiv>))
+        return std::any_cast<std::shared_ptr<NativeFloorDiv>>(obj)->to_string();
 
     if (obj.type() == typeid(std::shared_ptr<ListType>))
     {
