@@ -1,0 +1,54 @@
+class Node
+{
+    init(key)
+    {
+        this.left = nil;
+        this.right = nil;
+        this.val = key;
+    }
+
+    preorder()
+    {
+        print(this.val);
+        if (this.left)
+            this.left.preorder();
+        if (this.right)
+            this.right.preorder();
+    }
+
+    inorder()
+    {
+        if (this.left)
+            this.left.inorder();
+        print(this.val);
+        if (this.right)
+            this.right.inorder();
+    }
+
+    postorder()
+    {
+        if (this.left)
+            this.left.postorder();
+        if (this.right)
+            this.right.postorder();
+        print(this.val);
+    }
+}
+
+var root = Node(1);
+root.left = Node(2);
+root.right = Node(3);
+root.left.left = Node(4);
+root.left.right = Node(5);
+
+print("Preorder traversal:");
+root.preorder();
+print("");
+
+print("Inorder traversal:");
+root.inorder();
+print("");
+
+print("Postorder traversal:");
+root.postorder();
+print("");
