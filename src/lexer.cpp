@@ -219,7 +219,7 @@ void Lexer::scan_token()
         default:
             if (std::isdigit(c)) // handle number literals
                 number();
-            else if (std::isalpha(c) || c == '_') // handle identifiers
+            else if (std::isalpha(c) || c == '_' || (c & 0x80) != 0) // handle identifiers
                 identifier();
             else
                 Error::error(line, std::string("Unexpected character: ") + "'" + c + "'");
