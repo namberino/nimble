@@ -69,11 +69,11 @@ Average elapsed time of computationally intensive programs:
 | bintree.nbl | 82s |
 | count.nbl | 57s |
 | fibonacci.nbl | 77s |
-| prime.nbl | 35s | 
+| prime.nbl | 35s |
 
 ## Documentation
 
-You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [example](example/) directory.
+You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [examples](examples/) directory.
 
 ## VSCode syntax support
 
