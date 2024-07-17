@@ -26,7 +26,19 @@ bool Lexer::is_at_end() const
 char Lexer::advance()
 {
     // consume next character in the source file and return it
-    return source[current++];
+    char c = source[current];
+
+    // utf char length handling
+    if ((c & 0x80) == 0) // 1 byte
+        current++;
+    else if ((c & 0xE0) == 0xC0) // 2 bytes
+        current += 2;
+    else if ((c & 0xF0) == 0xE0) // 3 bytes
+        current += 3;
+    else if ((c & 0xF8) == 0xF0) // 4 bytes
+        current += 4;
+    
+    return c;
 }
 
 bool Lexer::match(char expected)
@@ -124,8 +136,8 @@ void Lexer::number()
 
 void Lexer::identifier()
 {
-    // while character is alpha numeric
-    while (std::isdigit(peek()) || std::isalpha(peek()) || peek() == '_')
+    // check for utf-8 characters
+    while (std::isalnum(peek()) || peek() == '_' || (peek() & 0x80) != 0)
         advance(); // consume
 
     const auto text = source.substr(start, current - start); // the word currently being evaluated
