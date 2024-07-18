@@ -1,3 +1,3 @@
 # NIMBLE Documentation
 
-You can find details on the NIMBLE programming language's grammar rule here
+You can find details on the NIMBLE interpreter here along with the NIMBLE prorgramming language's grammar rules.
