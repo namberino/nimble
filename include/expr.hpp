@@ -27,6 +27,7 @@ struct SuperExpr;
 struct ListExpr;
 struct SubscriptExpr;
 
+// visitor struct (for visitor pattern handling)
 struct ExprVisitor
 {
     virtual ~ExprVisitor() = default;
@@ -47,6 +48,7 @@ struct ExprVisitor
     virtual std::any visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr) = 0;
 };
 
+// default expression virtual struct
 struct Expr
 {
     virtual ~Expr() = default;
