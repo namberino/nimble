@@ -26,6 +26,12 @@ Each rule in a grammar has a head (name) and a body (what it generates, which is
 
 These grammar rules are the building block for a programming language's syntax and AST.
 
+To avoid ambiguity in operation order, we need to determine the precedence and associativity. Precedence means which operator to evaluate first in an expression. Associativity means which operator to evaluate first in a series of the same operator.
+
+Example:
+- Left associative: `4 - 2 - 1` is equivalent to `(4 - 2) - 1`.
+- Right associative: `a = b = c` is equivalent to `a = (b = c)`.
+
 ## NIMBLE's Grammar rule
 
 - Literals: *numbers*, *strings*, *booleans*, *nil*.
