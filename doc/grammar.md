@@ -48,8 +48,6 @@ Associativity:
 | Factor | /, * | Left |
 | Unary | !, - | Right |
 
-Parsing technique: **recursive descent**
-
 Note on the notation: For defining the grammar rules, the notation that I use is based on the [Backus–Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
 
 Each rule has a name, followed by a `:=`, then a sequence of symbols, and the terminals are quoted. `*` means the rule can be repeated for 0 or more times. `|` means or. Parentheses can be used for grouping. `?` means optional, the rule doesn't necessarily need to be complied. And the symbols here represent tokens. Capitalized terminals are single lexemes whose text representation may vary.
