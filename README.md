@@ -77,7 +77,9 @@ You can find the documentation in the [doc](doc/) directory. You can also learn 
 
 ## Plans for this project
 
-For now, most of the features of the language and the interpreter is complete. The long term plan is to integrate with [LLVM](https://llvm.org/) and create a compiler for this language for improved performance and speed.
+For now, most of the features of the language and the interpreter is complete. Currently, I'm working on the documentation for this interpreter.
+
+The long term plan is to integrate with [LLVM](https://llvm.org/) and create a compiler for this language for improved performance and speed.
 
 ## VSCode syntax support
 
