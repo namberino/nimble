@@ -259,7 +259,7 @@ std::shared_ptr<FunctionExpr> Parser::function_body(std::string kind)
         do
         {
             if (parameters.size() >= 255)
-                error(peek(), "Can't have more than 255 parameters.");
+                error(peek(), "Can't have more than 255 parameters");
 
             parameters.push_back(consume(IDENTIFIER, "Expected parameter name"));
         } while (match(COMMA));
