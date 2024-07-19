@@ -75,6 +75,10 @@ Average elapsed time of computationally intensive programs:
 
 You can find the documentation in the [doc](doc/) directory. You can also learn about the syntax of the language through example programs found in the [examples](examples/) directory.
 
+## Plans for this project
+
+For now, most of the features of the language and the interpreter is complete. The long term plan is to integrate with [LLVM](https://llvm.org/) and create a compiler for this language for improved performance and speed.
+
 ## VSCode syntax support
 
 I've created a VSCode extension for the language. You can checkout the extension [here](https://github.com/namberino/nimble-vscode)
