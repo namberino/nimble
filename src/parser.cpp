@@ -362,7 +362,7 @@ std::shared_ptr<Expr> Parser::equality()
 {
     std::shared_ptr<Expr> expr = comparison();
 
-    while (match(BANG_EQUAL, EQUAL_EQUAL))
+    while (match(BANG_EQUAL, EQUAL_EQUAL)) // find token
     {
         Token op = previous();
         std::shared_ptr<Expr> right = comparison();
@@ -578,7 +578,8 @@ std::shared_ptr<Expr> Parser::primary()
     throw error(peek(), "Expected an expression");
 }
 
-// check if current token as any type
+// check if current token has any of the given type
+// also consumes the token
 template <class... T>
 bool Parser::match(T... type)
 {
@@ -603,6 +604,8 @@ Token Parser::consume(TokenType type, std::string msg)
 
 bool Parser::check(TokenType type)
 {
+    // true if current token is of the defined types
+    // doesn't consume token
     if (is_at_end())
         return false;
 
@@ -611,6 +614,7 @@ bool Parser::check(TokenType type)
 
 Token Parser::advance()
 {
+    // consumes current token and returns it
     if (!is_at_end())
         ++current;
     
@@ -619,16 +623,19 @@ Token Parser::advance()
 
 bool Parser::is_at_end()
 {
+    // check if is at end of token list
     return peek().type == TOKEN_EOF;
 }
 
 Token Parser::peek()
 {
+    // get current token that the parser hasn't consumed
     return tokens.at(current);
 }
 
 Token Parser::previous()
 {
+    // get recently consumed token
     return tokens.at(current - 1);
 }
 
