@@ -87,3 +87,12 @@ std::any ClassStmt::accept(StmtVisitor& visitor)
 {
     return visitor.visitClassStmt(shared_from_this());
 }
+
+
+ImportStmt::ImportStmt(Token keyword, std::shared_ptr<LiteralExpr> target)
+    : keyword(std::move(keyword)), target(std::move(target)) {}
+
+std::any ImportStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitImportStmt(shared_from_this());
+}

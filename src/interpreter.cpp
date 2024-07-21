@@ -162,6 +162,13 @@ std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
     return {};
 }
 
+std::any Interpreter::visitImportStmt(std::shared_ptr<ImportStmt> stmt)
+{
+    std::string target = std::any_cast<std::string>(stmt->target->value);
+    run_file(target, *this);
+    return {};
+}
+
 
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {

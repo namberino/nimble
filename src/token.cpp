@@ -43,7 +43,7 @@ std::string token_to_string(TokenType type)
         "STAR_STAR",
         "IDENTIFIER", "STRING", "NUMBER",
         "AND", "BREAK", "CLASS", "ELSE", "FALSE", "FUN", "FOR", "IF", "NIL", "OR",
-        "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "VAR", "WHILE",
+        "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "VAR", "WHILE", "IMPORT",
         "TOKEN_EOF"
     };
 

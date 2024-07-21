@@ -23,6 +23,7 @@
 #include "nbl_class.hpp"
 #include "nbl_instance.hpp"
 #include "nbl_list.hpp"
+#include "util.hpp"
 
 class BreakException : public std::runtime_error
 {
@@ -82,6 +83,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) override;
         std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) override;
         std::any visitClassStmt(std::shared_ptr<ClassStmt> stmt) override;
+        std::any visitImportStmt(std::shared_ptr<ImportStmt> stmt) override;
 };
 
 #endif

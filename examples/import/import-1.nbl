@@ -1,0 +1,7 @@
+import "core:math";
+import "examples/import/liber";
+
+var t = adder(5, 2);
+var x = diver(5, 3);
+print(t);
+print(x);

@@ -20,6 +20,7 @@ struct FunctionStmt;
 struct ReturnStmt;
 struct BreakStmt;
 struct ClassStmt;
+struct ImportStmt;
 
 struct StmtVisitor
 {
@@ -34,6 +35,7 @@ struct StmtVisitor
     virtual std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) = 0;
     virtual std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) = 0;
     virtual std::any visitClassStmt(std::shared_ptr<ClassStmt> stmt) = 0;
+    virtual std::any visitImportStmt(std::shared_ptr<ImportStmt> stmt) = 0;
 };
 
 struct Stmt
@@ -125,6 +127,15 @@ struct ClassStmt : Stmt, public std::enable_shared_from_this<ClassStmt>
     const std::vector<std::shared_ptr<FunctionStmt>> methods;
 
     ClassStmt(Token name, std::shared_ptr<VarExpr> superclass, std::vector<std::shared_ptr<FunctionStmt>> methods);
+    std::any accept(StmtVisitor& visitor) override;
+};
+
+struct ImportStmt : Stmt, public std::enable_shared_from_this<ImportStmt>
+{
+    Token keyword;
+    std::shared_ptr<LiteralExpr> target;
+
+    ImportStmt(Token keyword, std::shared_ptr<LiteralExpr> target);
     std::any accept(StmtVisitor& visitor) override;
 };
 

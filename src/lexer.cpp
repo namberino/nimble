@@ -246,4 +246,5 @@ const std::map<std::string, TokenType> Lexer::keywords = {
     {"true", TokenType::TRUE},
     {"var", TokenType::VAR},
     {"while", TokenType::WHILE},
+    {"import", TokenType::IMPORT}
 };

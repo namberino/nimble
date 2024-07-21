@@ -58,6 +58,9 @@ std::shared_ptr<Stmt> Parser::statement()
     if (match(BREAK))
         return break_statement();
 
+    if (match(IMPORT))
+        return import_statement();
+
     if (match(LEFT_BRACE))
         return std::make_shared<BlockStmt>(block());
     
@@ -183,6 +186,14 @@ std::shared_ptr<Stmt> Parser::break_statement()
     consume(SEMICOLON, "Expected ';' after 'break'");
 
     return std::make_shared<BreakStmt>();
+}
+
+std::shared_ptr<Stmt> Parser::import_statement()
+{
+    Token keyword = previous();
+    Token target = consume(STRING, "Expected filename after 'import'");
+    consume(SEMICOLON, "Expected ';' after 'import' statement");
+    return std::make_shared<ImportStmt>(keyword, std::make_shared<LiteralExpr>(target.literal));
 }
 
 std::shared_ptr<Stmt> Parser::expression_statement()
@@ -676,7 +687,7 @@ void Parser::synchronize()
             case STAR_STAR:
             case IDENTIFIER: case STRING: case NUMBER:
             case AND: case BREAK: case ELSE: case FALSE: case NIL: case OR:
-            case SUPER: case THIS: case TRUE:
+            case SUPER: case THIS: case TRUE: case IMPORT:
             case TOKEN_EOF:
                 break;
         }

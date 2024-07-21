@@ -1,7 +1,7 @@
 #include "resolver.hpp"
 
-Resolver::Resolver(Interpreter& interpreter)
-    : interpreter(interpreter) {}
+Resolver::Resolver(Interpreter& interpreter, std::string& base_dir)
+    : interpreter(interpreter), base_dir(base_dir) {}
 
 void Resolver::resolve(const std::vector<std::shared_ptr<Stmt>>& statements)
 {
@@ -253,6 +253,31 @@ std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
         end_scope(); // end superclass scope
 
     current_class = enclosing_class;
+
+    return {};
+}
+
+std::any Resolver::visitImportStmt(std::shared_ptr<ImportStmt> stmt)
+{
+    std::string target = std::any_cast<std::string>(stmt->target->value);
+    bool is_core = false;
+
+    if (target.find("core:") != 0)
+    {
+        target = base_dir + (target[0] == '/' ? target : "/" + target) + ".nbl";
+    }
+    else
+    {
+        is_core = true;
+        target = target.substr(5); // remove "core:" prefix
+        target = core_lib_dir + "/" + target + ".nbl";
+    }
+
+    std::ifstream file(target);
+    if (!file.good())
+        Error::error(stmt->keyword, (is_core ? "Library" : "File") + std::string(" '") + target + "' not found");
+
+    stmt->target->value = target;
 
     return {};
 }

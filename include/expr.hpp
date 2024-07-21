@@ -84,7 +84,7 @@ struct GroupingExpr : Expr, public std::enable_shared_from_this<GroupingExpr>
 
 struct LiteralExpr : Expr, public std::enable_shared_from_this<LiteralExpr>
 {
-    const std::any value;
+    std::any value;
 
     LiteralExpr(std::any value);
     std::any accept(ExprVisitor& visitor) override;

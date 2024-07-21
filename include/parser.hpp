@@ -37,6 +37,7 @@ class Parser
         std::shared_ptr<Stmt> while_statement();
         std::shared_ptr<Stmt> return_statement();
         std::shared_ptr<Stmt> break_statement();
+        std::shared_ptr<Stmt> import_statement();
         std::shared_ptr<Stmt> expression_statement();
         std::vector<std::shared_ptr<Stmt>> block();
         std::shared_ptr<Stmt> declaration();
