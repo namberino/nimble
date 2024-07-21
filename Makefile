@@ -9,7 +9,7 @@ NBL_FILES = $(shell find tests -name '*.nbl')
 EXPECTED_FILES = $(patsubst %.nbl, %.nbl.expected, $(NBL_FILES))
 
 DEBUG_FLAG = -g
-CFLAGS = -std=c++20 -Wall -Werror -pedantic -Iinclude
+CFLAGS = -std=c++20 -Wall -pedantic -Iinclude
 
 compile: bin/nimble
 
