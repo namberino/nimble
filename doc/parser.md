@@ -143,3 +143,23 @@ This is uses [dynamic dispatch](https://en.wikipedia.org/wiki/Dynamic_dispatch) 
 [Recursive descent](https://en.wikipedia.org/wiki/Recursive_descent_parser) is employed as our grammar rules are recursive. This allows us to form a tree data structure called a syntax tree. It walks "down" the grammar, from high to low precedence (Eg. equality has a low precedence and unary has a high precedence).
 
 This parser technique starts from the top grammar rule and works its way down into nested subexpressions until it reaches the leaves of the tree.
+
+```cpp
+class Parser
+{
+    const std::vector<Token>& tokens;
+    int current = 0;
+    int loop_depth = 0;
+}
+```
+
+The parser takes in a flat input sequence of tokens and use `current` to point to the next token to be parsed. The `loop_depth` keeps track of how many enclosing loops there is, it enables *break* statements.
+
+The parser will have a function for each of the grammar rule, and the functions will expand to the rules with higher precedence than they are. The parser will start with the `expression` rule.
+
+```cpp
+std::shared_ptr<Expr> Parser::expression()
+{
+    return assignment();
+}
+```

@@ -327,7 +327,7 @@ std::shared_ptr<Expr> Parser::assignment()
 
 std::shared_ptr<Expr> Parser::expression()
 {
-    return assignment();
+    return assignment(); // recursive descent
 }
 
 std::shared_ptr<Expr> Parser::or_expression()
