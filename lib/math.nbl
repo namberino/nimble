@@ -1,4 +1,117 @@
-fun adder(a, b)
+var PI = 3.1415926535897932384626433832795028841971;
+
+fun factorial(n)
 {
-    return a + b;
+    if (n == 0 or n == 1)
+    {
+        return 1;
+    }
+
+    return n * factorial(n - 1);
+}
+
+fun sin(x)
+{
+    var result = 0;
+
+    for (var i = 0; i < 20; i = i + 1)
+    {
+        var sign = -1 ** i;
+        var term = (x ** (2 * i + 1)) / factorial(2 * i + 1);
+        result = result + sign * term;
+    }
+
+    return result;
+}
+
+fun cos(x)
+{
+    var result = 0;
+
+    for (var i = 0; i < 20; i = i + 1)
+    {
+        var sign = -1 ** i;
+        var term = (x ** (2 * i)) / factorial(2 * i);
+        result = result + sign * term;
+    }
+
+    return result;
+}
+
+fun tan(x)
+{
+    return sin(x) / cos(x);
+}
+
+fun cot(x)
+{
+    return cos(x) / sin(x);
+}
+
+fun exp(x)
+{
+    var result = 1;
+    var term = 1;
+
+    for (var i = 1; i < 20; i = i + 1)
+    {
+        term = term * x / i;
+        result = result + term;
+    }
+
+    return result;
+}
+
+fun ln(x)
+{
+    if (x <= 0)
+    {
+        return 0 / 0; // error
+    }
+
+    var y = (x - 1) / (x + 1);
+    var y2 = y * y;
+    var result = 0;
+    var term = y;
+
+    for (var i = 1; i < 100; i = i + 2)
+    {
+        result = result + term / i;
+        term = term * y2;
+    }
+
+    return 2 * result;
+}
+
+fun log10(x)
+{
+    return ln(x) / ln(10);
+}
+
+fun log2(x)
+{
+    return ln(x) / ln(2);
+}
+
+fun log(x, b)
+{
+    return ln(x) / ln(b);
+}
+
+fun sqrt(x)
+{
+    if (x < 0)
+    {
+        return 0 / 0; // error
+    }
+
+    var guess = x;
+    var epsilon = 0.000001;
+
+    while ((guess * guess - x) > epsilon)
+    {
+        guess = (guess + x / guess) / 2;
+    }
+
+    return guess;
 }
