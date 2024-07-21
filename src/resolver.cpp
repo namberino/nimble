@@ -1,7 +1,7 @@
 #include "resolver.hpp"
 
-Resolver::Resolver(Interpreter& interpreter, std::string& base_dir)
-    : interpreter(interpreter), base_dir(base_dir) {}
+Resolver::Resolver(Interpreter& interpreter, std::string& executed_path)
+    : interpreter(interpreter), executed_path(executed_path) {}
 
 void Resolver::resolve(const std::vector<std::shared_ptr<Stmt>>& statements)
 {
@@ -264,7 +264,9 @@ std::any Resolver::visitImportStmt(std::shared_ptr<ImportStmt> stmt)
 
     if (target.find("core:") != 0)
     {
-        target = base_dir + (target[0] == '/' ? target : "/" + target) + ".nbl";
+        fs::path cwd = fs::current_path();
+        fs::path relative_cwd = cwd / executed_path;
+        target = relative_cwd.parent_path().string() + (target[0] == '/' ? target : "/" + target) + ".nbl";
     }
     else
     {
@@ -348,4 +350,23 @@ void Resolver::begin_scope()
 void Resolver::end_scope()
 {
     scopes.pop_back();
+}
+
+fs::path Resolver::get_base_path()
+{
+    fs::path current_path = fs::current_path();
+    fs::path known_directory = "nimble"; // change if known directory is different
+
+    // find the known directory in current path
+    auto it = std::find(current_path.begin(), current_path.end(), known_directory);
+    if (it == current_path.end())
+        throw std::runtime_error("Known directory not found in the current path");
+
+    // create base path by joining parts of current path up to the known directory
+    fs::path base_path;
+    for (auto part = current_path.begin(); part != it; ++part)
+        base_path /= *part;
+    base_path /= known_directory;
+
+    return base_path;
 }

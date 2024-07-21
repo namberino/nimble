@@ -1,5 +1,5 @@
 import "core:math";
-import "examples/import/liber";
+import "liber";
 
 var t = adder(5, 2);
 var x = diver(5, 3);

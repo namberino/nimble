@@ -36,10 +36,12 @@ class Resolver : public ExprVisitor, public StmtVisitor
         std::vector<std::map<std::string, bool>> scopes;
         FunctionType current_func = FunctionType::NONE;
         ClassType current_class = ClassType::NONE;
-        std::string base_dir;
 
-        fs::path base_path = fs::canonical(fs::path(__FILE__)).parent_path().parent_path();
+        std::string executed_path;
+        fs::path base_path = get_base_path();
         std::string core_lib_dir = (base_path / "lib").generic_string();
+
+        fs::path get_base_path();
 
         void resolve(std::shared_ptr<Stmt> stmt);
         void resolve(std::shared_ptr<Expr> expr);
@@ -51,7 +53,7 @@ class Resolver : public ExprVisitor, public StmtVisitor
         void end_scope();
 
     public:
-        Resolver(Interpreter& interpreter, std::string& base_dir);
+        Resolver(Interpreter& interpreter, std::string& executed_path);
         void resolve(const std::vector<std::shared_ptr<Stmt>>& statements);
 
         std::any visitAssignExpr(std::shared_ptr<AssignExpr> expr) override;
