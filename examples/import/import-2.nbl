@@ -1,0 +1,12 @@
+import "core:math";
+
+var angle = PI / 3; // 45 degrees
+var sn = sin(angle);
+var cs = cos(angle);
+var tn = tan(angle);
+var ct = cot(angle);
+
+print("Sine result of 45 degrees: " + sn);
+print("Cosine result of 45 degrees: " + cs);
+print("Tangent result of 45 degrees: " + tn);
+print("Cotangent result of 45 degrees: " + ct);

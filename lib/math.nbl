@@ -1,4 +1,49 @@
-fun adder(a, b)
+var PI = 3.1415926535897932384626433832795028841971;
+
+fun factorial(n)
 {
-    return a + b;
+    if (n == 0 or n == 1)
+    {
+        return 1;
+    }
+
+    return n * factorial(n - 1);
+}
+
+fun sin(x)
+{
+    var result = 0;
+
+    for (var i = 0; i < 20; i = i + 1)
+    {
+        var sign = -1 ** i;
+        var term = (x ** (2 * i + 1)) / factorial(2 * i + 1);
+        result = result + sign * term;
+    }
+
+    return result;
+}
+
+fun cos(x)
+{
+    var result = 0;
+
+    for (var i = 0; i < 20; i = i + 1)
+    {
+        var sign = -1 ** i;
+        var term = (x ** (2 * i)) / factorial(2 * i);
+        result = result + sign * term;
+    }
+
+    return result;
+}
+
+fun tan(x)
+{
+    return sin(x) / cos(x);
+}
+
+fun cot(x)
+{
+    return cos(x) / sin(x);
 }
