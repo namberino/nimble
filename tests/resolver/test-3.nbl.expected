@@ -1,2 +1,1 @@
-Executing file: tests/resolver/test-3.nbl
 On line: 4, Error at 't': Already a variable with this name in this scope

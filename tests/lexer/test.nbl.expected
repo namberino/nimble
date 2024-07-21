@@ -1,4 +1,3 @@
-Executing file: tests/lexer/test.nbl
 On line: 2, Error at ')': Expected an expression
 On line: 8, Error at '/': Expected an expression
 On line: 14, Error at 'else': Expected class name

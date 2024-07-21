@@ -1,4 +1,3 @@
-Executing file: tests/stmt/test-3.nbl
 outer a
 outer b
 global c
