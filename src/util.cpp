@@ -24,8 +24,6 @@ void run(const std::string& source, Interpreter& interpreter, std::string base_d
 
 void run_file(const std::string& path, Interpreter& interpreter)
 {
-    std::string base_dir = fs::current_path().string();
-
     // std::cout << "Executing file: " + path + "\n";
     std::ifstream file{path};
     std::string line;
@@ -34,7 +32,7 @@ void run_file(const std::string& path, Interpreter& interpreter)
     while (std::getline(file, line))
         file_content += line + "\n";
 
-    run(file_content, interpreter, base_dir);
+    run(file_content, interpreter, path);
     
     if (Error::has_error)
         exit(2);
