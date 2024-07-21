@@ -6,7 +6,7 @@ NIMBLE (Nam's Interpreted Modular Basic Language Engine) is a dynamically typed,
 
 I started this project at the beginning of June 2024 with the goal of learning more about programming language design and practicing my C++ skills. It then gradually became one of my biggest projects yet. 
 
-This is a gigantic learning project for me. This project was inspired by the [Lox](https://craftinginterpreters.com/the-lox-language.html) programming language. The interpreter is not very optimized and there may be some bugs that I overlooked, but I'm quite happy with how it turned out. I'll definitely continute working on when I have the time.
+This is a gigantic learning project for me. This project was inspired by the [Lox](https://github.com/munificent/craftinginterpreters) programming language. The interpreter is not very optimized and there may be some bugs that I overlooked, but I'm quite happy with how it turned out. I'll definitely continute working on when I have the time.
 
 ## Syntax
 
