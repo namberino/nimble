@@ -11,6 +11,8 @@ This is a gigantic learning project for me. This project was inspired by the [Lo
 ## Syntax
 
 ```nimble
+import "core:math"
+
 fun fib(n)
 {
     if (n <= 1)
