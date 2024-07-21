@@ -1,12 +1,33 @@
 import "core:math";
 
-var angle = PI / 3; // 45 degrees
-var sn = sin(angle);
-var cs = cos(angle);
-var tn = tan(angle);
-var ct = cot(angle);
+var angle = PI / 3;
 
-print("Sine result of 45 degrees: " + sn);
-print("Cosine result of 45 degrees: " + cs);
-print("Tangent result of 45 degrees: " + tn);
-print("Cotangent result of 45 degrees: " + ct);
+var sn = sin(angle);
+print("Sine result of PI / 3: " + sn);
+
+var cs = cos(angle);
+print("Cosine result of PI / 3: " + cs);
+
+var tn = tan(angle);
+print("Tangent result of PI / 3: " + tn);
+
+var ct = cot(angle);
+print("Cotangent result of PI / 3: " + ct);
+
+var ep = exp(1); // e^1
+print("Exponentiation result of e^1: " + ep);
+
+var lne = ln(2.718281828459);
+print("Natural log result of ln(e): " + lne);
+
+var logt = log10(100);
+print("Log (base 10) result of log10(100): " + logt);
+
+var logtw = log2(10);
+print("Log (base 2) result of log2(10): " + logtw);
+
+var logn = log(8, 2);
+print("Log result of log2(8): " + logn);
+
+var sq = sqrt(16);
+print("Square root result of sqrt(16): " + sq);
