@@ -11,23 +11,32 @@ This is a gigantic learning project for me. This project was inspired by the [Lo
 ## Syntax
 
 ```nimble
-import "core:math"
+import "core:math";
 
-fun fib(n)
+fun collatz_conjecture(n)
 {
-    if (n <= 1)
+
+    if (n % 2 == 0)
     {
+        n = floordiv(n, 2);
         return n;
     }
-
-    return fib(n - 2) + fib(n - 1);
+    else if (n % 2 == 1)
+    {
+        n = 3 * n + 1;
+        return n;
+    }
 }
 
+var n = input("Enter number: ");
+var i = 0;
 var li = [];
 
-for (var i = 0; i < 20; i = i + 1)
+while (n != 1)
 {
-    li[i] = fib(i);
+    n = collatz_conjecture(n);
+    li[i] = n;
+    i = i + 1;
 }
 
 print(li);
