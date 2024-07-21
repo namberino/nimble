@@ -14,8 +14,6 @@ NIMBLE's syntactic grammar is going to be utilizing the [Chomsky hierarchy](http
 
 ## Parser
 
-Parsing technique: [Recursive descent](https://en.wikipedia.org/wiki/Recursive_descent_parser) as our grammar rules are recursive. This allows us to form a tree data structure called a syntax tree.
-
 Syntax trees aren't homogenous. There are many different types of expressions that we would need to consider (Eg. Unary expressions contain 1 operand, binary expressions contain 2 operands, etc). So I created a base expression structure that other types of expressions can inherit from. These expression subclasses will have different fields for nonterminals specific to that rule.
 
 ```cpp
@@ -139,3 +137,9 @@ Each visit methods are an operation that can be performed on the expression base
 When an expression needs to be processed, the expression's `accept()` method is called and the expression itself is passed into the visitor for the operation that needs to be executed. 
 
 This is uses [dynamic dispatch](https://en.wikipedia.org/wiki/Dynamic_dispatch) on the expression class to select the appropriate method on the visitor class. By executing the correct visitor method for each expresison structs, we can correctly choose what to do for each different expressions.
+
+## Recursive descent parsing
+
+[Recursive descent](https://en.wikipedia.org/wiki/Recursive_descent_parser) is employed as our grammar rules are recursive. This allows us to form a tree data structure called a syntax tree. It walks "down" the grammar, from high to low precedence (Eg. equality has a low precedence and unary has a high precedence).
+
+This parser technique starts from the top grammar rule and works its way down into nested subexpressions until it reaches the leaves of the tree.
