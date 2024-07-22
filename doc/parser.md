@@ -163,3 +163,51 @@ std::shared_ptr<Expr> Parser::expression()
     return assignment();
 }
 ```
+
+The `expression()` function will recursively descent and call higher precedence rules, until it reaches the rule with the highest precedence: `primary()`, which works just like the grammar rule specified.
+
+```cpp
+std::shared_ptr<Expr> Parser::primary()
+{
+    if (match(FALSE))
+        return std::make_shared<LiteralExpr>(false);
+
+    if (match(TRUE))
+        return std::make_shared<LiteralExpr>(true);
+
+    if (match(NIL))
+        return std::make_shared<LiteralExpr>(nullptr);
+        
+    if (match(NUMBER, STRING))
+        return std::make_shared<LiteralExpr>(previous().literal);
+
+    if (match(IDENTIFIER))
+        return std::make_shared<VarExpr>(previous());
+
+    if (match(FUN))
+        return function_body("function");
+
+    if (match(THIS))
+        return std::make_shared<ThisExpr>(previous());
+
+    if (match(LEFT_BRACKET))
+        return list_expression();
+
+    if (match(SUPER))
+    {
+        Token keyword = previous();
+        consume(DOT, "Expected '.' after 'super'");
+        Token method = consume(IDENTIFIER, "Expected superclass method name");
+        return std::make_shared<SuperExpr>(std::move(keyword), std::move(method));
+    }
+
+    if (match(LEFT_PAREN))
+    {
+        std::shared_ptr<Expr> expr = expression();
+        consume(RIGHT_PAREN, "Expect ')' after expression");
+        return std::make_shared<GroupingExpr>(expr);
+    }
+
+    throw error(peek(), "Expected an expression");
+}
+```
