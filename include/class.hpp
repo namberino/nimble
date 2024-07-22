@@ -1,5 +1,5 @@
-#ifndef NBL_CLASS_HPP
-#define NBL_CLASS_HPP
+#ifndef CLASS_HPP
+#define CLASS_HPP
 
 #pragma once
 #include <any>
@@ -9,9 +9,9 @@
 #include <utility>
 #include <map>
 
-#include "nbl_callable.hpp"
-#include "nbl_instance.hpp"
-#include "nbl_function.hpp"
+#include "callable.hpp"
+#include "instance.hpp"
+#include "function.hpp"
 
 class Interpreter;
 class NblFunction;

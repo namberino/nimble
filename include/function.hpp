@@ -1,9 +1,9 @@
-#ifndef NBL_FUNCTION_HPP
-#define NBL_FUNCTION_HPP
+#ifndef FUNCTION_HPP
+#define FUNCTION_HPP
 
 #pragma once
 #include "interpreter.hpp"
-#include "nbl_instance.hpp"
+#include "instance.hpp"
 
 class NblInstance;
 

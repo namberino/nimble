@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "nbl_function.hpp"
+#include "function.hpp"
 
 NblFunction::NblFunction(std::string name, std::shared_ptr<FunctionExpr> declaration, std::shared_ptr<Environment> closure, bool is_initializer)
     : name(name), declaration(declaration), closure(closure), is_initializer(is_initializer) {}

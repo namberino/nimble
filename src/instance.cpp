@@ -1,4 +1,4 @@
-#include "nbl_instance.hpp"
+#include "instance.hpp"
 
 NblInstance::NblInstance(std::shared_ptr<NblClass> klass)
     : klass(std::move(klass)) {}

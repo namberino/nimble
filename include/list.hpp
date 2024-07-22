@@ -1,5 +1,5 @@
-#ifndef NBL_LIST_HPP
-#define NBL_LIST_HPP
+#ifndef LIST_HPP
+#define LIST_HPP
 
 #pragma once
 #include <vector>

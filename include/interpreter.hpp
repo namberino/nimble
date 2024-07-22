@@ -18,11 +18,11 @@
 #include "stmt.hpp"
 #include "environment.hpp"
 #include "builtins.hpp"
-#include "nbl_callable.hpp"
-#include "nbl_function.hpp"
-#include "nbl_class.hpp"
-#include "nbl_instance.hpp"
-#include "nbl_list.hpp"
+#include "callable.hpp"
+#include "function.hpp"
+#include "class.hpp"
+#include "instance.hpp"
+#include "list.hpp"
 #include "util.hpp"
 
 class BreakException : public std::runtime_error

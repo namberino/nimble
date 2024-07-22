@@ -9,7 +9,7 @@
 #include <cstring>
 #include <cmath>
 
-#include "nbl_callable.hpp"
+#include "callable.hpp"
 
 class NativeClock : public NblCallable
 {

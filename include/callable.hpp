@@ -1,5 +1,5 @@
-#ifndef NBL_CALLABLE_HPP
-#define NBL_CALLABLE_HPP
+#ifndef CALLABLE_HPP
+#define CALLABLE_HPP
 
 #pragma once
 #include <vector>

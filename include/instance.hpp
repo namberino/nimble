@@ -1,5 +1,5 @@
-#ifndef NBL_INSTANCE_HPP
-#define NBL_INSTANCE_HPP
+#ifndef INSTANCE_HPP
+#define INSTANCE_HPP
 
 #pragma once
 #include <any>
@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "nbl_class.hpp"
+#include "class.hpp"
 #include "token.hpp"
 
 class NblClass;
