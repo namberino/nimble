@@ -91,7 +91,7 @@ You can find the documentation in the [doc](doc/) directory. You can also learn 
 
 For now, most of the features of the language and the interpreter is complete. Currently, I'm working on the documentation for this interpreter.
 
-The long term plan is to integrate with [LLVM](https://llvm.org/) and create a compiler for this language for improved performance and speed.
+Hopefully I could integrate this project with [LLVM](https://llvm.org/) and create a compiler for this language for improved performance and speed in the future.
 
 ## VSCode syntax support
 
