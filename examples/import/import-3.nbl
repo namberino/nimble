@@ -1,0 +1,13 @@
+import "core:collections";
+
+var my_map = Map();
+
+my_map.insert("Hello", 5);
+my_map.insert("There", 3);
+my_map.insert("World", 7);
+
+print("Complete map:");
+my_map.print_map();
+
+print("Value of 'Hello': " + my_map.get("Hello"));
+print("Index of 'World': " + my_map.get_index("World"));
