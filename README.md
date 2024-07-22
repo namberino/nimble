@@ -13,9 +13,9 @@ This is a gigantic learning project for me. This project was inspired by the [Lo
 ```nimble
 import "core:math";
 
+// collatz conjecture function
 fun collatz_conjecture(n)
 {
-
     if (n % 2 == 0)
     {
         n = floordiv(n, 2);
@@ -32,6 +32,7 @@ var n = input("Enter number: ");
 var i = 0;
 var li = [];
 
+// main loop
 while (n != 1)
 {
     n = collatz_conjecture(n);
