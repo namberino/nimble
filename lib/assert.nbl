@@ -1,0 +1,39 @@
+class Error
+{
+    init(msg, code)
+    {
+        this.msg = msg;
+        this.code = code;
+        this.type = "Error";
+    }
+}
+
+class RuntimeError : Error
+{
+    init(msg)
+    {
+        super.init(msg, 100);
+        this.type = "Runtime Error";
+    }
+}
+
+class AssertionError : Error
+{
+    init(msg)
+    {
+        super.init(msg, 200);
+        this.type = "Assertion Error";
+    }
+}
+
+fun throw(err)
+{
+    print(err.type + " : " + err.msg);
+    exit(err.code);
+}
+
+fun assert(condition, error)
+{
+    if (!condition)
+        throw(AssertionError(error));
+}
