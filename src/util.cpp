@@ -66,6 +66,9 @@ void run_prompt(Interpreter& interpreter)
                 std::cout << "Invalid syntax error\n";
                 continue;
             }
+            
+            Resolver resolver{interpreter, base_dir};
+            resolver.resolve(std::any_cast<std::vector<std::shared_ptr<Stmt>>>(syntax));
 
             if (syntax.type() == typeid(std::vector<std::shared_ptr<Stmt>>))
             {
