@@ -215,3 +215,9 @@ std::shared_ptr<Expr> Parser::primary()
 ## Parser state and synchronization
 
 The parser's state (which rule it is currently parsing) is not stored explicitly in the fields of the parser. The parser will use C++ call stack to track what rule the parser is on. Each rule being parsed is a call frame on the stack. In order to reset that state, we need to clear out those call frames.
+
+When we want to synchronize, we throw a parse error. Higher up in the function for the grammar rule we're synchronizing to is where we catch it. We synchronize on statement boundaries, also where we catch the exception. After the exception is caught, the parser is in the correct state. Then we synchronize the tokens. The tokens need to be discarded at the beginning of the next statement. So if the next token is a `for`, `if`, `return`, `var`, etc, then that means we're about to start a statement. And when we finish a statement is when we usually have a semicolon.
+
+If we reaches a parse error, we synchronize. When this works, that means we have discarded tokens that would've caused cascaded tokens. Then right after that, we start parsing the rest of the file starting at the next statement.
+
+

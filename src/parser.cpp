@@ -237,8 +237,9 @@ std::shared_ptr<Stmt> Parser::declaration()
     }
     catch (ParseError error)
     {
+        // synchronize parser state
         synchronize();
-        return nullptr;
+        return nullptr; // panic and unwind to the top and stop parsing
     }
 }
 
@@ -663,6 +664,7 @@ void Parser::synchronize()
     advance();
 
     // discarding nested productions
+    // discards until found statement boundary
     while (!is_at_end())
     {
         if (previous().type == SEMICOLON)
