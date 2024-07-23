@@ -660,6 +660,7 @@ void Parser::synchronize()
 {
     advance();
 
+    // discarding nested productions
     while (!is_at_end())
     {
         if (previous().type == SEMICOLON)
@@ -667,6 +668,7 @@ void Parser::synchronize()
 
         switch (peek().type)
         {
+            // synchronization points
             case CLASS:
             case FUN:
             case VAR:
@@ -675,7 +677,7 @@ void Parser::synchronize()
             case WHILE:
             case PRINT:
             case RETURN:
-                return;
+                return; // reached a token that can appear at that point in the rule
 
             // this is just here to make the compiler happy, it won't reach here
             case LEFT_PAREN: case RIGHT_PAREN: case LEFT_BRACE: case RIGHT_BRACE: case LEFT_BRACKET: case RIGHT_BRACKET:
