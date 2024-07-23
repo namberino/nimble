@@ -607,9 +607,11 @@ bool Parser::match(T... type)
 
 Token Parser::consume(TokenType type, std::string msg)
 {
+    // if is of known token type
     if (check(type))
         return advance();
 
+    // throw an error if token type is not recognized
     throw error(peek(), msg);
 }
 

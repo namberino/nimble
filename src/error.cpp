@@ -16,6 +16,7 @@ void Error::error(int line, const std::string& msg)
 
 void Error::error(const Token& token, std::string msg)
 {
+    // parse error
     if (token.type == TOKEN_EOF)
         report(token.line, " at end", msg);
     else
@@ -24,7 +25,6 @@ void Error::error(const Token& token, std::string msg)
 
 RuntimeError::RuntimeError(const Token& token, std::string msg)
     : std::runtime_error(msg.data()), token(token) {}
-
 
 void Error::runtime_error(const RuntimeError& error)
 {
