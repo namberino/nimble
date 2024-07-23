@@ -211,3 +211,7 @@ std::shared_ptr<Expr> Parser::primary()
     throw error(peek(), "Expected an expression");
 }
 ```
+
+## Parser state and synchronization
+
+The parser's state (which rule it is currently parsing) is not stored explicitly in the fields of the parser. The parser will use C++ call stack to track what rule the parser is on. Each rule being parsed is a call frame on the stack. In order to reset that state, we need to clear out those call frames.
