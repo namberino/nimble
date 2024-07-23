@@ -19,8 +19,8 @@ class RuntimeError : public std::runtime_error
 class Error
 {
     public:
-        static bool has_error;
-        static bool has_runtime_error;
+        static bool has_error; // general error
+        static bool has_runtime_error; // runtime error
 
         static void report(int line, const std::string& where, const std::string& msg);
         static void error(int line, const std::string& msg);

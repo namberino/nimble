@@ -587,6 +587,7 @@ std::shared_ptr<Expr> Parser::primary()
         return std::make_shared<GroupingExpr>(expr);
     }
 
+    // token that can't start an expression
     throw error(peek(), "Expected an expression");
 }
 

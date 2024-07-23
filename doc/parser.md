@@ -219,5 +219,3 @@ The parser's state (which rule it is currently parsing) is not stored explicitly
 When we want to synchronize, we throw a parse error. Higher up in the function for the grammar rule we're synchronizing to is where we catch it. We synchronize on statement boundaries, also where we catch the exception. After the exception is caught, the parser is in the correct state. Then we synchronize the tokens. The tokens need to be discarded at the beginning of the next statement. So if the next token is a `for`, `if`, `return`, `var`, etc, then that means we're about to start a statement. And when we finish a statement is when we usually have a semicolon.
 
 If we reaches a parse error, we synchronize. When this works, that means we have discarded tokens that would've caused cascaded tokens. Then right after that, we start parsing the rest of the file starting at the next statement.
-
-
