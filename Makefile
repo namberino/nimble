@@ -5,9 +5,6 @@ CPP_SRC = $(wildcard src/*.cpp)
 HEADERS = $(wildcard include/*.hpp)
 OBJ = $(patsubst src/%.cpp, obj/%.o, $(CPP_SRC))
 
-NBL_FILES = $(shell find tests -name '*.nbl')
-EXPECTED_FILES = $(patsubst %.nbl, %.nbl.expected, $(NBL_FILES))
-
 DEBUG_FLAG = -g
 CFLAGS = -std=c++20 -Wall -pedantic -Iinclude
 
