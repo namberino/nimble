@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #ifndef ERROR_HPP
 #define ERROR_HPP
 

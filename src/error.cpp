@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "error.hpp"
 
 bool Error::has_error = false;

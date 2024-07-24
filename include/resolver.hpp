@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #ifndef RESOLVER_HPP
 #define RESOLVER_HPP
 

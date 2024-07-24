@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "class.hpp"
 
 NblClass::NblClass(std::string name, std::shared_ptr<NblClass> superclass, std::map<std::string, std::shared_ptr<NblFunction>> methods)

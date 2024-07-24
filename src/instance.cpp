@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "instance.hpp"
 
 NblInstance::NblInstance(std::shared_ptr<NblClass> klass)

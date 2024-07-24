@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "expr.hpp"
 
 AssignExpr::AssignExpr(Token name, std::shared_ptr<Expr> value)

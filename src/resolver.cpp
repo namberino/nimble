@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "resolver.hpp"
 
 Resolver::Resolver(Interpreter& interpreter, std::string& executed_path)

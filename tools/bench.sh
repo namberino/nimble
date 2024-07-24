@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#------------------------------------#
+# Copyright 2024 Nam Nguyen
+# Licensed under Apache License v2.0
+#------------------------------------#
+
 declare -A elapsed_times # associative array
 
 NBL_FILES=$(find benchmark -name '*.nbl')

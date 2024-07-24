@@ -1,3 +1,8 @@
+//------------------------------------//
+// Copyright 2024 Nam Nguyen
+// Licensed under Apache License v2.0
+//------------------------------------//
+
 #include "stmt.hpp"
 
 BlockStmt::BlockStmt(std::vector<std::shared_ptr<Stmt>> statements)

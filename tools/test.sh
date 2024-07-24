@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#------------------------------------#
+# Copyright 2024 Nam Nguyen
+# Licensed under Apache License v2.0
+#------------------------------------#
+
 failed=0; # number of failed cases
 
 NBL_FILES=$(find tests -name '*.nbl');
