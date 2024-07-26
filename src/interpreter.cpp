@@ -39,7 +39,6 @@ std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
         Error::runtime_error(error);
         return "";
     }
-    
 }
 
 void Interpreter::resolve(std::shared_ptr<Expr> expr, int depth)
@@ -275,12 +274,15 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
 
     switch (expr->op.type)
     {
-        case BANG: return !is_truthy(right);
+        case BANG:
+            return !is_truthy(right);
+
         case MINUS:
             check_num_operand(expr->op, right);
             return -std::any_cast<double>(right);
         
-        default: break;
+        default:
+            break;
     }
 
     return {}; // unreachable, here to make the compiler happy
@@ -484,7 +486,7 @@ std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
 
 std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 {
-    // sends expression back into interpreter's visitor implementation
+    // send expression back into interpreter's visitor methods for evaluation
     return expr->accept(*this);
 }
 
