@@ -39,7 +39,6 @@ std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
         Error::runtime_error(error);
         return "";
     }
-    
 }
 
 void Interpreter::resolve(std::shared_ptr<Expr> expr, int depth)
