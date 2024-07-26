@@ -55,3 +55,14 @@ class RuntimeError : public std::runtime_error
 The `RuntimeError` class will track the token where the runtime error occurs by holding a reference to that token. This helps the user know where the error occured.
 
 We can throw this error deep inside the evaluator to break out. Then we can catch those error and properly handle them.
+
+```cpp
+void Error::runtime_error(const RuntimeError& error)
+{
+    // runtime error handling
+    std::cout << error.what() << "\nOn line " << error.token.line << "\n";
+    has_runtime_error = true;
+}
+```
+
+This `runtime_error()` method allows us to report runtime errors and let the program continues. It also access the `has_runtime_error` variable which allows us to exit the program if we're running from a script file.
