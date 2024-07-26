@@ -211,3 +211,93 @@ This is a long one.
 The arithmetic ones are pretty self explanatory. The "plus" one operates a bit differently, it operates kinda like python's plus operation. it can add up 2 doubles, it can concatenate 2 strings, it can also concatenate a string and a double.
 
 For the comparisors, we need to check whether the 2 operands are actual numbers as we can only compare numbers. If they are numbers then we perform comparison on the 2 of them. There are 2 exceptions though, `!=` and `==`. For these 2 comparisors, we can compare strings, bools, numbers, and nils with each other.
+
+## Interpreting
+
+```cpp
+std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
+{
+    try
+    {
+        std::any value = evaluate(expr);
+        return stringify(value);
+    }
+    catch(RuntimeError error)
+    {
+        Error::runtime_error(error);
+        return "";
+    }
+}
+
+std::string Interpreter::stringify(const std::any& obj)
+{
+    if (obj.type() == typeid(nullptr))
+        return "nil";
+
+    if (obj.type() == typeid(double))
+    {
+        std::string text = std::to_string(std::any_cast<double>(obj));
+
+        if (text[text.length() - 2] == '.' && text[text.length() - 1] == '0')
+            text = text.substr(0, text.length() - 2);
+
+        return text;
+    }
+
+    if (obj.type() == typeid(std::string))
+        return std::any_cast<std::string>(obj);
+
+    if (obj.type() == typeid(bool))
+        return std::any_cast<bool>(obj) ? "true" : "false";
+    
+    if (obj.type() == typeid(std::shared_ptr<NblFunction>))
+        return std::any_cast<std::shared_ptr<NblFunction>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NblClass>))
+        return std::any_cast<std::shared_ptr<NblClass>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NblInstance>))
+        return std::any_cast<std::shared_ptr<NblInstance>>(obj)->to_string();
+    
+    if (obj.type() == typeid(std::shared_ptr<NativeClock>))
+        return std::any_cast<std::shared_ptr<NativeClock>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeTime>))
+        return std::any_cast<std::shared_ptr<NativeTime>>(obj)->to_string();
+    
+    if (obj.type() == typeid(std::shared_ptr<NativeInput>))
+        return std::any_cast<std::shared_ptr<NativeInput>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeExit>))
+        return std::any_cast<std::shared_ptr<NativeExit>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeFloorDiv>))
+        return std::any_cast<std::shared_ptr<NativeFloorDiv>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<ListType>))
+    {
+        std::string result = "[";
+        std::shared_ptr<ListType> list = std::any_cast<std::shared_ptr<ListType>>(obj);
+        std::vector<std::any> elements = list->elements;
+
+        for (auto i = elements.begin(); i != elements.end(); i++)
+        {
+            auto next = i + 1;
+
+            result.append(stringify(*i));
+
+            if (next != elements.end())
+                result.append(", ");
+        }
+
+        result.append("]");
+        return result;
+    }
+
+    return "Error in stringify: Invalid object type";
+}
+```
+
+This will take in an AST for an expression and evaluates it. If it works, `evaluate()` will return an `std::any`. Then we can convert this object into strings to display those values.
+
+The `stringify()` function basically let's us turn an `std::any` object into strings for printing. For primitive types like strings, double, boolean, they're pretty simple, but for more complex objects, we need to do more. For each of the built-in functions and objects that the language supports, we need to implement a `to_string()` function for them. For lists specifically, we need to format them a bit differently, we can access each of the elements that the `ListType` object holds and recursively call the `stringify()` function on each elements, then storing it in a result string.

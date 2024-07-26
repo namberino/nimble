@@ -53,3 +53,5 @@ class RuntimeError : public std::runtime_error
 ```
 
 The `RuntimeError` class will track the token where the runtime error occurs by holding a reference to that token. This helps the user know where the error occured.
+
+We can throw this error deep inside the evaluator to break out. Then we can catch those error and properly handle them.
