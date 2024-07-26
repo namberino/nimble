@@ -59,6 +59,7 @@ Before compilation, you'll need to have these tools installed first:
 | [doc](doc/) | Documentation |
 | [examples](examples/) | Example programs |
 | [include](include/) | Header files |
+| [lib](lib/) | Core library |
 | [src](src/) | Source code |
 | [tests](tests/) | Test cases |
 | [tools](tools/) | Useful tools and scripts |
