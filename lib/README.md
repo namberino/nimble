@@ -1,6 +1,6 @@
-# NIMBLE's standard library
+# NIMBLE's core library
 
-These are the standard libraries of NIMBLE. Import then using this command:
+These are the core libraries of NIMBLE. Import then using this command:
 
 ```nimble
 import "core:<filename>";
