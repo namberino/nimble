@@ -567,10 +567,21 @@ std::string Interpreter::stringify(const std::any& obj)
 
     if (obj.type() == typeid(double))
     {
-        std::string text = std::to_string(std::any_cast<double>(obj));
+        std::string text;
 
-        if (text[text.length() - 2] == '.' && text[text.length() - 1] == '0')
-            text = text.substr(0, text.length() - 2);
+        if (std::any_cast<double>(obj) == static_cast<int>(std::any_cast<double>(obj)))
+        {
+            // is an integer
+            text = std::to_string(static_cast<int>(std::any_cast<double>(obj)));
+        }
+        else
+        {
+            // is a double
+            text = std::to_string(std::any_cast<double>(obj));
+
+            if (text[text.length() - 2] == '.' && text[text.length() - 1] == '0')
+                text = text.substr(0, text.length() - 2);
+        }
 
         return text;
     }
