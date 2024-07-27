@@ -53,6 +53,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         void check_num_operands(const Token& op, const std::any& left, const std::any& right);
         bool is_truthy(const std::any& obj);
         bool is_equal(const std::any& obj1, const std::any& obj2);
+        std::string int_or_double(const std::any& obj);
         std::string stringify(const std::any& obj);
 
     public:

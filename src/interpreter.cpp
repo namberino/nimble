@@ -230,10 +230,10 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
                 return std::any_cast<std::string>(left) + std::any_cast<std::string>(right);
 
             if (left.type() == typeid(std::string) && right.type() == typeid(double))
-                return std::any_cast<std::string>(left) + std::to_string(std::any_cast<double>(right));
+                return std::any_cast<std::string>(left) + int_or_double(right);
 
             if (left.type() == typeid(double) && right.type() == typeid(std::string))
-                return std::to_string(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
+                return int_or_double(left) + std::any_cast<std::string>(right);
 
             throw RuntimeError{expr->op, "Operands must be 2 numbers, 2 strings, or 1 number and 1 string"};
         case MINUS:
@@ -562,31 +562,34 @@ bool Interpreter::is_equal(const std::any& obj1, const std::any& obj2)
     return false;
 }
 
+std::string Interpreter::int_or_double(const std::any& obj)
+{
+    std::string text;
+
+    if (std::any_cast<double>(obj) == static_cast<int>(std::any_cast<double>(obj)))
+    {
+        // is an integer
+        text = std::to_string(static_cast<int>(std::any_cast<double>(obj)));
+    }
+    else
+    {
+        // is a double
+        text = std::to_string(std::any_cast<double>(obj));
+
+        if (text[text.length() - 2] == '.' && text[text.length() - 1] == '0')
+            text = text.substr(0, text.length() - 2);
+    }
+
+    return text;
+}
+
 std::string Interpreter::stringify(const std::any& obj)
 {
     if (obj.type() == typeid(nullptr))
         return "nil";
 
     if (obj.type() == typeid(double))
-    {
-        std::string text;
-
-        if (std::any_cast<double>(obj) == static_cast<int>(std::any_cast<double>(obj)))
-        {
-            // is an integer
-            text = std::to_string(static_cast<int>(std::any_cast<double>(obj)));
-        }
-        else
-        {
-            // is a double
-            text = std::to_string(std::any_cast<double>(obj));
-
-            if (text[text.length() - 2] == '.' && text[text.length() - 1] == '0')
-                text = text.substr(0, text.length() - 2);
-        }
-
-        return text;
-    }
+        return int_or_double(obj);
 
     if (obj.type() == typeid(std::string))
         return std::any_cast<std::string>(obj);
