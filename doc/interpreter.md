@@ -450,3 +450,41 @@ std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 This is similar to variable declaration. It evaluates the right side to get the value and call the `assign()` function to redefine the variable in the environment data structure.
 
 Assignment is not allowed to create a new variable. It will throw a runtime error if a key already exists in the environment.
+
+## Interpreting blocks
+
+We'll need to implement the visitor function for the block statement:
+
+```cpp
+std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
+{
+    execute_block(stmt->statements, std::make_shared<Environment>(environment));
+    return {};
+}
+
+void Interpreter::execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment)
+{
+    std::shared_ptr<Environment> previous_env = this->environment;
+
+    try
+    {
+        this->environment = environment;
+
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
+    }
+    catch (...)
+    {
+        this->environment = previous_env;
+        throw;
+    }
+
+    this->environment = previous_env;
+}
+```
+
+For the visitor for the block statement, we need to create a new environment for the block's scope and pass it off to `execute_block()`. We'll try to execute the list of statements in the given environment.
+
+We know that the environment field in the interpreter points to the global environment, now this field will point to the "current" environment (inner environment).
+
+We'll update the environment field in the interpreter, visit the statements, and then restore the previous values by assigning `previous_env` to the environment field.

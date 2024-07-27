@@ -379,3 +379,35 @@ We parse the left side first, then if we find an `=`, we parse the right side to
 The trick is right before we create the assignment expression node, we look at the left side expression and evaluate what kind of assignment target it is. We also convert the r-value expression node into an l-value expression ([reference](https://www.oreilly.com/library/view/c-in-a/059600298X/ch03s01.html) for information about r-value and l-value).
 
 We can parse the left side like an expression then produce an AST that turns it into an assigment target. If the left side expression isn't a valid assignment target, we throw a syntax error.
+
+## Parsing blocks
+
+We'll need to evaluate block statements (which is just a series of statements), we can define the block statements like this:
+
+```cpp
+struct BlockStmt : Stmt, public std::enable_shared_from_this<BlockStmt>
+{
+    const std::vector<std::shared_ptr<Stmt>> statements;
+
+    BlockStmt(std::vector<std::shared_ptr<Stmt>> statements);
+    std::any accept(StmtVisitor& visitor) override;
+};
+```
+
+We can evaluate it using this block method in the parser class:
+
+```cpp
+std::vector<std::shared_ptr<Stmt>> Parser::block()
+{
+    std::vector<std::shared_ptr<Stmt>> statements;
+
+    while (!check(RIGHT_BRACE) && !is_at_end())
+        statements.push_back(declaration());
+
+    consume(RIGHT_BRACE, "Expected '}' after block");
+
+    return statements;
+}
+```
+
+Note: We add the `is_at_end()` check so that even if the user forgets the `}`, the program won't get stuck.
