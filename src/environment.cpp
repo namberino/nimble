@@ -16,9 +16,11 @@ std::any Environment::get(const Token& name)
 {
     auto element = values.find(name.lexeme);
 
+    // key found
     if (element != values.end())
         return element->second;
 
+    // enclosing environment
     if (enclosing != nullptr)
         return enclosing->get(name);
 
@@ -49,15 +51,15 @@ void Environment::define(const std::string& name, std::any value)
     values[name] = std::move(value);
 }
 
- std::shared_ptr<Environment> Environment::ancestor(int distance)
- {
+std::shared_ptr<Environment> Environment::ancestor(int distance)
+{
     std::shared_ptr<Environment> environment = shared_from_this();
 
     for (int i = 0; i < distance; i++)
         environment = environment->enclosing;
 
     return environment;
- }
+}
 
 std::any Environment::get_at(int distance, const std::string& name)
 {
