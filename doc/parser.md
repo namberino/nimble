@@ -219,3 +219,90 @@ The parser's state (which rule it is currently parsing) is not stored explicitly
 When we want to synchronize, we throw a parse error. Higher up in the function for the grammar rule we're synchronizing to is where we catch it. We synchronize on statement boundaries, also where we catch the exception. After the exception is caught, the parser is in the correct state. Then we synchronize the tokens. The tokens need to be discarded at the beginning of the next statement. So if the next token is a `for`, `if`, `return`, `mut`, etc, then that means we're about to start a statement. And when we finish a statement is when we usually have a semicolon.
 
 If we reaches a parse error, we synchronize. When this works, that means we have discarded tokens that would've caused cascaded tokens. Then right after that, we start parsing the rest of the file starting at the next statement.
+
+## Parsing statements
+
+```cpp
+std::vector<std::shared_ptr<Stmt>> Parser::parse()
+{
+    std::vector<std::shared_ptr<Stmt>> statements;
+
+    while (!is_at_end())
+    {
+        // statements.push_back(statement());
+        statements.push_back(declaration());
+    }
+
+    return statements;
+}
+```
+
+The parser will return a array of statements which will be interpreted by the interpreter.
+
+```cpp
+std::shared_ptr<Stmt> Parser::declaration()
+{
+    try
+    {
+        if (match(MUT))
+            return mut_declaration();
+
+        if (match(FUN))
+            return function("function");
+
+        if (match(CLASS))
+            return class_declaration();
+
+        return statement();
+    }
+    catch (ParseError error)
+    {
+        // synchronize parser state
+        synchronize();
+        return nullptr; // panic and unwind to the top and stop parsing
+    }
+}
+
+std::shared_ptr<Stmt> Parser::statement()
+{
+    if (match(PRINT))
+        return print_statement();
+
+    if (match(IF))
+        return if_statement();
+
+    if (match(FOR))
+        return for_statement();
+
+    if (match(WHILE))
+        return while_statement();
+    
+    if (match(RETURN))
+        return return_statement();
+
+    if (match(BREAK))
+        return break_statement();
+
+    if (match(IMPORT))
+        return import_statement();
+
+    if (match(LEFT_BRACE))
+        return std::make_shared<BlockStmt>(block());
+    
+    return expression_statement();
+}
+
+std::shared_ptr<Stmt> Parser::expression_statement()
+{
+    std::shared_ptr<Expr> expr = expression();
+
+    if (allow_expression && is_at_end())
+        found_expression = true;
+    else
+        consume(SEMICOLON, "Expected ';' after expression");
+
+    return std::make_shared<ExpressionStmt>(expr);
+}
+```
+
+There are 3 main declarations in this programming language: `mut` for variables, `fun` for functions, and `class` for classes. Anything other than those will be evaluated through the `statement()` function, and if all of that didn't work, that means the program has a syntax error, so we'll throw a parse error which will be caught in this `declaration()` function, once caught, we'll synchronize and unwind.
