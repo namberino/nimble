@@ -43,11 +43,11 @@ jobs:
 
       - name: Build the project on Linux/macOS
         if: matrix.os != 'windows-latest'
-        run: make compile
+        run: make release
 
       - name: Build the project on Windows
         if: matrix.os == 'windows-latest'
-        run: make compile
+        run: make release
         shell: bash
 
       - name: Rename binary on Linux/macOS
