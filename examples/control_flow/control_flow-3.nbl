@@ -1,4 +1,4 @@
-var test = 17;
+mut test = 17;
 
 if (test == 18)
 {

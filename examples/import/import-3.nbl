@@ -1,6 +1,6 @@
 import "core:collections";
 
-var my_map = Map();
+mut my_map = Map();
 
 my_map.insert("Hello", 5);
 my_map.insert("There", 3);

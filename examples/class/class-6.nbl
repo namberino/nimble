@@ -11,5 +11,5 @@ class Stuff
     }
 }
 
-var callback = Stuff().get_callback();
+mut callback = Stuff().get_callback();
 callback();

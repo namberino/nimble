@@ -1,4 +1,4 @@
-var a = "global";
+mut a = "global";
 {
     fun show_a()
     {
@@ -6,6 +6,6 @@ var a = "global";
     }
 
     show_a(); // global
-    var a = "block";
+    mut a = "block";
     show_a(); // global
 }

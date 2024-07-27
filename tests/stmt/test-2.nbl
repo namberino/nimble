@@ -1,6 +1,6 @@
-var a = "hello";
+mut a = "hello";
 print(a); // hello
-var a = "world";
+mut a = "world";
 print(a); // world
-var c;
+mut c;
 print(c); // "nil".

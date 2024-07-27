@@ -46,7 +46,7 @@ class Parser
         std::shared_ptr<Stmt> expression_statement();
         std::vector<std::shared_ptr<Stmt>> block();
         std::shared_ptr<Stmt> declaration();
-        std::shared_ptr<Stmt> var_declaration();
+        std::shared_ptr<Stmt> mut_declaration();
         std::shared_ptr<Stmt> class_declaration();
         std::shared_ptr<FunctionStmt> function(std::string kind);
         std::shared_ptr<FunctionExpr> function_body(std::string kind);

@@ -1,8 +1,8 @@
-var li = [];
+mut li = [];
 print(li);
 print(li[0]);
 
-var li = [1, 2, 3];
+mut li = [1, 2, 3];
 print(li);
 print(li[0]);
 print(li[1]);

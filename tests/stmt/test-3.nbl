@@ -1,11 +1,11 @@
-var a = "global a";
-var b = "global b";
-var c = "global c";
+mut a = "global a";
+mut b = "global b";
+mut c = "global c";
 {
-  var a = "outer a";
-  var b = "outer b";
+  mut a = "outer a";
+  mut b = "outer b";
   {
-    var a = "inner a";
+    mut a = "inner a";
     print(a);
     print(b);
     print(c);

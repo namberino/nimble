@@ -1,11 +1,11 @@
-var a = 0;
-var b = 1;
-var t = a + b;
+mut a = 0;
+mut b = 1;
+mut t = a + b;
 
 print("The Fibonacci sequence:");
 
 print(t);
-for (var i = 3; i <= 20; i = i + 1)
+for (mut i = 3; i <= 20; i = i + 1)
 {
     print(t);
 

@@ -1,4 +1,4 @@
-var n = 10;
+mut n = 10;
 
 while (true)
 {

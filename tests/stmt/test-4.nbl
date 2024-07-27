@@ -1,7 +1,7 @@
-var a = 3;
-var b = 4;
+mut a = 3;
+mut b = 4;
 print(a + b);
 
 print("Testing variable printing");
-var d = 0;
+mut d = 0;
 print(d = 5);

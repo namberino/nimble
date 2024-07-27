@@ -109,8 +109,8 @@ std::shared_ptr<Stmt> Parser::for_statement()
 
         if (match(SEMICOLON)) // initializer omitted
             initializer = nullptr;
-        else if (match(VAR)) // variable declaration
-            initializer = var_declaration();
+        else if (match(MUT)) // variable declaration
+            initializer = mut_declaration();
         else // expression
             initializer = expression_statement();
 
@@ -229,8 +229,8 @@ std::shared_ptr<Stmt> Parser::declaration()
 {
     try
     {
-        if (match(VAR))
-            return var_declaration();
+        if (match(MUT))
+            return mut_declaration();
 
         if (match(FUN))
             return function("function");
@@ -248,7 +248,7 @@ std::shared_ptr<Stmt> Parser::declaration()
     }
 }
 
-std::shared_ptr<Stmt> Parser::var_declaration()
+std::shared_ptr<Stmt> Parser::mut_declaration()
 {
     Token name = consume(IDENTIFIER, "Expected variable name");
 
@@ -257,7 +257,7 @@ std::shared_ptr<Stmt> Parser::var_declaration()
         initializer = expression();
 
     consume(SEMICOLON, "Expected ';' after variable declaration");
-    return std::make_shared<VarStmt>(std::move(name), initializer);
+    return std::make_shared<MutStmt>(std::move(name), initializer);
 }
 
 std::shared_ptr<FunctionStmt> Parser::function(std::string kind)
@@ -293,11 +293,11 @@ std::shared_ptr<Stmt> Parser::class_declaration()
 {
     Token name = consume(IDENTIFIER, "Expected class name");
 
-    std::shared_ptr<VarExpr> superclass = nullptr;
+    std::shared_ptr<MutExpr> superclass = nullptr;
     if (match(COLON))
     {
         consume(IDENTIFIER, "Expected superclass name");
-        superclass = std::make_shared<VarExpr>(previous());
+        superclass = std::make_shared<MutExpr>(previous());
     }
 
     consume(LEFT_BRACE, "Expected '{' before class body");
@@ -320,7 +320,7 @@ std::shared_ptr<Expr> Parser::assignment()
         Token equals = previous();
         std::shared_ptr<Expr> value = assignment();
 
-        if (VarExpr* e = dynamic_cast<VarExpr*>(expr.get()))
+        if (MutExpr* e = dynamic_cast<MutExpr*>(expr.get()))
         {
             Token name = e->name;
             return std::make_shared<AssignExpr>(std::move(name), value);
@@ -566,7 +566,7 @@ std::shared_ptr<Expr> Parser::primary()
         return std::make_shared<LiteralExpr>(previous().literal);
 
     if (match(IDENTIFIER))
-        return std::make_shared<VarExpr>(previous());
+        return std::make_shared<MutExpr>(previous());
 
     if (match(FUN))
         return function_body("function");
@@ -681,7 +681,7 @@ void Parser::synchronize()
             // synchronization points
             case CLASS:
             case FUN:
-            case VAR:
+            case MUT:
             case FOR:
             case IF:
             case WHILE:

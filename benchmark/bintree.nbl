@@ -7,7 +7,7 @@ class Tree
 
         if (depth > 0)
         {
-            var item2 = item + item;
+            mut item2 = item + item;
             depth = depth - 1;
             this.left = Tree(item2 - 1, depth);
             this.right = Tree(item2, depth);
@@ -30,20 +30,20 @@ class Tree
     }
 }
 
-var min_depth = 4;
-var max_depth = 12;
-var stretch_depth = max_depth + 1;
+mut min_depth = 4;
+mut max_depth = 12;
+mut stretch_depth = max_depth + 1;
 
-var start = clock();
+mut start = clock();
 
 print("Stretch tree depth: " + stretch_depth);
 print("Check: " + Tree(0, stretch_depth).check());
 
-var long_lived_tree = Tree(0, max_depth);
+mut long_lived_tree = Tree(0, max_depth);
 
 // iterations = 2 ** max_depth
-var iterations = 1;
-var d = 0;
+mut iterations = 1;
+mut d = 0;
 
 while (d < max_depth)
 {
@@ -51,12 +51,12 @@ while (d < max_depth)
     d = d + 1;
 }
 
-var depth = min_depth;
+mut depth = min_depth;
 
 while (depth < stretch_depth)
 {
-    var check = 0;
-    var i = 1;
+    mut check = 0;
+    mut i = 1;
 
     while (i <= iterations)
     {

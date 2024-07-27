@@ -1,6 +1,6 @@
 // no initializers
-var a;
-var b;
+mut a;
+mut b;
 
 a = "assigned";
 

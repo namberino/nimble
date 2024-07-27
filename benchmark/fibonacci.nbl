@@ -6,6 +6,6 @@ fun fib(n)
     return fib(n - 2) + fib(n - 1);
 }
 
-var start = clock();
-var t = fib(30);
+mut start = clock();
+mut t = fib(30);
 print("Elapsed: " + (clock() - start));

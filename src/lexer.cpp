@@ -249,7 +249,7 @@ const std::map<std::string, TokenType> Lexer::keywords = {
     {"super", TokenType::SUPER},
     {"this", TokenType::THIS},
     {"true", TokenType::TRUE},
-    {"var", TokenType::VAR},
+    {"mut", TokenType::MUT},
     {"while", TokenType::WHILE},
     {"import", TokenType::IMPORT}
 };

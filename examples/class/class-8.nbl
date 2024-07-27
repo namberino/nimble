@@ -6,6 +6,6 @@ class Initial
     }
 }
 
-var initial = Initial();
+mut initial = Initial();
 
 print(initial.init());

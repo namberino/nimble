@@ -1,4 +1,4 @@
-var test = "test";
+mut test = "test";
 {
-    var test = test; // error
+    mut test = test; // error
 }

@@ -5,7 +5,7 @@ The lexer will take in the code (series of characters) and groups it into a seri
 ## Token
 
 ```nimble
-[var] [hello] [=] ["Hello"] [;]
+[mut] [hello] [=] ["Hello"] [;]
 ```
 
 Each blob of characters is called a *lexeme*. They are small, raw substrings of the code. However, when we group character sequences into lexemes, we may also find other useful information that we would want to store. So we group the lexeme and those information into a *token*.
@@ -37,7 +37,7 @@ enum TokenType
 
     // keywords
     AND, BREAK, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
-    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+    PRINT, RETURN, SUPER, THIS, TRUE, MUT, WHILE,
 
     // end of file
     TOKEN_EOF

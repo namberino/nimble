@@ -1,6 +1,6 @@
-var name = input("Enter your name: ");
-var age = input("Enter your age: ");
+mut name = input("Enter your name: ");
+mut age = input("Enter your age: ");
 
-var birth_year = 2024 - age;
+mut birth_year = 2024 - age;
 
 print("Name: " + name + " | Birth year: " + birth_year);

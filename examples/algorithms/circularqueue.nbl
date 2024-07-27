@@ -40,19 +40,19 @@ class CircularQueue
         }
         else if (this.tail >= this.head) // normal order
         {
-            for (var i = this.head; i < this.tail + 1; i = i + 1)
+            for (mut i = this.head; i < this.tail + 1; i = i + 1)
             {
                 print(this.queue[i]);
             }
         }
         else // circular order
         {
-            for (var i = this.head; i < this.length; i = i + 1)
+            for (mut i = this.head; i < this.length; i = i + 1)
             {
                 print(this.queue[i]);
             }
 
-            for (var i = 0; i < this.tail + 1; i = i + 1)
+            for (mut i = 0; i < this.tail + 1; i = i + 1)
             {
                 print(this.queue[i]);
             }
@@ -90,7 +90,7 @@ class CircularQueue
     }
 }
 
-var cqueue = CircularQueue(6);
+mut cqueue = CircularQueue(6);
 cqueue.enqueue("A");
 cqueue.enqueue("B");
 cqueue.enqueue("C");
@@ -98,8 +98,8 @@ cqueue.enqueue("C");
 print("Initial queue:");
 cqueue.print_cqueue();
 
-var front = cqueue.front();
-var rear = cqueue.rear();
+mut front = cqueue.front();
+mut rear = cqueue.rear();
 print("Front: " + front + ", Rear: " + rear);
 print("");
 

@@ -79,18 +79,18 @@ primary := NUMBER | STRING | IDENTIFIER | "true" | "false" | "nil" | "this" | "(
 Statement grammar rule:
 ```
 program := declaration* EOF
-declaration := var_declaration | function_declaration | class_declaration | statement
+declaration := mut_declaration | function_declaration | class_declaration | statement
 statement := expression_statement | print_statement | if_statement | for_statement | while_statement | break_statement | return_statement | import_statement | block
 expr_statement := expression ";"
 print_statement := "print" expression ";"
-var_declaration := "var" IDENTIFIER ( "=" expression )? ";"
+mut_declaration := "mut" IDENTIFIER ( "=" expression )? ";"
 function_declaration := "fun" function
 class_declaration := "class" IDENTIFIER ( ":" IDENTIFIER )? "{" function* "}"
 function := IDENTIFIER "(" parameters? ")" block
 parameters := IDENTIFIER ( "," IDENTIFIER )*
 block := "{" declaration* "}"
 if_statement := "if" "(" expression ")" statement ( "else" statement )?
-for_statement := "for" "(" ( var_declaration | expression_statement | ";" ) expression? ";" expression? ")" statement
+for_statement := "for" "(" ( mut_declaration | expression_statement | ";" ) expression? ";" expression? ")" statement
 while_statement := "while" "(" expression ")" statement
 break_statement := "break" ";"
 return_statement := "return" expression? ";"

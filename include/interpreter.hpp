@@ -46,7 +46,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::shared_ptr<Environment> environment = globals;
 
     private:
-        std::any lookup_var(const Token& name, std::shared_ptr<Expr> expr);
+        std::any lookup_mut(const Token& name, std::shared_ptr<Expr> expr);
         std::any evaluate(std::shared_ptr<Expr> expr);
         void execute(std::shared_ptr<Stmt> stmt);
         void check_num_operand(const Token& op, const std::any& operand);
@@ -67,7 +67,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitGroupingExpr(std::shared_ptr<GroupingExpr> expr) override;
         std::any visitLiteralExpr(std::shared_ptr<LiteralExpr> expr) override;
         std::any visitUnaryExpr(std::shared_ptr<UnaryExpr> expr) override;
-        std::any visitVarExpr(std::shared_ptr<VarExpr> expr) override;
+        std::any visitMutExpr(std::shared_ptr<MutExpr> expr) override;
         std::any visitLogicalExpr(std::shared_ptr<LogicalExpr> expr) override;
         std::any visitCallExpr(std::shared_ptr<CallExpr> expr) override;
         std::any visitFunctionExpr(std::shared_ptr<FunctionExpr> expr) override;
@@ -81,7 +81,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor
         std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) override;
         std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) override;
         std::any visitPrintStmt(std::shared_ptr<PrintStmt> stmt) override;
-        std::any visitVarStmt(std::shared_ptr<VarStmt> stmt) override;
+        std::any visitMutStmt(std::shared_ptr<MutStmt> stmt) override;
         std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) override;
         std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) override;
         std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) override;

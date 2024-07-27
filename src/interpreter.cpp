@@ -65,7 +65,7 @@ std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
     return {};
 }
 
-std::any Interpreter::visitVarStmt(std::shared_ptr<VarStmt> stmt)
+std::any Interpreter::visitMutStmt(std::shared_ptr<MutStmt> stmt)
 {
     std::any value = nullptr;
 
@@ -288,7 +288,7 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
     return {}; // unreachable, here to make the compiler happy
 }
 
-std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
+std::any Interpreter::visitMutExpr(std::shared_ptr<MutExpr> expr)
 {
     // std::any value = environment->get(expr->name);
 
@@ -297,7 +297,7 @@ std::any Interpreter::visitVarExpr(std::shared_ptr<VarExpr> expr)
 
     // return value;
 
-    return lookup_var(expr->name, expr);
+    return lookup_mut(expr->name, expr);
 }
 
 std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
@@ -400,7 +400,7 @@ std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
 
 std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
 {
-    return lookup_var(expr->keyword, expr);
+    return lookup_mut(expr->keyword, expr);
 }
 
 std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
@@ -469,7 +469,7 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
 }
 
 
-std::any Interpreter::lookup_var(const Token& name, std::shared_ptr<Expr> expr)
+std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
 {
     auto element = locals.find(expr);
 

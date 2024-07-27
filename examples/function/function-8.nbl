@@ -1,8 +1,8 @@
 fun sizeof(list)
 {
-    var size = 0;
+    mut size = 0;
 
-    for (var i = 0; list[i]; i = i + 1)
+    for (mut i = 0; list[i]; i = i + 1)
     {
         size = size + 1;
     }
@@ -17,9 +17,9 @@ fun append(list, element)
 
 fun prepend(list, element)
 {
-    var result = [element];
+    mut result = [element];
 
-    for (var i = 0; i < sizeof(list); i = i + 1)
+    for (mut i = 0; i < sizeof(list); i = i + 1)
     {
         result[i + 1] = list[i];
     }
@@ -29,7 +29,7 @@ fun prepend(list, element)
 
 fun foldl(oper, initial, list)
 {
-    for (var i = 0; list[i]; i = i + 1)
+    for (mut i = 0; list[i]; i = i + 1)
     {
         initial = oper(initial, list[i]);
     }
@@ -39,9 +39,9 @@ fun foldl(oper, initial, list)
 
 fun foldr(oper, initial, list)
 {
-    var last = sizeof(list) - 1;
+    mut last = sizeof(list) - 1;
 
-    for (var i = last; i >= 0; i = i - 1)
+    for (mut i = last; i >= 0; i = i - 1)
     {
         initial = oper(list[i], initial);
     }
@@ -76,8 +76,8 @@ fun filter(pred, list)
     return foldr(helper, [], list);
 }
 
-var result = map(fun (num) { return num * num; }, [1, 2, 3, 4, 5]);
+mut result = map(fun (num) { return num * num; }, [1, 2, 3, 4, 5]);
 
-var greater = filter(fun (num) { return num > 2; }, [1, 2, 3, 4, 5]);
+mut greater = filter(fun (num) { return num > 2; }, [1, 2, 3, 4, 5]);
 
 

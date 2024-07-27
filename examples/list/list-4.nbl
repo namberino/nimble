@@ -4,7 +4,7 @@ fun test(li)
     return li[0];
 }
 
-var l = test([1, 2, 3]);
+mut l = test([1, 2, 3]);
 print(l);
 
 class Test
@@ -25,10 +25,10 @@ class Test
     }
 }
 
-var t = Test([1, 2, 3]);
+mut t = Test([1, 2, 3]);
 
 t.print_list();
 
-var li = t.return_list();
+mut li = t.return_list();
 print(li);
 

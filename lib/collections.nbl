@@ -14,7 +14,7 @@ class Map
 
     get_index(key)
     {
-        for (var i = 0; i < this.size; i = i + 1)
+        for (mut i = 0; i < this.size; i = i + 1)
         {
             if (this.keys[i] == key)
             {
@@ -26,7 +26,7 @@ class Map
 
     insert(key, value)
     {
-        var index = this.get_index(key);
+        mut index = this.get_index(key);
 
         if (index == -1) // key not found
         {
@@ -42,7 +42,7 @@ class Map
 
     get(key)
     {
-        var index = this.get_index(key);
+        mut index = this.get_index(key);
 
         if (index == -1)
         {
@@ -56,7 +56,7 @@ class Map
 
     print_map()
     {
-        for (var i = 0; i < this.size; i = i + 1)
+        for (mut i = 0; i < this.size; i = i + 1)
             print(this.keys[i] + " : " + this.values[i]);
     }
 }

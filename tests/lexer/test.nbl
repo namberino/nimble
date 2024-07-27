@@ -11,4 +11,4 @@
 
 txt "txt" 1
 
-and class else false fun for if nil or print return super this true var while
+and class else false fun for if nil or print return super this true mut while

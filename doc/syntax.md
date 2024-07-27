@@ -75,7 +75,7 @@ true or false; // true
 Basic mathematical precedence is here, you can also use parentheses to group stuff
 
 ```nimble
-var avg = (n1 + n2 + n3) / 3;
+mut avg = (n1 + n2 + n3) / 3;
 ```
 
 ## Statement
@@ -111,17 +111,17 @@ We can use a *block* to pack a series of statements
 
 ## Variables
 
-Declare variables with the `var` keyword. By default, variables evaulate to `nil`.
+Declare variables with the `mut` keyword. By default, variables evaulate to `nil`.
 
 ```nimble
-var v1 = "variable";
-var v2; // nil
+mut v1 = "variable";
+mut v2; // nil
 ```
 
 Variables also support reassignation
 
 ```nimble
-var v1 = "variable";
+mut v1 = "variable";
 print(v1);
 v1 = "reassigned";
 print(v1);
@@ -149,12 +149,12 @@ else
 Use `for` and `while` loops for iteration
 
 ```nimble
-for (var i = 0; i < 10; i = i + 1)
+for (mut i = 0; i < 10; i = i + 1)
 {
     print(i);
 }
 
-var i = 0;
+mut i = 0;
 while (i < 10)
 {
     print(i);
@@ -167,7 +167,7 @@ while (i < 10)
 There's support for list expressions
 
 ```nimble
-var li = [1, 2, 3];
+mut li = [1, 2, 3];
 print(li); // 1, 2, 3
 print(li[0]); // 1
 
@@ -218,17 +218,19 @@ fun func1()
 ```
 
 ```nimble
-fun return_func() {
-  var outside = "outside";
+fun return_func()
+{
+    mut outside = "outside";
 
-  fun inner() {
-    print(outside);
-  }
+    fun inner()
+    {
+        print(outside);
+    }
 
-  return inner;
+    return inner;
 }
 
-var f = return_func();
+mut f = return_func();
 f();
 ```
 
@@ -256,14 +258,14 @@ class GordonRamsay
 When class declaration is executed, the language creates a class object and stores that in a variable named after the class.
 
 ```nimble
-var variable = GordonRamsay; // store it in variables
+mut variable = GordonRamsay; // store it in variables
 func(GordonRamsay); // pass it to function
 ```
 
 The class itself is a factory function for instances. Calling a class will produce a new instance of itself.
 
 ```nimble
-var chef = GordonRamsay();
+mut chef = GordonRamsay();
 print(chef); // GordonRamsay instance
 ```
 
@@ -302,7 +304,7 @@ class GordonRamsay
     // ...
 }
 
-var chef = GordonRamsay("Oh dear", "You donkey");
+mut chef = GordonRamsay("Oh dear", "You donkey");
 chef.yell("you");
 ```
 
@@ -317,7 +319,7 @@ class Brunch : Breakfast
     }
 }
 
-var t = Brunch("ham", "muffin");
+mut t = Brunch("ham", "muffin");
 t.serve("me");
 ```
 

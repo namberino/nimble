@@ -4,319 +4,319 @@
 //------------------------------------//
 
 // Null character
-var NULL = 0;
+mut NULL = 0;
 
 // Backspace
-var BACKSPACE = 8;
+mut BACKSPACE = 8;
 
 // horizontal tab
-var HORI_TAB = 9;
+mut HORI_TAB = 9;
 
 // line feed
-var LINE_FEED = 10;
+mut LINE_FEED = 10;
 
 // vertical tab
-var VERT_TAB = 11;
+mut VERT_TAB = 11;
 
 // form feed
-var FORM_FEED = 12;
+mut FORM_FEED = 12;
 
 // carriage return
-var CAR_RET = 13;
+mut CAR_RET = 13;
 
 // cancel
-var CANCEL = 24;
+mut CANCEL = 24;
 
 // substitute
-var SUBSTITUTE = 26;
+mut SUBSTITUTE = 26;
 
 // escape
-var ESCAPE = 27;
+mut ESCAPE = 27;
 
 // delete
-var DEL = 31;
+mut DEL = 31;
 
 // space
-var SPACE = 32;
+mut SPACE = 32;
 
 // '0'
-var ZERO = 48;
+mut ZERO = 48;
 
 // '1'
-var ONE = 49;
+mut ONE = 49;
 
 // '2'
-var TWO = 50;
+mut TWO = 50;
 
 // '3'
-var THREE = 51;
+mut THREE = 51;
 
 // '4'
-var FOUR = 52;
+mut FOUR = 52;
 
 // '5'
-var FIVE = 53;
+mut FIVE = 53;
 
 // '6'
-var SIX = 54;
+mut SIX = 54;
 
 // '7'
-var SEVEN = 55;
+mut SEVEN = 55;
 
 // '8'
-var EIGHT = 56;
+mut EIGHT = 56;
 
 // '9'
-var NINE = 57;
+mut NINE = 57;
 
 // 'A'
-var ASCII_A = 65;
+mut ASCII_A = 65;
 
 // 'B'
-var ASCII_B = 66;
+mut ASCII_B = 66;
 
 // 'C'
-var ASCII_C = 67;
+mut ASCII_C = 67;
 
 // 'D'
-var ASCII_D = 68;
+mut ASCII_D = 68;
 
 // 'E'
-var ASCII_E = 69;
+mut ASCII_E = 69;
 
 // 'F'
-var ASCII_F = 70;
+mut ASCII_F = 70;
 
 // 'G'
-var ASCII_G = 71;
+mut ASCII_G = 71;
 
 // 'H'
-var ASCII_H = 72;
+mut ASCII_H = 72;
 
 // 'I'
-var ASCII_I = 73;
+mut ASCII_I = 73;
 
 // 'J'
-var ASCII_J = 74;
+mut ASCII_J = 74;
 
 // 'K'
-var ASCII_K = 75;
+mut ASCII_K = 75;
 
 // 'L'
-var ASCII_L = 76;
+mut ASCII_L = 76;
 
 // 'M'
-var ASCII_M = 77;
+mut ASCII_M = 77;
 
 // 'N'
-var ASCII_N = 78;
+mut ASCII_N = 78;
 
 // 'O'
-var ASCII_O = 79;
+mut ASCII_O = 79;
 
 // 'P'
-var ASCII_P = 80;
+mut ASCII_P = 80;
 
 // 'Q'
-var ASCII_Q = 81;
+mut ASCII_Q = 81;
 
 // 'R'
-var ASCII_R = 82;
+mut ASCII_R = 82;
 
 // 'S'
-var ASCII_S = 83;
+mut ASCII_S = 83;
 
 // 'T'
-var ASCII_T = 84;
+mut ASCII_T = 84;
 
 // 'U'
-var ASCII_U = 85;
+mut ASCII_U = 85;
 
 // 'V'
-var ASCII_V = 86;
+mut ASCII_V = 86;
 
 // 'W'
-var ASCII_W = 87;
+mut ASCII_W = 87;
 
 // 'X'
-var ASCII_X = 88;
+mut ASCII_X = 88;
 
 // 'Y'
-var ASCII_Y = 89;
+mut ASCII_Y = 89;
 
 // 'Z'
-var ASCII_Z = 90;
+mut ASCII_Z = 90;
 
 // 'a'
-var ASCII_a = 97;
+mut ASCII_a = 97;
 
 // 'b'
-var ASCII_b = 98;
+mut ASCII_b = 98;
 
 // 'c'
-var ASCII_c = 99;
+mut ASCII_c = 99;
 
 // 'd'
-var ASCII_d = 100;
+mut ASCII_d = 100;
 
 // 'e'
-var ASCII_e = 101;
+mut ASCII_e = 101;
 
 // 'f'
-var ASCII_f = 102;
+mut ASCII_f = 102;
 
 // 'g'
-var ASCII_g = 103;
+mut ASCII_g = 103;
 
 // 'h'
-var ASCII_h = 104;
+mut ASCII_h = 104;
 
 // 'i'
-var ASCII_i = 105;
+mut ASCII_i = 105;
 
 // 'j'
-var ASCII_j = 106;
+mut ASCII_j = 106;
 
 // 'k'
-var ASCII_k = 107;
+mut ASCII_k = 107;
 
 // 'l'
-var ASCII_l = 108;
+mut ASCII_l = 108;
 
 // 'm'
-var ASCII_m = 109;
+mut ASCII_m = 109;
 
 // 'n'
-var ASCII_n = 110;
+mut ASCII_n = 110;
 
 // 'o'
-var ASCII_o = 111;
+mut ASCII_o = 111;
 
 // 'p'
-var ASCII_p = 112;
+mut ASCII_p = 112;
 
 // 'q'
-var ASCII_q = 113;
+mut ASCII_q = 113;
 
 // 'r'
-var ASCII_r = 114;
+mut ASCII_r = 114;
 
 // 's'
-var ASCII_s = 115;
+mut ASCII_s = 115;
 
 // 't'
-var ASCII_t = 116;
+mut ASCII_t = 116;
 
 // 'u'
-var ASCII_u = 117;
+mut ASCII_u = 117;
 
 // 'v'
-var ASCII_v = 118;
+mut ASCII_v = 118;
 
 // 'w'
-var ASCII_w = 119;
+mut ASCII_w = 119;
 
 // 'x'
-var ASCII_x = 120;
+mut ASCII_x = 120;
 
 // 'y'
-var ASCII_y = 121;
+mut ASCII_y = 121;
 
 // 'z'
-var ASCII_z = 122;
+mut ASCII_z = 122;
 
 // '{'
-var LEFT_BRACE = 123;
+mut LEFT_BRACE = 123;
 
 // '|'
-var PIPE = 124;
+mut PIPE = 124;
 
 // '}'
-var RIGHT_BRACE = 125;
+mut RIGHT_BRACE = 125;
 
 // '~'
-var TILDE = 126;
+mut TILDE = 126;
 
 // '['
-var LEFT_BRACKET = 91;
+mut LEFT_BRACKET = 91;
 
 // ']'
-var RIGHT_BRACKET = 93;
+mut RIGHT_BRACKET = 93;
 
 // '\'
-var BACKSLASH = 92;
+mut BACKSLASH = 92;
 
 // '/'
-var SLASH = 47;
+mut SLASH = 47;
 
 // '^'
-var HAT = 94;
+mut HAT = 94;
 
 // '_'
-var UNDERSCORE = 95;
+mut UNDERSCORE = 95;
 
 // '`'
-var BACKQUOTE = 96;
+mut BACKQUOTE = 96;
 
 // ':'
-var COLON = 58;
+mut COLON = 58;
 
 // ';'
-var SEMICOLON = 59;
+mut SEMICOLON = 59;
 
 // '<'
-var LEFT_ARROW = 60;
+mut LEFT_ARROW = 60;
 
 // '='
-var EQUAL = 61;
+mut EQUAL = 61;
 
 // '>'
-var RIGHT_ARROW = 62;
+mut RIGHT_ARROW = 62;
 
 // '?'
-var QUESTION = 63;
+mut QUESTION = 63;
 
 // '@'
-var AT = 64;
+mut AT = 64;
 
 // '!'
-var EXCLAMATION = 33;
+mut EXCLAMATION = 33;
 
 // '"'
-var QUOTE = 34;
+mut QUOTE = 34;
 
 // '#'
-var HASH = 35;
+mut HASH = 35;
 
 // '$'
-var DOLLAR = 36;
+mut DOLLAR = 36;
 
 // '%'
-var PERCENT = 37;
+mut PERCENT = 37;
 
 // '&'
-var AMPERSAND = 38;
+mut AMPERSAND = 38;
 
 // "'"
-var APOSTROPHE = 39;
+mut APOSTROPHE = 39;
 
 // '('
-var LEFT_PAREN = 40;
+mut LEFT_PAREN = 40;
 
 // ')'
-var RIGHT_PAREN = 41;
+mut RIGHT_PAREN = 41;
 
 // '*'
-var ASTERISK = 42;
+mut ASTERISK = 42;
 
 // '+'
-var PLUS = 43;
+mut PLUS = 43;
 
 // ','
-var COMMA = 44;
+mut COMMA = 44;
 
 // '-'
-var DASH = 45;
+mut DASH = 45;
 
 // '.'
-var DOT = 46;
+mut DOT = 46;

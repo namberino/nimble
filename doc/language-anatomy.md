@@ -7,7 +7,7 @@ There's a couple of components of this programming language that plays a vital r
 A lexer takes in a stream of characters (from a file or from the command-line) and turn them into tokens. It should ignore stuff like whitespaces.
 
 ```
-[var] [avg] [=] [(] [n1] [+] [n2] [+] [n3] [)] [/] [3] [;]
+[mut] [avg] [=] [(] [n1] [+] [n2] [+] [n3] [)] [/] [3] [;]
 ```
 
 > Each word in the brackets represents a token.
@@ -19,7 +19,7 @@ This is where the grammar analysis happen. This allows us to build large express
 The parser takes in a list of tokens and constructs an abstract syntax tree (AST) which describe which expression and statement needs to be processed first. It mirrors the nested nature of grammar. It also has the job of reporting errors for when the program doesn't follow the grammar.
 
 ```
-         var statement  [avg]
+         mut statement  [avg]
                           |
       binary expression  [/]
                           |
@@ -29,7 +29,7 @@ The parser takes in a list of tokens and constructs an abstract syntax tree (AST
                        |
                  -------------
                  |     |     |
-                [n1]  [n2]  [n3] var expression
+                [n1]  [n2]  [n3] mut expression
 ```
 
 ## Static analysis

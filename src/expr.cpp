@@ -49,12 +49,12 @@ std::any UnaryExpr::accept(ExprVisitor& visitor)
     return visitor.visitUnaryExpr(shared_from_this());
 }
 
-VarExpr::VarExpr(Token name)
+MutExpr::MutExpr(Token name)
     : name(std::move(name)) {}
 
-std::any VarExpr::accept(ExprVisitor& visitor)
+std::any MutExpr::accept(ExprVisitor& visitor)
 {
-    return visitor.visitVarExpr(shared_from_this());
+    return visitor.visitMutExpr(shared_from_this());
 }
 
 

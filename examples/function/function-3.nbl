@@ -1,6 +1,6 @@
 fun make_counter()
 {
-    var i = 0;
+    mut i = 0;
 
     fun count()
     {
@@ -11,7 +11,7 @@ fun make_counter()
     return count;
 }
 
-var counter = make_counter();
+mut counter = make_counter();
 
 counter(); // 1
 counter(); // 2

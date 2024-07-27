@@ -11,7 +11,7 @@ class LinkedList {
     }
 
     print_list() {
-        var value = this.head;
+        mut value = this.head;
 
         while (value != nil) {
             print(value.data);
@@ -20,10 +20,10 @@ class LinkedList {
     }
 }
 
-var ll = LinkedList();
+mut ll = LinkedList();
 ll.head = Node(1);
-var second = Node(2);
-var third = Node(3);
+mut second = Node(2);
+mut third = Node(3);
 
 ll.head.next = second;
 second.next = third;

@@ -46,7 +46,7 @@ std::any Resolver::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
     return {};
 }
 
-std::any Resolver::visitVarExpr(std::shared_ptr<VarExpr> expr)
+std::any Resolver::visitMutExpr(std::shared_ptr<MutExpr> expr)
 {
     if (!scopes.empty())
     {
@@ -160,7 +160,7 @@ std::any Resolver::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
     return {};
 }
 
-std::any Resolver::visitVarStmt(std::shared_ptr<VarStmt> stmt)
+std::any Resolver::visitMutStmt(std::shared_ptr<MutStmt> stmt)
 {
     declare(stmt->name);
 

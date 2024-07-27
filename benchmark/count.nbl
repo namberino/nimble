@@ -1,6 +1,6 @@
-var start = clock();
+mut start = clock();
 
-var i = 0;
+mut i = 0;
 
 while (i < 10000000)
 {

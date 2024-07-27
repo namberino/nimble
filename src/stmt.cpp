@@ -32,12 +32,12 @@ std::any PrintStmt::accept(StmtVisitor& visitor)
 }
 
 
-VarStmt::VarStmt(Token name, std::shared_ptr<Expr> initializer) 
+MutStmt::MutStmt(Token name, std::shared_ptr<Expr> initializer) 
     : name(std::move(name)), initializer(std::move(initializer)) {}
 
-std::any VarStmt::accept(StmtVisitor& visitor)
+std::any MutStmt::accept(StmtVisitor& visitor)
 {
-    return visitor.visitVarStmt(shared_from_this());
+    return visitor.visitMutStmt(shared_from_this());
 }
 
 
@@ -85,7 +85,7 @@ std::any BreakStmt::accept(StmtVisitor& visitor)
 }
 
 
-ClassStmt::ClassStmt(Token name, std::shared_ptr<VarExpr> superclass, std::vector<std::shared_ptr<FunctionStmt>> methods)
+ClassStmt::ClassStmt(Token name, std::shared_ptr<MutExpr> superclass, std::vector<std::shared_ptr<FunctionStmt>> methods)
     : name(std::move(name)), superclass(std::move(superclass)), methods(std::move(methods)) {}
 
 std::any ClassStmt::accept(StmtVisitor& visitor)

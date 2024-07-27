@@ -1,5 +1,5 @@
 fun test()
 {
-    var t = "1";
-    var t = "2"; // error
+    mut t = "1";
+    mut t = "2"; // error
 }

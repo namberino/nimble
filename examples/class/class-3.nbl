@@ -5,6 +5,6 @@ fun not_class_func(arg)
     print("Called function with " + arg);
 }
 
-var box = Box();
+mut box = Box();
 box.function = not_class_func;
 box.function("argument");

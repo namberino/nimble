@@ -9,18 +9,18 @@ fun fib(n)
     return fib(n - 2) + fib(n - 1);
 }
 
-var li = [];
+mut li = [];
 
-for (var i = 0; i < 20; i = i + 1)
+for (mut i = 0; i < 20; i = i + 1)
 {
     li[i] = fib(i);
 }
 
 print(li);
 
-var test = [1, 2, 3];
+mut test = [1, 2, 3];
 
-for (var i = 0; i < 4; i = i + 1)
+for (mut i = 0; i < 4; i = i + 1)
 {
     print(test[i]);
 }

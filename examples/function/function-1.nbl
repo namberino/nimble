@@ -1,6 +1,6 @@
 fun say_hi()
 {
-    var n = 10;
+    mut n = 10;
 
     print("Hello world");
     print("This was printed from the say_hi function");
@@ -8,7 +8,7 @@ fun say_hi()
     return n;
 }
 
-var num = say_hi();
+mut num = say_hi();
 
 print("This was printed from outside the say_hi function");
 

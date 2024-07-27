@@ -1,5 +1,5 @@
 import "core:math";
 import "liber";
 
-var x = diver(5, 3);
+mut x = diver(5, 3);
 print(x);

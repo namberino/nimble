@@ -19,7 +19,7 @@ class DoublelyLinkedList
     // insert at the beginning of the list
     push(new_data)
     {
-        var new_node = Node(new_data);
+        mut new_node = Node(new_data);
         new_node.next = this.head;
 
         if (this.head != nil)
@@ -32,7 +32,7 @@ class DoublelyLinkedList
 
     remove(value)
     {
-        var current_node = this.head;
+        mut current_node = this.head;
 
         while (current_node != nil)
         {
@@ -59,7 +59,7 @@ class DoublelyLinkedList
     {
         print("Checking from bottom up:");
         
-        var current_node = this.head;
+        mut current_node = this.head;
 
         while (current_node.next != nil)
         {
@@ -74,7 +74,7 @@ class DoublelyLinkedList
     }
 }
 
-var dll = DoublelyLinkedList();
+mut dll = DoublelyLinkedList();
 
 dll.push(1);
 dll.push(2);

@@ -1,5 +1,5 @@
 class Donut {}
 
-var donut = Donut();
+mut donut = Donut();
 
 print(donut);

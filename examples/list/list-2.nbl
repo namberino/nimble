@@ -1,9 +1,9 @@
-var li = [];
+mut li = [];
 print(li);
 li[0] = 1;
 print(li);
 
-var li = [1, 2, 3, 4];
+mut li = [1, 2, 3, 4];
 print(li);
 li[0] = 5;
 li[2] = 6;

@@ -8,5 +8,5 @@ class Animal
 
 Animal().say();
 
-var method = Animal().say;
+mut method = Animal().say;
 method();

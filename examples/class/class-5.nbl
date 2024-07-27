@@ -6,7 +6,7 @@ class Cake
     }
 }
 
-var cake = Cake();
+mut cake = Cake();
 cake.cake_type = "Chocolate";
 
 cake.eat();

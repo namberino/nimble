@@ -1,6 +1,6 @@
 fun loop()
 {
-    var n = 10;
+    mut n = 10;
 
     while (true)
     {
@@ -16,6 +16,6 @@ fun loop()
     return n;
 }
 
-var n = loop();
+mut n = loop();
 
 print("Output of the function: " + n);

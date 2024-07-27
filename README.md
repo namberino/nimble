@@ -28,9 +28,9 @@ fun collatz_conjecture(n)
     }
 }
 
-var n = input("Enter number: ");
-var i = 0;
-var li = [];
+mut n = input("Enter number: ");
+mut i = 0;
+mut li = [];
 
 // main loop
 while (n != 1)
