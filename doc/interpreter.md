@@ -423,3 +423,30 @@ std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
 ```
 
 This allows us to find the expression at a local level first, then find it in the global level. This will allow us to access local and global variables.
+
+## Assignment
+
+```cpp
+std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
+{
+    std::any value = evaluate(expr->value);
+
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        environment->assign_at(distance, expr->name, value);
+    }
+    else
+    {
+        globals->assign(expr->name, value);
+    }
+
+    return value;
+}
+```
+
+This is similar to variable declaration. It evaluates the right side to get the value and call the `assign()` function to redefine the variable in the environment data structure.
+
+Assignment is not allowed to create a new variable. It will throw a runtime error if a key already exists in the environment.

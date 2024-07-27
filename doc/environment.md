@@ -52,3 +52,27 @@ std::any Environment::get(const Token& name)
     throw RuntimeError(name, "Undefined variable: '" + name.lexeme + "'");
 }
 ```
+
+For assigning variables:
+
+```cpp
+void Environment::assign(const Token& name, std::any value)
+{
+    auto element = values.find(name.lexeme);
+
+    if (element != values.end())
+    {
+        element->second = std::move(value);
+        return;
+    }
+
+    if (enclosing != nullptr)
+    {
+        enclosing->assign(name, std::move(value));
+        return;
+    }
+
+    throw RuntimeError(name, "Undefined variable: '" + name.lexeme + "'");
+}
+
+```
