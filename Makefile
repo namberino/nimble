@@ -5,8 +5,11 @@ CPP_SRC = $(wildcard src/*.cpp)
 HEADERS = $(wildcard include/*.hpp)
 OBJ = $(patsubst src/%.cpp, obj/%.o, $(CPP_SRC))
 
-DEBUG_FLAG = -g
 CFLAGS = -std=c++20 -Wall -pedantic -Iinclude
+DEP_FLAGS = -MMD -MP
+
+RELEASE_CFLAGS = -O2
+DEBUG_CFLAGS = -g -O0
 
 compile: bin/nimble
 
@@ -33,5 +36,11 @@ test: compile
 
 bench: compile
 	./tools/bench.sh
+
+release: CFLAGS += $(RELEASE_CFLAGS)
+release: clean compile
+
+debug: CFLAGS += $(DEBUG_CFLAGS)
+debug: clean compile
 
 .PHONY: compile run clean test bench
