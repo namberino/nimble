@@ -82,7 +82,7 @@ program := declaration* EOF
 declaration := mut_declaration | function_declaration | class_declaration | statement
 statement := expression_statement | print_statement | if_statement | for_statement | while_statement | break_statement | return_statement | import_statement | block
 expr_statement := expression ";"
-print_statement := "print" expression ";"
+print_statement := "print" "(" expression ")" ";"
 mut_declaration := "mut" IDENTIFIER ( "=" expression )? ";"
 function_declaration := "fun" function
 class_declaration := "class" IDENTIFIER ( ":" IDENTIFIER )? "{" function* "}"

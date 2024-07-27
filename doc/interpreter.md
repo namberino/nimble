@@ -301,3 +301,190 @@ std::string Interpreter::stringify(const std::any& obj)
 This will take in an AST for an expression and evaluates it. If it works, `evaluate()` will return an `std::any`. Then we can convert this object into strings to display those values.
 
 The `stringify()` function basically let's us turn an `std::any` object into strings for printing. For primitive types like strings, double, boolean, they're pretty simple, but for more complex objects, we need to do more. For each of the built-in functions and objects that the language supports, we need to implement a `to_string()` function for them. For lists specifically, we need to format them a bit differently, we can access each of the elements that the `ListType` object holds and recursively call the `stringify()` function on each elements, then storing it in a result string.
+
+## Statements execution
+
+Our interpreter class will also implements the statement visitor virtual struct:
+
+```cpp
+struct StmtVisitor
+{
+    virtual ~StmtVisitor() = default;
+    virtual std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) = 0;
+    virtual std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) = 0;
+    virtual std::any visitPrintStmt(std::shared_ptr<PrintStmt> stmt) = 0;
+    virtual std::any visitMutStmt(std::shared_ptr<MutStmt> stmt) = 0;
+    virtual std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) = 0;
+    virtual std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) = 0;
+    virtual std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) = 0;
+    virtual std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) = 0;
+    virtual std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) = 0;
+    virtual std::any visitClassStmt(std::shared_ptr<ClassStmt> stmt) = 0;
+    virtual std::any visitImportStmt(std::shared_ptr<ImportStmt> stmt) = 0;
+};
+```
+
+So the interpreter class will also need to implement a visitor function for each of the statement types. Let's checkout 2 as an example:
+
+### Expression statement
+
+```cpp
+std::any Interpreter::visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt)
+{
+    evaluate(stmt->expression);
+    return {};
+}
+```
+
+Since statements produces no values (they only modify the states), we just return nothing. The expression statement just needs to be evaluated using the `evaluate()` function.
+
+### Print statement
+
+```cpp
+std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
+{
+    std::any value = evaluate(stmt->expression);
+    std::cout << stringify(value) + "\n";
+    return {};
+}
+```
+
+The print statement will need to evaluate the inner expression to derive a value from it then stringify it for printing.
+
+## Interpreting the statements from parser
+
+We can interpret the statements outputed by the parser by making another function to do it.
+
+```cpp
+void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
+{
+    try
+    {
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
+    }
+    catch (RuntimeError error)
+    {
+        Error::runtime_error(error);
+    }
+}
+
+void Interpreter::execute(std::shared_ptr<Stmt> stmt)
+{
+    stmt->accept(*this);
+}
+```
+
+This just execute each of the statements in the statement list by calling the accept function of the statement, which calls the statement's visitor function based on its type.
+
+## Evaluating variables in interpreter
+
+Refer to [environment.md](environment.md) to learn more about the environment data structure.
+
+We can initialize an environment object in the interpreter class so that the variables stay in memory as long as the interpreter is running.
+
+```cpp
+std::any Interpreter::visitMutStmt(std::shared_ptr<MutStmt> stmt)
+{
+    std::any value = nullptr;
+
+    if (stmt->initializer != nullptr)
+        value = evaluate(stmt->initializer);
+
+    environment->define(stmt->name.lexeme, std::move(value));
+    
+    return {};
+}
+```
+
+We'll need to evaluate the statement's initializer if it does have one, if not then we just assign the variable's value to a `nullptr`. Then add the variable to the environment data structure.
+
+
+```cpp
+std::any Interpreter::visitMutExpr(std::shared_ptr<MutExpr> expr)
+{
+    return lookup_mut(expr->name, expr);
+}
+
+std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
+{
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        return environment->get_at(distance, name.lexeme);
+    }
+    else
+    {
+        return globals->get(name);
+    }
+}
+```
+
+This allows us to find the expression at a local level first, then find it in the global level. This will allow us to access local and global variables.
+
+## Assignment
+
+```cpp
+std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
+{
+    std::any value = evaluate(expr->value);
+
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        environment->assign_at(distance, expr->name, value);
+    }
+    else
+    {
+        globals->assign(expr->name, value);
+    }
+
+    return value;
+}
+```
+
+This is similar to variable declaration. It evaluates the right side to get the value and call the `assign()` function to redefine the variable in the environment data structure.
+
+Assignment is not allowed to create a new variable. It will throw a runtime error if a key already exists in the environment.
+
+## Interpreting blocks
+
+We'll need to implement the visitor function for the block statement:
+
+```cpp
+std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
+{
+    execute_block(stmt->statements, std::make_shared<Environment>(environment));
+    return {};
+}
+
+void Interpreter::execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment)
+{
+    std::shared_ptr<Environment> previous_env = this->environment;
+
+    try
+    {
+        this->environment = environment;
+
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
+    }
+    catch (...)
+    {
+        this->environment = previous_env;
+        throw;
+    }
+
+    this->environment = previous_env;
+}
+```
+
+For the visitor for the block statement, we need to create a new environment for the block's scope and pass it off to `execute_block()`. We'll try to execute the list of statements in the given environment.
+
+We know that the environment field in the interpreter points to the global environment, now this field will point to the "current" environment (inner environment).
+
+We'll update the environment field in the interpreter, visit the statements, and then restore the previous values by assigning `previous_env` to the environment field.
