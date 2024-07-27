@@ -324,3 +324,58 @@ std::shared_ptr<Stmt> Parser::mut_declaration()
 ```
 
 The `declaration()` method will be called repeatedly when parsing a series of statements in a block or script. We need to synchronize right when the parser goes into panic mode.
+
+## Assignment
+
+Since NIMBLE is an imperative programming language, we need to allow mutation. We can do this by defining an assign expression.
+
+```cpp
+AssignExpr::AssignExpr(Token name, std::shared_ptr<Expr> value)
+    : name(std::move(name)), value(std::move(value)) {}
+
+std::any AssignExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitAssignExpr(shared_from_this());
+}
+```
+
+It holds a token for the variable being assigned to, and an expression for the new value.
+
+```cpp
+std::shared_ptr<Expr> Parser::assignment()
+{
+    std::shared_ptr<Expr> expr = or_expression();
+
+    if (match(EQUAL))
+    {
+        Token equals = previous();
+        std::shared_ptr<Expr> value = assignment();
+
+        if (MutExpr* e = dynamic_cast<MutExpr*>(expr.get()))
+        {
+            Token name = e->name;
+            return std::make_shared<AssignExpr>(std::move(name), value);
+        }
+        else if (GetExpr* g = dynamic_cast<GetExpr*>(expr.get()))
+        {
+            return std::make_shared<SetExpr>(g->object, g->name, value);
+        }
+        else if (SubscriptExpr* s = dynamic_cast<SubscriptExpr*>(expr.get()))
+        {
+            std::shared_ptr<Expr> name = s->name;
+            std::shared_ptr<Expr> index = s->index;
+            return std::make_shared<SubscriptExpr>(name, s->paren, index, value);
+        }
+
+        Error::error(std::move(equals), "Invalid assignment target");
+    }
+
+    return expr;
+}
+```
+
+We parse the left side first, then if we find an `=`, we parse the right side too. Then we wrap it up in an expression node. Since assignments are right associative, we recursively call `assignment()` to parse the right hand side.
+
+The trick is right before we create the assignment expression node, we look at the left side expression and evaluate what kind of assignment target it is. We also convert the r-value expression node into an l-value expression ([reference](https://www.oreilly.com/library/view/c-in-a/059600298X/ch03s01.html) for information about r-value and l-value).
+
+We can parse the left side like an expression then produce an AST that turns it into an assigment target. If the left side expression isn't a valid assignment target, we throw a syntax error.
