@@ -33,3 +33,50 @@ std::any PrintStmt::accept(StmtVisitor& visitor)
 ```
 
 This lets you evaluate an expression and print the result out into the terminal.
+
+## Variables
+
+Variables are a vital part of any programming language. Let's see how they are implemented here.
+
+Variable declarations will declare a new variable.
+
+```nimble
+mut hello = "world";
+```
+
+This makes a new binding that associates the name `hello` with the value `"world"`.
+
+Variable expressions will access those bindings. 
+
+```nimble
+print(hello); // world
+```
+
+When we use `hello` as an expression, the interpreter will look up the value bound to the name and return it.
+
+### Variable syntax
+
+For variable declaration (stores a name and an initializer. If initializer is empty then put a `nullptr` there):
+
+```cpp
+MutStmt::MutStmt(Token name, std::shared_ptr<Expr> initializer) 
+    : name(std::move(name)), initializer(std::move(initializer)) {}
+
+std::any MutStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitMutStmt(shared_from_this());
+}
+```
+
+For variable accessing:
+
+```cpp
+MutExpr::MutExpr(Token name)
+    : name(std::move(name)) {}
+
+std::any MutExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitMutExpr(shared_from_this());
+}
+```
+

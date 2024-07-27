@@ -306,3 +306,21 @@ std::shared_ptr<Stmt> Parser::expression_statement()
 ```
 
 There are 3 main declarations in this programming language: `mut` for variables, `fun` for functions, and `class` for classes. Anything other than those will be evaluated through the `statement()` function, and if all of that didn't work, that means the program has a syntax error, so we'll throw a parse error which will be caught in this `declaration()` function, once caught, we'll synchronize and unwind.
+
+## Parsing variables
+
+```cpp
+std::shared_ptr<Stmt> Parser::mut_declaration()
+{
+    Token name = consume(IDENTIFIER, "Expected variable name");
+
+    std::shared_ptr<Expr> initializer = nullptr;
+    if (match(EQUAL))
+        initializer = expression();
+
+    consume(SEMICOLON, "Expected ';' after variable declaration");
+    return std::make_shared<MutStmt>(std::move(name), initializer);
+}
+```
+
+The `declaration()` method will be called repeatedly when parsing a series of statements in a block or script. We need to synchronize right when the parser goes into panic mode.
