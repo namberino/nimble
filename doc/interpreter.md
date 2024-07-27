@@ -301,3 +301,78 @@ std::string Interpreter::stringify(const std::any& obj)
 This will take in an AST for an expression and evaluates it. If it works, `evaluate()` will return an `std::any`. Then we can convert this object into strings to display those values.
 
 The `stringify()` function basically let's us turn an `std::any` object into strings for printing. For primitive types like strings, double, boolean, they're pretty simple, but for more complex objects, we need to do more. For each of the built-in functions and objects that the language supports, we need to implement a `to_string()` function for them. For lists specifically, we need to format them a bit differently, we can access each of the elements that the `ListType` object holds and recursively call the `stringify()` function on each elements, then storing it in a result string.
+
+## Statements execution
+
+Our interpreter class will also implements the statement visitor virtual struct:
+
+```cpp
+struct StmtVisitor
+{
+    virtual ~StmtVisitor() = default;
+    virtual std::any visitBlockStmt(std::shared_ptr<BlockStmt> stmt) = 0;
+    virtual std::any visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt) = 0;
+    virtual std::any visitPrintStmt(std::shared_ptr<PrintStmt> stmt) = 0;
+    virtual std::any visitMutStmt(std::shared_ptr<MutStmt> stmt) = 0;
+    virtual std::any visitIfStmt(std::shared_ptr<IfStmt> stmt) = 0;
+    virtual std::any visitWhileStmt(std::shared_ptr<WhileStmt> stmt) = 0;
+    virtual std::any visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt) = 0;
+    virtual std::any visitReturnStmt(std::shared_ptr<ReturnStmt> stmt) = 0;
+    virtual std::any visitBreakStmt(std::shared_ptr<BreakStmt> stmt) = 0;
+    virtual std::any visitClassStmt(std::shared_ptr<ClassStmt> stmt) = 0;
+    virtual std::any visitImportStmt(std::shared_ptr<ImportStmt> stmt) = 0;
+};
+```
+
+So the interpreter class will also need to implement a visitor function for each of the statement types. Let's checkout 2 as an example:
+
+### Expression statement
+
+```cpp
+std::any Interpreter::visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt)
+{
+    evaluate(stmt->expression);
+    return {};
+}
+```
+
+Since statements produces no values (they only modify the states), we just return nothing. The expression statement just needs to be evaluated using the `evaluate()` function.
+
+### Print statement
+
+```cpp
+std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
+{
+    std::any value = evaluate(stmt->expression);
+    std::cout << stringify(value) + "\n";
+    return {};
+}
+```
+
+The print statement will need to evaluate the inner expression to derive a value from it then stringify it for printing.
+
+## Interpreting the statements from parser
+
+We can interpret the statements outputed by the parser by making another function to do it.
+
+```cpp
+void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
+{
+    try
+    {
+        for (const std::shared_ptr<Stmt>& statement : statements)
+            execute(statement);
+    }
+    catch (RuntimeError error)
+    {
+        Error::runtime_error(error);
+    }
+}
+
+void Interpreter::execute(std::shared_ptr<Stmt> stmt)
+{
+    stmt->accept(*this);
+}
+```
+
+This just execute each of the statements in the statement list by calling the accept function of the statement, which calls the statement's visitor function based on its type.
