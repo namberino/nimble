@@ -376,3 +376,50 @@ void Interpreter::execute(std::shared_ptr<Stmt> stmt)
 ```
 
 This just execute each of the statements in the statement list by calling the accept function of the statement, which calls the statement's visitor function based on its type.
+
+## Evaluating variables in interpreter
+
+Refer to [environment.md](environment.md) to learn more about the environment data structure.
+
+We can initialize an environment object in the interpreter class so that the variables stay in memory as long as the interpreter is running.
+
+```cpp
+std::any Interpreter::visitMutStmt(std::shared_ptr<MutStmt> stmt)
+{
+    std::any value = nullptr;
+
+    if (stmt->initializer != nullptr)
+        value = evaluate(stmt->initializer);
+
+    environment->define(stmt->name.lexeme, std::move(value));
+    
+    return {};
+}
+```
+
+We'll need to evaluate the statement's initializer if it does have one, if not then we just assign the variable's value to a `nullptr`. Then add the variable to the environment data structure.
+
+
+```cpp
+std::any Interpreter::visitMutExpr(std::shared_ptr<MutExpr> expr)
+{
+    return lookup_mut(expr->name, expr);
+}
+
+std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
+{
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        return environment->get_at(distance, name.lexeme);
+    }
+    else
+    {
+        return globals->get(name);
+    }
+}
+```
+
+This allows us to find the expression at a local level first, then find it in the global level. This will allow us to access local and global variables.
