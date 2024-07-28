@@ -1,0 +1,93 @@
+fun bubble_sort(array)
+{
+    if (len(array) > 1 and array != nil)
+    {
+        for (mut i = 0; i < len(array); i = i + 1)
+        {
+            for (mut j = 0; j < len(array) - i - 1; j = j + 1)
+            {
+                if (array[j] > array[j + 1])
+                {
+                    mut temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
+
+fun insertion_sort(array)
+{
+    for (mut i = 1; i < len(array); i = i + 1)
+    {
+        mut j = i;
+
+        while (array[j] < array[j - 1])
+        {
+            mut temp = array[j];
+            array[j] = array[j - 1];
+            array[j - 1] = temp;
+
+            j = j - 1;
+        }
+    }
+}
+
+fun quick_sort(array, low, high)
+{
+    fun partition(array, low, high)
+    {
+        mut pivot = array[high];
+        mut i = low - 1;
+
+        for (mut j = low; j < high; j = j + 1)
+        {
+            if (array[j] <= pivot)
+            {
+                i = i + 1;
+                
+                mut temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+        mut temp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = temp;
+
+        return i + 1;
+    }
+
+    if (low <= high)
+    {
+        mut pivot_index = partition(array, low, high);
+
+        quick_sort(array, low, pivot_index - 1);
+        quick_sort(array, pivot_index + 1, high);
+    }
+}
+
+fun selection_sort(array)
+{
+    for (mut i = 0; i < len(array); i = i + 1)
+    {
+        mut min_index = i;
+
+        for (mut j = i + 1; j < len(array); j = j + 1)
+        {
+            if (array[j] < array[min_index])
+            {
+                min_index = j;
+            }
+        }
+
+        if (min_index != i)
+        {
+            mut temp = array[min_index];
+            array[min_index] = array[i];
+            array[i] = temp;
+        }
+    }
+}

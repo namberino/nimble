@@ -14,6 +14,7 @@
 #include <cstring>
 #include <cmath>
 
+#include "list.hpp"
 #include "callable.hpp"
 
 class NativeClock : public NblCallable
@@ -51,6 +52,14 @@ class NativeExit : public NblCallable
 };
 
 class NativeFloorDiv : public NblCallable
+{
+    public:
+        int arity() override;
+        std::any call(Interpreter& interpreter, std::vector<std::any> args) override;
+        std::string to_string() override;
+};
+
+class NativeArrayLen : public NblCallable
 {
     public:
         int arity() override;
