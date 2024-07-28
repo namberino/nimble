@@ -68,3 +68,26 @@ fun quick_sort(array, low, high)
         quick_sort(array, pivot_index + 1, high);
     }
 }
+
+fun selection_sort(array)
+{
+    for (mut i = 0; i < len(array); i = i + 1)
+    {
+        mut min_index = i;
+
+        for (mut j = i + 1; j < len(array); j = j + 1)
+        {
+            if (array[j] < array[min_index])
+            {
+                min_index = j;
+            }
+        }
+
+        if (min_index != i)
+        {
+            mut temp = array[min_index];
+            array[min_index] = array[i];
+            array[i] = temp;
+        }
+    }
+}
