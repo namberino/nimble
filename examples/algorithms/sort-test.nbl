@@ -11,3 +11,9 @@ insertion_sort(array);
 print("Insertion sort:");
 print(array);
 print("");
+
+mut array = [1, 9, 2, 4, 3, 6, 5, 7, 8];
+quick_sort(array, 0, len(array) - 1);
+print("Quick sort:");
+print(array);
+print("");

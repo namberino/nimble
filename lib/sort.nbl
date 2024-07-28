@@ -33,3 +33,38 @@ fun insertion_sort(array)
         }
     }
 }
+
+fun quick_sort(array, low, high)
+{
+    fun partition(array, low, high)
+    {
+        mut pivot = array[high];
+        mut i = low - 1;
+
+        for (mut j = low; j < high; j = j + 1)
+        {
+            if (array[j] <= pivot)
+            {
+                i = i + 1;
+                
+                mut temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+        mut temp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = temp;
+
+        return i + 1;
+    }
+
+    if (low <= high)
+    {
+        mut pivot_index = partition(array, low, high);
+
+        quick_sort(array, low, pivot_index - 1);
+        quick_sort(array, pivot_index + 1, high);
+    }
+}
