@@ -1,0 +1,25 @@
+mut lookup = [];
+
+for (mut i = 0; i < 100; i = i + 1)
+{
+    lookup[i] = nil;
+}
+
+fun dynamic_fib(n)
+{
+    if (n == 0 or n == 1)
+    {
+        return 1;
+    }
+
+    if (lookup[n] != nil)
+    {
+        return lookup[n];
+    }
+
+    lookup[n] = dynamic_fib(n - 1) + dynamic_fib(n - 2);
+
+    return lookup[n];
+}
+
+print(dynamic_fib(5));
