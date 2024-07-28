@@ -1,0 +1,51 @@
+fun max(arg1, arg2)
+{
+    if (arg1 >= arg2)
+        return arg1;
+    return arg2;
+}
+
+fun knapsack(W, wt, val, n)
+{
+    mut K = [];
+
+    for (mut i = 0; i < n + 1; i = i + 1)
+    {
+        mut li = [];
+
+        for (mut j = 0; j < W + 1; j = j + 1)
+        {
+            li[j] = 0;
+        }
+
+        K[i] = li;
+    }
+
+    for (mut i = 0; i < n + 1; i = i + 1)
+    {
+        for (mut w = 0; w < W + 1; w = w + 1)
+        {
+            if (i == 0 or w == 0)
+            {
+                K[i][w] = 0;
+            }
+            else if (wt[i - 1] <= w)
+            {
+                K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
+            }
+            else
+            {
+                K[i][w] = K[i - 1][w];
+            }
+        }
+    }
+
+    return K[n][W];
+}
+
+mut val = [2, 3, 4, 5, 6, 7, 8]; // list of values of items
+mut wt = [3, 4, 5, 6, 9, 15, 20]; // list of weights of the items
+mut W = 20; // max weight capacity of knapsack
+mut n = len(val); // number of items
+
+print("Result: " + knapsack(W, wt, val, n));
