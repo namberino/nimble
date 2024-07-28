@@ -1,0 +1,43 @@
+fun linear_search(array, value, length)
+{
+    mut count = 0;
+
+    for (mut i = 0; i < length; i = i + 1)
+    {
+        // print("Checking the " + i + " element");
+
+		if (array[i] == value)
+			return count;
+
+		count = count + 1;
+    }
+
+    return -1;
+}
+
+fun binary_search(array, value, low, high)
+{
+    while (low <= high)
+    {
+        mut mid = low + floordiv((high - 1), 2);
+        // print("Midpoint: " + mid);
+
+        if (value == array[mid])
+        {
+            return mid;
+        }
+
+        if (value > array[mid])
+        {
+            // print("Checking right half");
+            low = mid + 1;
+        }
+        else
+        {
+            // print("Checking left half");
+            high = mid - 1;
+        }
+    }
+
+    return -1;
+}
