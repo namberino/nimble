@@ -102,3 +102,18 @@ std::string NativeFloorDiv::to_string()
 {
     return "<native floordiv>";
 }
+
+int NativeArrayLen::arity()
+{
+    return 1;
+}
+
+std::any NativeArrayLen::call(Interpreter& interpreter, std::vector<std::any> args)
+{
+    return (double)std::any_cast<std::shared_ptr<ListType>>(args[0])->get_length();
+}
+
+std::string NativeArrayLen::to_string()
+{
+    return "<native len>";
+}

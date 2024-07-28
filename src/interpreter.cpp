@@ -12,6 +12,7 @@ Interpreter::Interpreter()
     globals->define("input", std::make_shared<NativeInput>());
     globals->define("exit", std::make_shared<NativeExit>());
     globals->define("floordiv", std::make_shared<NativeFloorDiv>());
+    globals->define("len", std::make_shared<NativeArrayLen>());
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
@@ -359,6 +360,10 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
     {
         function = std::any_cast<std::shared_ptr<NativeFloorDiv>>(callee);
     }
+    else if (callee.type() == typeid(std::shared_ptr<NativeArrayLen>))
+    {
+        function = std::any_cast<std::shared_ptr<NativeArrayLen>>(callee);
+    }
     else
     {
         throw RuntimeError(expr->paren, "Can only call functions");
@@ -620,6 +625,9 @@ std::string Interpreter::stringify(const std::any& obj)
 
     if (obj.type() == typeid(std::shared_ptr<NativeFloorDiv>))
         return std::any_cast<std::shared_ptr<NativeFloorDiv>>(obj)->to_string();
+
+    if (obj.type() == typeid(std::shared_ptr<NativeArrayLen>))
+        return std::any_cast<std::shared_ptr<NativeArrayLen>>(obj)->to_string();
 
     if (obj.type() == typeid(std::shared_ptr<ListType>))
     {

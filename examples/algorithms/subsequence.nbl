@@ -1,0 +1,9 @@
+fun longest_increasing_subsequence(array)
+{
+    mut n = len(array);
+    return n;
+}
+
+mut array = [1, 2, 3, 4];
+mut t = longest_increasing_subsequence(array);
+print(t);
