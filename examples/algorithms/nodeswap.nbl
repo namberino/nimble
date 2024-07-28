@@ -1,0 +1,63 @@
+class Node
+{
+    init(data)
+    {
+        this.data = data;
+        this.left = nil;
+        this.right = nil;
+    }
+}
+
+fun swap_every_k_level(root, level, k)
+{
+    if (root == nil or (root.left == nil and root.right == nil))
+    {
+        return;
+    }
+
+    if ((level + 1) % k == 0)
+    {
+        mut temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+    }
+
+    swap_every_k_level(root.left, level + 1, k);
+    swap_every_k_level(root.right, level + 1, k);
+}
+
+fun inorder(root)
+{
+    if (root == nil)
+    {
+        return;
+    }
+
+    inorder(root.left);
+    print(root.data);
+    inorder(root.right);
+}
+
+// 	   1
+//    / \
+//   2	 3
+//  /	/ \
+// 4   7   8
+
+mut root = Node(1);
+root.left = Node(2);
+root.right = Node(3);
+root.left.left = Node(4);
+root.right.right = Node(8);
+root.right.left = Node(7);
+
+mut k = 2;
+
+print("Before swapping:");
+inorder(root);
+print("");
+
+swap_every_k_level(root, 1, k);
+
+print("After swapping:");
+inorder(root);
