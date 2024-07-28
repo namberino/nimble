@@ -1,0 +1,5 @@
+import "core:sort";
+
+mut array = [42, 26, 75, 37, 14, 68, 51, 9, 11];
+bubble_sort(array);
+print(array);

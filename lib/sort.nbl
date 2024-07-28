@@ -1,0 +1,18 @@
+fun bubble_sort(array)
+{
+    if (len(array) > 1 and array != nil)
+    {
+        for (mut i = 0; i < len(array); i = i + 1)
+        {
+            for (mut j = 0; j < len(array) - i - 1; j = j + 1)
+            {
+                if (array[j] > array[j + 1])
+                {
+                    mut temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
