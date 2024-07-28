@@ -16,3 +16,20 @@ fun bubble_sort(array)
         }
     }
 }
+
+fun insertion_sort(array)
+{
+    for (mut i = 1; i < len(array); i = i + 1)
+    {
+        mut j = i;
+
+        while (array[j] < array[j - 1])
+        {
+            mut temp = array[j];
+            array[j] = array[j - 1];
+            array[j - 1] = temp;
+
+            j = j - 1;
+        }
+    }
+}

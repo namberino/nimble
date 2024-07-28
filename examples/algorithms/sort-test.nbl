@@ -1,5 +1,13 @@
 import "core:sort";
 
-mut array = [42, 26, 75, 37, 14, 68, 51, 9, 11];
+mut array = [1, 9, 2, 4, 3, 6, 5, 7, 8];
 bubble_sort(array);
+print("Bubble sort:");
 print(array);
+print("");
+
+mut array = [1, 9, 2, 4, 3, 6, 5, 7, 8];
+insertion_sort(array);
+print("Insertion sort:");
+print(array);
+print("");
