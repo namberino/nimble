@@ -11,7 +11,7 @@ fun fib(n)
 
 mut li = [];
 
-for (mut i = 0; i < 20; i = i + 1)
+for (mut i = 0; i < 20; i += 1)
 {
     li[i] = fib(i);
 }
@@ -20,7 +20,7 @@ print(li);
 
 mut test = [1, 2, 3];
 
-for (mut i = 0; i < 4; i = i + 1)
+for (mut i = 0; i < 4; i += 1)
 {
     print(test[i]);
 }

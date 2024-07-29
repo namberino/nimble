@@ -1,6 +1,6 @@
 mut lookup = [];
 
-for (mut i = 0; i < 100; i = i + 1)
+for (mut i = 0; i < 100; i += 1)
 {
     lookup[i] = nil;
 }

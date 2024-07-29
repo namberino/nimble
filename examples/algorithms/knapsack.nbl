@@ -9,11 +9,11 @@ fun knapsack(W, wt, val, n)
 {
     mut K = [];
 
-    for (mut i = 0; i < n + 1; i = i + 1)
+    for (mut i = 0; i < n + 1; i += 1)
     {
         mut li = [];
 
-        for (mut j = 0; j < W + 1; j = j + 1)
+        for (mut j = 0; j < W + 1; j += 1)
         {
             li[j] = 0;
         }
@@ -21,9 +21,9 @@ fun knapsack(W, wt, val, n)
         K[i] = li;
     }
 
-    for (mut i = 0; i < n + 1; i = i + 1)
+    for (mut i = 0; i < n + 1; i += 1)
     {
-        for (mut w = 0; w < W + 1; w = w + 1)
+        for (mut w = 0; w < W + 1; w += 1)
         {
             if (i == 0 or w == 0)
             {

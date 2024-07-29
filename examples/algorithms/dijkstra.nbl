@@ -5,11 +5,11 @@ class Graph
         this.vertices = vertices;
         this.graph = [];
 
-        for (mut row = 0; row < vertices; row = row + 1)
+        for (mut row = 0; row < vertices; row += 1)
         {
             mut li = [];
 
-            for (mut col = 0; col < vertices; col = col + 1)
+            for (mut col = 0; col < vertices; col += 1)
             {
                 li[col] = 0;
             }
@@ -21,7 +21,7 @@ class Graph
     print_paths(dist)
     {
         print("Vertex and distance from source");
-        for (mut node = 0; node < this.vertices; node = node + 1)
+        for (mut node = 0; node < this.vertices; node += 1)
         {
             print(node + 1 + " | " + dist[node]);
         }
@@ -32,7 +32,7 @@ class Graph
         mut min = 10000000;
         mut min_index;
 
-        for (mut v = 0; v < this.vertices; v = v + 1)
+        for (mut v = 0; v < this.vertices; v += 1)
         {
             if (dist[v] < min and sptset[v] == false)
             {
@@ -47,24 +47,24 @@ class Graph
     dijkstra(source)
     {
         mut dist = [];
-        for (mut i = 0; i < this.vertices; i = i + 1)
+        for (mut i = 0; i < this.vertices; i += 1)
         {
             dist[i] = 10000000;
         }
         dist[source] = 0;
 
         mut sptset = [];
-        for (mut i = 0; i < this.vertices; i = i + 1)
+        for (mut i = 0; i < this.vertices; i += 1)
         {
             sptset[i] = false;
         }
 
-        for (mut cout = 0; cout < this.vertices; cout = cout + 1)
+        for (mut cout = 0; cout < this.vertices; cout += 1)
         {
             mut u = this.min_dist(dist, sptset);
             sptset[u] = true;
 
-            for (mut v = 0; v < this.vertices; v = v + 1)
+            for (mut v = 0; v < this.vertices; v += 1)
             {
                 if (this.graph[u][v] > 0 and sptset[v] == false and dist[v] > dist[u] + this.graph[u][v])
                 {

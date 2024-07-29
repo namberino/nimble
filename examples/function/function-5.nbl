@@ -1,6 +1,6 @@
 fun thrice(fn)
 {
-    for (mut i = 1; i <= 3; i = i + 1)
+    for (mut i = 1; i <= 3; i += 1)
     {
         fn(i);
     }

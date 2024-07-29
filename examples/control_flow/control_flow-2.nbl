@@ -5,7 +5,7 @@ mut t = a + b;
 print("The Fibonacci sequence:");
 
 print(t);
-for (mut i = 3; i <= 20; i = i + 1)
+for (mut i = 3; i <= 20; i += 1)
 {
     print(t);
 

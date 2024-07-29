@@ -40,19 +40,19 @@ class CircularQueue
         }
         else if (this.tail >= this.head) // normal order
         {
-            for (mut i = this.head; i < this.tail + 1; i = i + 1)
+            for (mut i = this.head; i < this.tail + 1; i += 1)
             {
                 print(this.queue[i]);
             }
         }
         else // circular order
         {
-            for (mut i = this.head; i < this.length; i = i + 1)
+            for (mut i = this.head; i < this.length; i += 1)
             {
                 print(this.queue[i]);
             }
 
-            for (mut i = 0; i < this.tail + 1; i = i + 1)
+            for (mut i = 0; i < this.tail + 1; i += 1)
             {
                 print(this.queue[i]);
             }

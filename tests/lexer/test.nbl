@@ -1,7 +1,7 @@
 // comment
 {()} // grouping
 
-!*+-/=<> <= == // operators
+!*+-/=<> <= == += -= *= /= // operators
 
 (1 + 2) * 3 / 4
 
