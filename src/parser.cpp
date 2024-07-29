@@ -339,6 +339,29 @@ std::shared_ptr<Expr> Parser::assignment()
         Error::error(std::move(equals), "Invalid assignment target");
     }
 
+    if (match(PLUS_EQUAL, MINUS_EQUAL, STAR_EQUAL, SLASH_EQUAL))
+    {
+        Token op = previous(); // already moved pass the expression at the beginning of the function
+        return compound(expr, op); // expr is the variable itself
+    }
+
+    return expr;
+}
+
+std::shared_ptr<Expr> Parser::compound(std::shared_ptr<Expr> expr, Token op)
+{
+    std::shared_ptr<Expr> value = term();
+
+    if (std::shared_ptr<MutExpr> e = std::dynamic_pointer_cast<MutExpr>(expr))
+    {
+        Token name = std::dynamic_pointer_cast<MutExpr>(expr)->name;
+        std::shared_ptr<Expr> val = std::make_shared<BinaryExpr>(expr, op, value);
+
+        return std::make_shared<AssignExpr>(name, val);
+    }
+
+    Error::error(op, "Invalid compound assignment target");
+
     return expr;
 }
 
@@ -447,7 +470,7 @@ std::shared_ptr<Expr> Parser::factor()
 
 std::shared_ptr<Expr> Parser::unary()
 {
-    if (match(BANG, MINUS))
+    if (match(BANG, MINUS, PLUS))
     {
         Token op = previous();
         std::shared_ptr<Expr> right = unary();
@@ -697,6 +720,7 @@ void Parser::synchronize()
             case GREATER: case GREATER_EQUAL:
             case LESS: case LESS_EQUAL:
             case STAR_STAR:
+            case PLUS_EQUAL: case MINUS_EQUAL: case STAR_EQUAL: case SLASH_EQUAL:
             case IDENTIFIER: case STRING: case NUMBER:
             case AND: case BREAK: case ELSE: case FALSE: case NIL: case OR:
             case SUPER: case THIS: case TRUE: case IMPORT:

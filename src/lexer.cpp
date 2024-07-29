@@ -170,15 +170,16 @@ void Lexer::scan_token()
         case ']': add_token(TokenType::RIGHT_BRACKET); break;
         case ',': add_token(TokenType::COMMA); break;
         case '.': add_token(TokenType::DOT); break;
-        case '-': add_token(TokenType::MINUS); break;
-        case '+': add_token(TokenType::PLUS); break;
         case ';': add_token(TokenType::SEMICOLON); break;
         case '%': add_token(TokenType::PERCENT); break;
         case ':': add_token(TokenType::COLON); break;
 
         // 1 or 2 chars token recognition
-        case '*':
-            add_token(match('*') ? TokenType::STAR_STAR : TokenType::STAR);
+        case '-':
+            add_token(match('=') ? TokenType::MINUS_EQUAL : TokenType::MINUS);
+            break;
+        case '+':
+            add_token(match('=') ? TokenType::PLUS_EQUAL : TokenType::PLUS);
             break;
         case '!':
             add_token(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
@@ -193,7 +194,13 @@ void Lexer::scan_token()
             add_token(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
             break;
 
-        // comment lexeme
+        // multi lexeme
+        case '*':
+            if (match('*'))
+                add_token(TokenType::STAR_STAR);
+            else
+                add_token(match('=') ? TokenType::STAR_EQUAL : TokenType::STAR);
+            break;
         case '/':
             if (match('/')) // if the next char is also a '/'
             {
@@ -203,7 +210,7 @@ void Lexer::scan_token()
             }
             else
             {
-                add_token(TokenType::SLASH);
+                add_token(match('=') ? TokenType::SLASH_EQUAL : TokenType::SLASH);
             }
             break;
 

@@ -46,6 +46,7 @@ std::string token_to_string(TokenType type)
         "GREATER", "GREATER_EQUAL",
         "LESS", "LESS_EQUAL",
         "STAR_STAR",
+        "PLUS_EQUAL", "MINUS_EQUAL", "STAR_EQUAL", "SLASH_EQUAL",
         "IDENTIFIER", "STRING", "NUMBER",
         "AND", "BREAK", "CLASS", "ELSE", "FALSE", "FUN", "FOR", "IF", "NIL", "OR",
         "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "MUT", "WHILE", "IMPORT",

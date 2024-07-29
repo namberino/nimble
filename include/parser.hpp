@@ -52,6 +52,7 @@ class Parser
         std::shared_ptr<FunctionExpr> function_body(std::string kind);
 
         std::shared_ptr<Expr> assignment();
+        std::shared_ptr<Expr> compound(std::shared_ptr<Expr> expr, Token op);
         std::shared_ptr<Expr> expression();
         std::shared_ptr<Expr> or_expression();
         std::shared_ptr<Expr> and_expression();

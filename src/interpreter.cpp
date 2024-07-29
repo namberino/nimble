@@ -223,7 +223,7 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
             return pow(std::any_cast<double>(left), std::any_cast<double>(right));
 
         // arithmetics
-        case PLUS:
+        case PLUS: case PLUS_EQUAL:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) + std::any_cast<double>(right);
 
@@ -237,13 +237,13 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
                 return int_or_double(left) + std::any_cast<std::string>(right);
 
             throw RuntimeError{expr->op, "Operands must be 2 numbers, 2 strings, or 1 number and 1 string"};
-        case MINUS:
+        case MINUS: case MINUS_EQUAL:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) - std::any_cast<double>(right);
-        case STAR:
+        case STAR: case STAR_EQUAL:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) * std::any_cast<double>(right);
-        case SLASH:
+        case SLASH: case SLASH_EQUAL:
             if (left.type() == typeid(double) && right.type() == typeid(double))
                 return std::any_cast<double>(left) / std::any_cast<double>(right);
         case PERCENT:

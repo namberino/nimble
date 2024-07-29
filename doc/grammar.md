@@ -61,7 +61,7 @@ Each rule has a name, followed by a `:=`, then a sequence of symbols, and the te
 Grammar rule:
 ```
 expression := assignment
-assignment := ( call "." )? IDENTIFIER "=" assignment | logic_or
+assignment := ( call "." )? IDENTIFIER ( "=" | "+=" | "-=" | "*=" | "/=" ) assignment | logic_or
 logic_or := logic_and ( "or" logic_and )*
 logic_and := equality ( "and" equality )*
 equality := comparison ( ( "!=" | "==" ) comparison )*
