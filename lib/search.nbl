@@ -2,14 +2,14 @@ fun linear_search(array, value, length)
 {
     mut count = 0;
 
-    for (mut i = 0; i < length; i = i + 1)
+    for (mut i = 0; i < length; i += 1)
     {
         // print("Checking the " + i + " element");
 
 		if (array[i] == value)
 			return count;
 
-		count = count + 1;
+		count += 1;
     }
 
     return -1;

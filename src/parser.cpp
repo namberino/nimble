@@ -354,10 +354,25 @@ std::shared_ptr<Expr> Parser::compound(std::shared_ptr<Expr> expr, Token op)
 
     if (std::shared_ptr<MutExpr> e = std::dynamic_pointer_cast<MutExpr>(expr))
     {
-        Token name = std::dynamic_pointer_cast<MutExpr>(expr)->name;
+        Token name = e->name;
         std::shared_ptr<Expr> val = std::make_shared<BinaryExpr>(expr, op, value);
 
         return std::make_shared<AssignExpr>(name, val);
+    }
+    else if (std::shared_ptr<GetExpr> g = std::dynamic_pointer_cast<GetExpr>(expr))
+    {
+        Token name = g->name;
+        std::shared_ptr<Expr> val = std::make_shared<BinaryExpr>(expr, op, value);
+
+        return std::make_shared<SetExpr>(g->object, name, val);
+    }
+    else if (std::shared_ptr<SubscriptExpr> s = std::dynamic_pointer_cast<SubscriptExpr>(expr))
+    {
+        std::shared_ptr<Expr> name = s->name;
+        std::shared_ptr<Expr> index = s->index;
+        std::shared_ptr<Expr> val = std::make_shared<BinaryExpr>(expr, op, value);
+
+        return std::make_shared<SubscriptExpr>(name, s->paren, index, val);
     }
 
     Error::error(op, "Invalid compound assignment target");

@@ -19,11 +19,11 @@ fun sin(x)
 {
     mut result = 0;
 
-    for (mut i = 0; i < 20; i = i + 1)
+    for (mut i = 0; i < 20; i += 1)
     {
         mut sign = -1 ** i;
         mut term = (x ** (2 * i + 1)) / factorial(2 * i + 1);
-        result = result + sign * term;
+        result += sign * term;
     }
 
     return result;
@@ -33,11 +33,11 @@ fun cos(x)
 {
     mut result = 0;
 
-    for (mut i = 0; i < 20; i = i + 1)
+    for (mut i = 0; i < 20; i += 1)
     {
         mut sign = -1 ** i;
         mut term = (x ** (2 * i)) / factorial(2 * i);
-        result = result + sign * term;
+        result += sign * term;
     }
 
     return result;
@@ -58,7 +58,7 @@ fun exp(x)
     mut result = 1;
     mut term = 1;
 
-    for (mut i = 1; i < 20; i = i + 1)
+    for (mut i = 1; i < 20; i += 1)
     {
         term = term * x / i;
         result = result + term;
@@ -79,7 +79,7 @@ fun ln(x)
     mut result = 0;
     mut term = y;
 
-    for (mut i = 1; i < 100; i = i + 2)
+    for (mut i = 1; i < 100; i += 2)
     {
         result = result + term / i;
         term = term * y2;

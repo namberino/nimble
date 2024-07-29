@@ -2,9 +2,9 @@ fun bubble_sort(array)
 {
     if (len(array) > 1 and array != nil)
     {
-        for (mut i = 0; i < len(array); i = i + 1)
+        for (mut i = 0; i < len(array); i += 1)
         {
-            for (mut j = 0; j < len(array) - i - 1; j = j + 1)
+            for (mut j = 0; j < len(array) - i - 1; j += 1)
             {
                 if (array[j] > array[j + 1])
                 {
@@ -19,7 +19,7 @@ fun bubble_sort(array)
 
 fun insertion_sort(array)
 {
-    for (mut i = 1; i < len(array); i = i + 1)
+    for (mut i = 1; i < len(array); i += 1)
     {
         mut j = i;
 
@@ -29,7 +29,7 @@ fun insertion_sort(array)
             array[j] = array[j - 1];
             array[j - 1] = temp;
 
-            j = j - 1;
+            j -= 1;
         }
     }
 }
@@ -41,11 +41,11 @@ fun quick_sort(array, low, high)
         mut pivot = array[high];
         mut i = low - 1;
 
-        for (mut j = low; j < high; j = j + 1)
+        for (mut j = low; j < high; j += 1)
         {
             if (array[j] <= pivot)
             {
-                i = i + 1;
+                i += 1;
                 
                 mut temp = array[i];
                 array[i] = array[j];
@@ -71,11 +71,11 @@ fun quick_sort(array, low, high)
 
 fun selection_sort(array)
 {
-    for (mut i = 0; i < len(array); i = i + 1)
+    for (mut i = 0; i < len(array); i += 1)
     {
         mut min_index = i;
 
-        for (mut j = i + 1; j < len(array); j = j + 1)
+        for (mut j = i + 1; j < len(array); j += 1)
         {
             if (array[j] < array[min_index])
             {

@@ -14,7 +14,7 @@ class Map
 
     get_index(key)
     {
-        for (mut i = 0; i < this.size; i = i + 1)
+        for (mut i = 0; i < this.size; i += 1)
         {
             if (this.keys[i] == key)
             {
@@ -32,7 +32,7 @@ class Map
         {
             this.keys[this.size] = key;
             this.values[this.size] = value;
-            this.size = this.size + 1;
+            this.size += 1;
         }
         else
         {
@@ -56,7 +56,7 @@ class Map
 
     print_map()
     {
-        for (mut i = 0; i < this.size; i = i + 1)
+        for (mut i = 0; i < this.size; i += 1)
             print(this.keys[i] + " : " + this.values[i]);
     }
 }
