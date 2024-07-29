@@ -320,16 +320,16 @@ std::shared_ptr<Expr> Parser::assignment()
         Token equals = previous();
         std::shared_ptr<Expr> value = assignment();
 
-        if (MutExpr* e = dynamic_cast<MutExpr*>(expr.get()))
+        if (std::shared_ptr<MutExpr> e = std::dynamic_pointer_cast<MutExpr>(expr))
         {
             Token name = e->name;
             return std::make_shared<AssignExpr>(std::move(name), value);
         }
-        else if (GetExpr* g = dynamic_cast<GetExpr*>(expr.get()))
+        else if (std::shared_ptr<GetExpr> g = std::dynamic_pointer_cast<GetExpr>(expr))
         {
             return std::make_shared<SetExpr>(g->object, g->name, value);
         }
-        else if (SubscriptExpr* s = dynamic_cast<SubscriptExpr*>(expr.get()))
+        else if (std::shared_ptr<SubscriptExpr> s = std::dynamic_pointer_cast<SubscriptExpr>(expr))
         {
             std::shared_ptr<Expr> name = s->name;
             std::shared_ptr<Expr> index = s->index;
