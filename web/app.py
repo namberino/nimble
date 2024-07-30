@@ -11,18 +11,18 @@ def serve_index():
 @app.route('/run', methods=['POST'])
 def run_code():
     code = request.json.get('code')
-    with open('temp.nbl', 'w') as f:
+    with open('program.nbl', 'w') as f:
         f.write(code)
     
     try:
-        result = subprocess.run(['../bin/nimble', 'temp.nbl'], capture_output=True, text=True, timeout=5)
+        result = subprocess.run(['../bin/nimble', 'program.nbl'], capture_output=True, text=True, timeout=5)
         output = result.stdout
         error = result.stderr
     except subprocess.TimeoutExpired:
         output = ""
         error = "Execution timed out."
     
-    os.remove('temp.nbl')
+    os.remove('program.nbl')
     
     return jsonify({'output': output, 'error': error})
 
