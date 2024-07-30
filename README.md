@@ -37,7 +37,7 @@ while (n != 1)
 {
     n = collatz_conjecture(n);
     li[i] = n;
-    i = i + 1;
+    i += 1;
 }
 
 print(li);
