@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/*  Main Code Editor   */
+.editor-output-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 99vw;
+    margin-bottom: 10px;
+    /* background-color: #d37373; */
+}
+.CodeMirror {
+    flex: 1;
+    height: 20rem;
+    margin: 0.5vw;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    overflow-y: auto;
+    color: black;
+    padding: 10px;
+    border-radius: 0.5rem;
+}
+.code-out {
+    flex: 1;
+    height: 20rem;
+    margin: 0.5vw;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    overflow-y: auto;
+    color: black;
+    padding: 10px;
+    border-radius: 0.5rem;
+}
+
+/* End Main Code Editor */
+
+#run-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+#run-button:hover {
+    background-color: #45a049;
+}
