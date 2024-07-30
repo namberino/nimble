@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <meta charset="UTF-8">
     <title>Nimble Code Runner</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,27 +22,33 @@
             max-width: 1000px;
             margin: auto;
         }
-        #editor-output-container {
+        
+        /*  Main Code Editor   */
+        .editor-output-container {
             display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 800px;
+            justify-content: space-around;
+            align-items: center;
+            width: 99vw; 
             margin-bottom: 10px;
+            /*  background-color: #d37373;  */
         }
-        #code, #output {
-            width: 50%;
-            height: 300px;
+        .code-in, .code-out {
+            display: flex;
+            flex: 1;
+            height: 20rem;
+            margin: 0.5vw;
+            background-color: #262a33;
             border: 1px solid #ccc;
             box-sizing: border-box;
             overflow-y: auto;
-        }
-        #code {
+            color: whitesmoke;
             padding: 10px;
+            border-radius: 0.5rem;
         }
-        #output {
-            padding: 10px;
-            background-color: #f9f9f9;
-        }
+
+
+        /* End Main Code Editor */
+
         #run-button {
             padding: 10px 20px;
             font-size: 16px;
@@ -61,9 +67,9 @@
 </head>
 <body>
     <div id="container">
-        <div id="editor-output-container">
-            <textarea id="code" name="code"></textarea>
-            <pre id="output"></pre>
+        <div class="editor-output-container" id="editor-output-container">
+            <textarea class="code-in"  name="code"></textarea>
+            <pre class="code-out" ></pre>
         </div>
         <button id="run-button">Run</button>
     </div>
@@ -72,7 +78,7 @@
         const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
             lineNumbers: true,
             mode: 'javascript',
-            viewportMargin: Infinity // Ensures the editor size matches the specified height
+            viewportMargin: Infinity
         });
 
         document.getElementById('run-button').addEventListener('click', () => {
