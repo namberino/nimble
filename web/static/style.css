@@ -33,9 +33,16 @@ body {
     border: 1px solid #ccc;
     box-sizing: border-box;
     overflow-y: auto;
-    color: black;
-    padding: 10px;
+    /* color: black; */
+    /* padding: 10px; */
     border-radius: 0.5rem;
+}
+.CodeMirror-gutter.CodeMirror-linenumbers {
+    /* background-color: #fff; */
+    padding-right: 10px;
+}
+.CodeMirror-gutter-elt {
+    padding: 0 0 0 0;
 }
 .code-out {
     flex: 1;
