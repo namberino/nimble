@@ -1,5 +1,6 @@
 CC = $(shell which clang++)
 CC ?= $(shell which g++) # fallback compiler
+PY3 = $(shell which python3)
 
 CPP_SRC = $(wildcard src/*.cpp)
 HEADERS = $(wildcard include/*.hpp)
@@ -43,4 +44,7 @@ release: clean compile
 debug: CFLAGS += $(DEBUG_CFLAGS)
 debug: clean compile
 
-.PHONY: compile run clean test bench
+web: compile
+	$(PY3) web/app.py
+
+.PHONY: compile run clean test bench release debug web
