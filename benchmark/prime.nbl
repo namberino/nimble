@@ -1,6 +1,6 @@
 fun is_prime(n)
 {
-    for (mut i = 2; i < n / 2 + 1; i = i + 1)
+    for (mut i = 2; i < n / 2 + 1; i += 1)
     {
         if (n % i == 0)
             return 0;
@@ -11,9 +11,9 @@ fun is_prime(n)
 mut start = clock();
 mut num_primes = 0;
 
-for (mut i = 2; i < 10001; i = i + 1)
+for (mut i = 2; i < 10001; i += 1)
 {
-    num_primes = num_primes + is_prime(i);
+    num_primes += is_prime(i);
 }
 
 print(num_primes);

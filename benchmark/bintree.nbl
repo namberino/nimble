@@ -8,7 +8,7 @@ class Tree
         if (depth > 0)
         {
             mut item2 = item + item;
-            depth = depth - 1;
+            depth -= 1;
             this.left = Tree(item2 - 1, depth);
             this.right = Tree(item2, depth);
         }
@@ -47,8 +47,8 @@ mut d = 0;
 
 while (d < max_depth)
 {
-    iterations = iterations * 2;
-    d = d + 1;
+    iterations *= 2;
+    d += 1;
 }
 
 mut depth = min_depth;
@@ -60,16 +60,16 @@ while (depth < stretch_depth)
 
     while (i <= iterations)
     {
-        check = check + Tree(i, depth).check() + Tree(-i, depth).check();
-        i = i + 1;
+        check += Tree(i, depth).check() + Tree(-i, depth).check();
+        i += 1;
     }
 
     print("Num trees: " + iterations * 2);
     print("Depth: " + depth);
     print("Check: " + check);
 
-    iterations = iterations / 4;
-    depth = depth + 2;
+    iterations /= 4;
+    depth += 2;
 }
 
 print("");
