@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nimble Code Runner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+        }
+        #editor-output-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 10px;
+        }
+        #code, #output {
+            width: 50%;
+            height: 300px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        #code {
+            padding: 10px;
+        }
+        #output {
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        #run-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #run-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="editor-output-container">
+            <textarea id="code" name="code"></textarea>
+            <pre id="output"></pre>
+        </div>
+        <button id="run-button">Run</button>
+    </div>
+
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            lineNumbers: true,
+            mode: 'javascript',
+            viewportMargin: Infinity // Ensures the editor size matches the specified height
+        });
+
+        document.getElementById('run-button').addEventListener('click', () => {
+            const code = editor.getValue();
+            fetch('/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').textContent = data.output;
+            });
+        });
+    </script>
+</body>
+</html>
