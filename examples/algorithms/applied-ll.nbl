@@ -1,0 +1,48 @@
+class Node
+{
+    init(key, info)
+    {
+        this.key = key;
+        this.info = info;
+        this.next = nil;
+    }
+}
+
+class LinkedList
+{
+    init()
+    {
+        this.head = nil;
+    }
+
+    search(value)
+    {
+        mut p = this.head;
+
+        while (p != nil)
+        {
+            if (p.key == value)
+            {
+                print("Student found: " + value + " | GPA: " + p.info);
+                break;
+            }
+
+            p = p.next;
+        }
+    }
+}
+
+mut ll = LinkedList();
+
+ll.head = Node("stu1234", 7.5);
+mut second = Node("stu2345", 8.3);
+mut third = Node("stu3456", 7.6);
+mut fourth = Node("stu4567", 9);
+mut fifth = Node("stu5678", 9.5);
+
+ll.head.next = second;
+second.next = third;
+third.next = fourth;
+fourth.next = fifth;
+
+ll.search("stu3456");
