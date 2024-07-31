@@ -5,7 +5,7 @@
 # Licensed under Apache License v2.0
 #------------------------------------#
 
-declare -A elapsed_times # associative array
+declare -A elapsed_times # associative array (basically a dictionary)
 
 NBL_FILES=$(find benchmark -name '*.nbl')
 
