@@ -75,14 +75,14 @@ If you're using `make`:
 
 ## Benchmark
 
-Average elapsed time of computationally intensive programs:
+Elapsed time of computationally intensive programs:
 
-| Program | AET |
-| --- | :---: |
-| bintree.nbl | 82s |
-| count.nbl | 57s |
-| fibonacci.nbl | 77s |
-| prime.nbl | 35s |
+| Program | Mininum | Average | Maximum |
+| --- | :---: | :---: | :---: |
+| bintree.nbl | 1.13 | 1.19 | 1.30 |
+| count.nbl | 0.57 | 0.61 | 0.64 |
+| fibonacci.nbl | 1.01 | 1.04 | 1.10 |
+| prime.nbl | 0.34 | 0.34 | 0.35 |
 
 ## Documentation
 
