@@ -64,7 +64,7 @@ Before compilation, you'll need to have these tools installed first:
 | [tests](tests/) | Test cases |
 | [tools](tools/) | Useful tools and scripts |
 
-## Compiling
+## Compiling and Running
 
 If you're using `make`:
 - `make compile` to compile the program into the `bin/` directory
@@ -72,6 +72,8 @@ If you're using `make`:
 - `make clean` to clean up the object and binary files
 - `make test` to run test cases
 - `make bench` to run benchmarks
+
+You can run the interpreter with `make run` or `./bin/nimble <filename>.nbl`
 
 ## Benchmark
 
