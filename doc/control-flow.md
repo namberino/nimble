@@ -206,3 +206,61 @@ for (;;)
     // block
 }
 ```
+
+Since for loops are pretty similar to while loops, we can translate the for loops to while loops to simplify the work.
+
+```cpp
+std::shared_ptr<Stmt> Parser::for_statement()
+{
+    try 
+    {
+        consume(LEFT_PAREN, "Expected '(' after 'for' statement");
+        std::shared_ptr<Stmt> initializer;
+
+        if (match(SEMICOLON)) // initializer omitted
+            initializer = nullptr;
+        else if (match(MUT)) // variable declaration
+            initializer = mut_declaration();
+        else // expression
+            initializer = expression_statement();
+
+        std::shared_ptr<Expr> condition = nullptr;
+        if (!check(SEMICOLON)) // clause not omitted
+            condition = expression();
+        consume(SEMICOLON, "Expected ';' after loop condition");
+        
+        std::shared_ptr<Expr> increment = nullptr;
+        if (!check(RIGHT_PAREN)) // clause not omitted
+            increment = expression();
+        consume(RIGHT_PAREN, "Expected ')' after 'for' clauses");
+
+        std::shared_ptr<Stmt> body = statement();
+        if (increment != nullptr)
+            // executes after the body in each iteration of the loop
+            // replace body with a block that contains the original body with an expression statement that evaluates the increment
+            body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{body, std::make_shared<ExpressionStmt>(increment)});
+
+        if (condition == nullptr)
+            // true if condition is omitted
+            condition = std::make_shared<LiteralExpr>(true);
+        body = std::make_shared<WhileStmt>(condition, body); // build for loop with while loop
+
+        if (initializer != nullptr) // runs once
+            // replace statement with a block that runs the initializer and execute the loop
+            body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{initializer, body});
+
+        return body;
+    }
+    catch (...) // throw error for trying to use break outside a loop
+    {
+        loop_depth--;
+        throw;
+    }
+
+    loop_depth--;
+}
+```
+
+We can check for omission of the clauses in the parser's for loop function. Then, once we've gotten all of those clauses, we can construct AST nodes that represents the for loop by using existing statement implementations.
+
+The increment will execute after the the body in each iteration. We replace the body with a block that contains the original body followed by an expression statement that evaluates the increment. Then we take the condition and the body and build a while statement around the 2, if the condition is omitted, we evaluate the condition to true. Then the initializer will run once, we replace the whole body with a block statement that runs the initializer and execute the loop.

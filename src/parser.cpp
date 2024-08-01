@@ -127,7 +127,7 @@ std::shared_ptr<Stmt> Parser::for_statement()
         std::shared_ptr<Stmt> body = statement();
         if (increment != nullptr)
             // executes after the body in each iteration of the loop
-            // replace body with a block that contains the body with an expression statement that evaluates the increment
+            // replace body with a block that contains the original body with an expression statement that evaluates the increment
             body = std::make_shared<BlockStmt>(std::vector<std::shared_ptr<Stmt>>{body, std::make_shared<ExpressionStmt>(increment)});
 
         if (condition == nullptr)
