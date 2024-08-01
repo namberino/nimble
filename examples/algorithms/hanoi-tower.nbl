@@ -1,0 +1,19 @@
+mut count = 0;
+
+fun tower_of_hanoi(n, A, B, C)
+{
+    if (n == 1)
+    {
+        count += 1;
+        print("Step " + count + ": Move disk 1 from rod " + A + " to rod " + B);
+        return;
+    }
+
+    tower_of_hanoi(n - 1, A, C, B);
+    count += 1;
+    print("Step " + count + ": Move disk " + n + " from rod " + A + " to rod " + B);
+    tower_of_hanoi(n - 1, C, B, A);
+}
+
+mut n = 3;
+tower_of_hanoi(n, "A", "B", "C");
