@@ -1,0 +1,57 @@
+class Node
+{
+    init(value)
+    {
+        this.vertex = value;
+        this.next = nil;
+    }
+}
+
+class Graph
+{
+    init(num)
+    {
+        this.V = num;
+        this.graph = [];
+        
+        for (mut i = 0; i < this.V; i += 1)
+        {
+            this.graph[i] = nil;
+        }
+    }
+
+    add_edge(data1, data2)
+    {
+        mut node = Node(data2);
+        node.next = this.graph[data1];
+        this.graph[data1] = node;
+
+        node = Node(data1);
+        node.next = this.graph[data2];
+        this.graph[data2] = node;
+    }
+
+    print_graph()
+    {
+        print("Vertices:");
+        for (mut i = 0; i < this.V; i += 1)
+        {
+            mut temp = this.graph[i];
+
+            while (temp)
+            {
+                print("Vertex " + i + " -> " + temp.vertex);
+                temp = temp.next;
+            }
+        }
+    }
+}
+
+mut g = Graph(4);
+
+g.add_edge(1, 2);
+g.add_edge(1, 3);
+g.add_edge(1, 4);
+g.add_edge(2, 3);
+
+g.print_graph();
