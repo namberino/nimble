@@ -11,6 +11,10 @@ DEP_FLAGS = -MMD -MP
 
 RELEASE_CFLAGS = -O2
 DEBUG_CFLAGS = -g -O0
+DEP_FLAGS = -MMD -MP
+
+RELEASE_CFLAGS = -O2
+DEBUG_CFLAGS = -g -O0
 
 compile: bin/nimble
 
