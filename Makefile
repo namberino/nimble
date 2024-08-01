@@ -1,6 +1,6 @@
 CC = $(shell which clang++)
 CC ?= $(shell which g++) # fallback compiler
-PY3 = $(shell which python3)
+PY3 = $(shell which python3) # python interpreter (for flask)
 
 CPP_SRC = $(wildcard src/*.cpp)
 HEADERS = $(wildcard include/*.hpp)
