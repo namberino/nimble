@@ -205,3 +205,52 @@ std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 ```
 
 We take a interpret-time representation of the function and convert it into runtime representation. The function declaration also binds objects to a new variable. So we also need to create a new binding to the current environment and store it here.
+
+## Function return
+
+```cpp
+ReturnStmt::ReturnStmt(Token keyword, std::shared_ptr<Expr> value)
+    : keyword{std::move(keyword)}, value{std::move(value)} {}
+
+std::any ReturnStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitReturnStmt(shared_from_this());
+}
+```
+
+By default, the functions in NIMBLE will return `nil` if there's no return statement. For the return statement, we need to keep the return keyword (for error) and the value being returned.
+
+```cpp
+std::shared_ptr<Stmt> Parser::return_statement()
+{
+    Token keyword = previous();
+    std::shared_ptr<Expr> value = nullptr;
+    
+    if (!check(SEMICOLON))
+        value = expression();
+    consume(SEMICOLON, "Expected ';' after return value");
+
+    return std::make_shared<ReturnStmt>(keyword, value);
+}
+```
+
+When we parse the return statement, we also parse the value being returned, if there's no value being return, we'll just return `nil`, which is `nullptr`. Then we create a return statement node.
+
+```cpp
+struct NblReturn
+{
+    const std::any value;
+};
+
+std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
+{
+    std::any value = nullptr;
+
+    if (stmt->value != nullptr)
+        value = evaluate(stmt->value);
+
+    throw NblReturn{value};
+}
+```
+
+This allows us to evaluate the return value and throw a return exception. We throw an exception because we need to unwind all the way back to the code that began executing the function body, which is where we'll catch the exception.
