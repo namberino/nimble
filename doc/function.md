@@ -142,3 +142,66 @@ class NblCallable
 ```
 
 With this callable class, we can implement a function class for our language, you can check the implementation of it [here](../src/function.cpp).
+
+## Function declaration
+
+```cpp
+FunctionStmt::FunctionStmt(Token name, std::shared_ptr<FunctionExpr> fn)
+    : name{std::move(name)}, fn{std::move(fn)} {}
+
+std::any FunctionStmt::accept(StmtVisitor& visitor)
+{
+    return visitor.visitFunctionStmt(shared_from_this());
+}
+
+FunctionExpr::FunctionExpr(std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body)
+    : parameters(std::move(parameters)), body(std::move(body)) {}
+
+std::any FunctionExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitFunctionExpr(shared_from_this());
+}
+```
+
+The function expresison takes in 2 parameters, a list of function parameters (the names) and the body of the function. I declared 2 classes, 1 for statements and 1 for expression. This helps with separating the 2 and allow us to implement functions for classes too.
+
+```cpp
+std::shared_ptr<FunctionExpr> Parser::function_body(std::string kind)
+{
+    consume(LEFT_PAREN, "Expected '(' after " + kind + " name");
+
+    std::vector<Token> parameters;
+    if (!check(RIGHT_PAREN))
+    {
+        do
+        {
+            if (parameters.size() >= 255)
+                error(peek(), "Can't have more than 255 parameters");
+
+            parameters.push_back(consume(IDENTIFIER, "Expected parameter name"));
+        } while (match(COMMA));
+    }
+    consume(RIGHT_PAREN, "Expected ')' after parameters");
+
+    consume(LEFT_BRACE, "Expected '{' before " + kind + " body");
+    std::vector<std::shared_ptr<Stmt>> body = block();
+
+    return std::make_shared<FunctionExpr>(std::move(parameters), std::move(body));
+}
+```
+
+We'll check for the correct syntax of the function along with the correct arity size. Then we can execute the body with `block()` and create a function expression with the parameter list and body.
+
+For interpreting, we can utilize the function class that is implemented [here](../src/function.cpp). That class allows us to represent functions.
+
+```cpp
+std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
+{
+    std::string func_name = stmt->name.lexeme;
+    auto function = std::make_shared<NblFunction>(func_name, stmt->fn, environment, false);
+    environment->define(func_name, function);
+    return {};
+}
+```
+
+We take a interpret-time representation of the function and convert it into runtime representation. The function declaration also binds objects to a new variable. So we also need to create a new binding to the current environment and store it here.

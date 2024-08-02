@@ -7,11 +7,13 @@
 
 #include "function.hpp"
 
+// get the name, declaration, closure and verify if it is an initializer
 NblFunction::NblFunction(std::string name, std::shared_ptr<FunctionExpr> declaration, std::shared_ptr<Environment> closure, bool is_initializer)
     : name(name), declaration(declaration), closure(closure), is_initializer(is_initializer) {}
 
 std::shared_ptr<NblFunction> NblFunction::bind(std::shared_ptr<NblInstance> instance)
 {
+    // bind the function to a closure
     auto environment = std::make_shared<Environment>(closure);
     environment->define("this", instance);
     return std::make_shared<NblFunction>(name, declaration, environment, is_initializer);
@@ -25,7 +27,7 @@ int NblFunction::arity()
 
 std::any NblFunction::call(Interpreter& interpreter, std::vector<std::any> arguments)
 {
-    // create a new environment
+    // create a new environment at each function call
     auto environment = std::make_shared<Environment>(closure);
 
     // add each parameter to the environment
