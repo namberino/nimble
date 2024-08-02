@@ -34,6 +34,17 @@ The `-` operator can also be used to negate a number
 
 All these operator works on numbers only. Except for the `+` operator, which can work on 2 strings, 2 numbers, or 1 string and 1 number.
 
+## Compound operations
+
+NIMBLE supports compound operation for 4 different arithmetic symbols:
+
+```nimble
+add1 += 1;
+sub1 -= 1;
+mul1 *= 1;
+div1 /= 1;
+```
+
 ### Comparison
 
 These operators return boolean. They can be used to compare values
