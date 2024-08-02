@@ -254,3 +254,19 @@ std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
 ```
 
 This allows us to evaluate the return value and throw a return exception. We throw an exception because we need to unwind all the way back to the code that began executing the function body, which is where we'll catch the exception.
+
+## Local functions
+
+NIMBLE also supports local functions inside another functions. The local functions must be able to access the local variables in its parent function. We need to enable parent function body access for the local function, that means implementing a chain rule capable of supporting that feature.
+
+Remember those closures variables from earlier? We utilize closures to hold onto data structures surrounding the function declaration. In the function class, we store the closure environment. When we create a new function, we capture the current environment, which contains all of that environments variables. The variables of that closure is active when the function is declared. Then when we call that function, we use the parent function's environment (which is the closure environment) instead of the global environment. This creates a chain that goes through the environment where the function is declared out to the global scope.
+
+```
+global scope
+      ^
+      |
+parent function body
+      ^
+      |
+child function body
+```
