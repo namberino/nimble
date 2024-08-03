@@ -19,6 +19,7 @@
 
 namespace fs = std::filesystem;
 
+// function types for resolution
 enum class FunctionType
 {
     NONE,
@@ -27,6 +28,7 @@ enum class FunctionType
     METHOD
 };
 
+// class types for resolution
 enum class ClassType
 {
     NONE,
