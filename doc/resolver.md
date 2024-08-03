@@ -193,3 +193,33 @@ std::any Resolver::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 ```
 
 We can resolve expression that assign to variables like this. Resolve the expression's assigned value (in case it also contains references to other variables), and use `resolve_local()` to resolve the variable being assigned to.
+
+```cpp
+std::any Resolver::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
+{
+    declare(stmt->name);
+    define(stmt->name);
+
+    resolve_function(stmt->fn, FunctionType::FUNCTION);
+    return {};
+}
+
+void Resolver::resolve_function(std::shared_ptr<FunctionExpr> fn, FunctionType type)
+{
+    FunctionType enclosing_func = current_func;
+    current_func = type;
+
+    begin_scope();
+    for (const Token& param : fn->parameters)
+    {
+        declare(param);
+        define(param);
+    }
+    resolve(fn->body);
+    end_scope();
+
+    current_func = enclosing_func;
+}
+```
+
+Functions will need to bind names and create a new scope. The name of the function is bound to the surrounding scope where the function is declared. We also bind the function's parameters into the function's scope. We handle the function statement by declaring and defining the function's name in the current scope before resolving. This lets a function recursively refer to itself inside its own body. We will resolve the function with `resolve_function()`. We sore the enclosing function and the function type. This allows us to declare inner functions inside another function. We then create a new scope and bind the variables for each of the function parameters. After the parameters are done, we resolve the function's body and end scope.
