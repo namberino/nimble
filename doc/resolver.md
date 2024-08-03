@@ -222,4 +222,73 @@ void Resolver::resolve_function(std::shared_ptr<FunctionExpr> fn, FunctionType t
 }
 ```
 
-Functions will need to bind names and create a new scope. The name of the function is bound to the surrounding scope where the function is declared. We also bind the function's parameters into the function's scope. We handle the function statement by declaring and defining the function's name in the current scope before resolving. This lets a function recursively refer to itself inside its own body. We will resolve the function with `resolve_function()`. We sore the enclosing function and the function type. This allows us to declare inner functions inside another function. We then create a new scope and bind the variables for each of the function parameters. After the parameters are done, we resolve the function's body and end scope.
+Functions will need to bind names and create a new scope. The name of the function is bound to the surrounding scope where the function is declared. We also bind the function's parameters into the function's scope. We handle the function statement by declaring and defining the function's name in the current scope before resolving. This lets a function recursively refer to itself inside its own body. We will resolve the function with `resolve_function()`. We store the enclosing function and the function type to keep track of how many function enclosings we're in. When we're done resolving the function body, we restore the original field to that value. This allows us to declare inner functions inside another function. We then create a new scope and bind the variables for each of the function parameters. After the parameters are done, we resolve the function's body and end scope. 
+
+We'll also need a visit function for other nodes in the AST. You can checkout the implementation for each of those nodes [here](../src/resolver.cpp).
+
+## Resolution interpretation
+
+Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.
+
+```cpp
+std::map<std::shared_ptr<Expr>, int> locals;
+
+void Interpreter::resolve(std::shared_ptr<Expr> expr, int depth)
+{
+    locals[expr] = depth;
+}
+```
+
+We store that number on a map called `locals`. This allows us to access the resolution information when the variable expression or assignment expression is executed.
+
+```cpp
+std::any Interpreter::visitMutExpr(std::shared_ptr<MutExpr> expr)
+{
+    return lookup_mut(expr->name, expr);
+}
+
+std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
+{
+    auto element = locals.find(expr);
+
+    if (element != locals.end())
+    {
+        int distance = element->second;
+        return environment->get_at(distance, name.lexeme);
+    }
+    else
+    {
+        return globals->get(name);
+    }
+}
+```
+
+So we can lookup the variables like this using the `lookup_mut()` function. Because we only resolved local variables, if we don't find the element in in the map, it must be a global. If we do find it, then it's a local and we can call `get_at()` to evaluate it.
+
+```cpp
+std::shared_ptr<Environment> Environment::ancestor(int distance)
+{
+    std::shared_ptr<Environment> environment = shared_from_this();
+
+    for (int i = 0; i < distance; i++)
+        environment = environment->enclosing;
+
+    return environment;
+}
+
+std::any Environment::get_at(int distance, const std::string& name)
+{
+    return ancestor(distance)->values[name];
+}
+```
+
+The `get()` function of environment dynamically walks the chain of enclosing environments, searching for the variable. Since we know exactly which environment in the chain will the variable through the `distance` variable, we can call `ancestor()` to walk through the chain a fixed number of times and return the environment. Then `get_at()` returns the value of the variable in the environment's map.
+
+```cpp
+void Environment::assign_at(int distance, const Token& name, std::any value)
+{
+    ancestor(distance)->values[name.lexeme] = std::move(value);
+}
+```
+
+We can do the same thing for assignment expressions with the `assign_at()` function. 
