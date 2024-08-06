@@ -57,7 +57,10 @@ std::any NativeInput::call(Interpreter& interpreter, std::vector<std::any> args)
     double result;
 
     if (!(iss >> result)) // input is not a double
+    {
+        std::cout << "not double\n";
         return input;
+    }
 
     return result;
 }

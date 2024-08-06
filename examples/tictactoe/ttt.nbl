@@ -1,0 +1,135 @@
+mut BOARD_SIZE = 3;
+
+fun place_move(row, col, player, board)
+{
+    if (board[row][col] != " ")
+    {
+        print("Position is not empty");
+        return -1;
+    }
+
+    board[row][col] = player;
+    return 0;
+}
+
+fun initialize_board(board)
+{
+    for (mut i = 0; i < BOARD_SIZE; i += 1)
+    {
+        for (mut j = 0; j < BOARD_SIZE; j += 1)
+        {
+            board[i][j] = " ";
+        }
+    }
+
+    return board;
+}
+
+fun print_board(board)
+{
+    print(" " + board[0][0] + " | " + board[0][1] + " | " + board[0][2] + " ");
+    print("---|---|---");
+    print(" " + board[1][0] + " | " + board[1][1] + " | " + board[1][2] + " ");
+    print("---|---|---");
+    print(" " + board[2][0] + " | " + board[2][1] + " | " + board[2][2] + " ");
+}
+
+fun check_winner(board)
+{
+    // horizontal
+    for (mut i = 0; i < BOARD_SIZE; i += 1)
+    {
+        if (board[i][0] == board[i][1] and board[i][1] == board[i][2])
+            return board[i][0];
+    }
+
+    // vertical
+    for (mut i = 0; i < BOARD_SIZE; i += 1)
+    {
+        if (board[0][i] == board[1][i] and board[1][i] == board[2][i])
+            return board[i][0];
+    }
+
+    // diagonal
+    if (board[0][0] == board[1][1] and board[1][1] == board[2][2])
+        return board[0][0];
+    if (board[0][2] == board[1][1] and board[1][1] == board[2][0])
+        return board[0][2];
+
+    return " ";
+}
+
+fun is_full(board)
+{
+    for (mut i = 0; i < BOARD_SIZE; i += 1)
+    {
+        for (mut j = 0; j < BOARD_SIZE; j += 1)
+        {
+            if (board[i][j] = " ")
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+mut board = [];
+
+for (mut i = 0; i < BOARD_SIZE; i += 1)
+{
+    mut li = [];
+
+    for (mut j = 0; j < BOARD_SIZE; j += 1)
+    {
+        li[j] = nil;
+    }
+
+    board[i] = li;
+}
+
+mut is_player1 = true;
+
+mut board = initialize_board(board);
+print_board(board);
+
+while (true)
+{
+    mut winner = check_winner(board);
+
+    if (is_full(board))
+    {
+        print("Draw");
+        break;
+    }
+
+    if (is_player1)
+    {
+        mut row1 = input("Enter row: ");
+        mut col1 = input("Enter col: ");
+
+        row1 -= 1;
+        col1 -= 1;
+
+        if (place_move(row1, col1, "X", board) == 0)
+        {
+            is_player1 = false;
+            print_board(board);
+        }
+    }
+    else
+    {
+        mut row2 = input("Enter row: ");
+        mut col2 = input("Enter col: ");
+
+        row2 -= 1;
+        col2 -= 1;
+
+        if (place_move(row2, col2, "O", board) == 0)
+        {
+            is_player1 = true;
+            print_board(board);
+        }
+    }
+}
