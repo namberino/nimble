@@ -226,6 +226,54 @@ Functions will need to bind names and create a new scope. The name of the functi
 
 We'll also need a visit function for other nodes in the AST. You can checkout the implementation for each of those nodes [here](../src/resolver.cpp).
 
+```cpp
+std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
+{
+    ClassType enclosing_class = current_class;
+    current_class = ClassType::CLASS;
+
+    declare(stmt->name);
+    define(stmt->name);
+
+    if (stmt->superclass != nullptr && stmt->name.lexeme == stmt->superclass->name.lexeme)
+        Error::error(stmt->superclass->name, "Classes can't inherit from themselves");
+    
+    if (stmt->superclass != nullptr)
+    {
+        current_class = ClassType::SUBCLASS;
+        resolve(stmt->superclass);
+    }
+
+    if (stmt->superclass != nullptr)
+    {
+        begin_scope();
+        scopes.back()["super"] = true;
+    }
+
+    begin_scope();
+    scopes.back()["this"] = true;
+    for (std::shared_ptr<FunctionStmt> method : stmt->methods)
+    {
+        FunctionType declaration = FunctionType::METHOD;
+
+        if (method->name.lexeme == "init")
+            declaration = FunctionType::INITIALIZER;
+
+        resolve_function(method->fn, declaration);
+    }
+    end_scope();
+
+    if (stmt->superclass != nullptr)
+        end_scope(); // end superclass scope
+
+    current_class = enclosing_class;
+
+    return {};
+}
+```
+
+Class statements also follow a similar trajectory to function statements. Since NIMBLE allows superclasses, we do the same thing we did for functions, we use the `enclosing_class` to store the enclosing class type. Then we declare and define the class by name. We then check if the superclass that the current class is inheriting from is the same as the current class's name, if it is then we throw an error. Then we check for superclasses, if there is a superclass, we have to resolve that superclass first before we begin the scope of the current class. Then we can work through the methods defined in the class, we make sure to handle the `init()` function a bit differently since it's an initializer. The declaration for the `init()` function will be an initializer function type. then we end scope of the class (if there's a superclass, we need ot make sure to also end the scope of the superclass too).
+
 ## Resolution interpretation
 
 Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.
