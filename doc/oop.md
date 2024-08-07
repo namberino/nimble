@@ -276,3 +276,13 @@ std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
 ```
 
 To interpret the this expression, we use the `lookup_mut()` function to grab the variable associated with the keyword.
+
+## Constructor
+
+The constructor does 2 things:
+- Allocate memory required for a new instance.
+- Initialize the instance with the user's parameters.
+
+When a new instance is created, we find the `init()` method. If we find one, we immediately bind and invoke it just like a normal method call. The argument list is forwarded along. Since we bind the init method before we call it, it has access to the "this".
+
+If a function is an initilizer, we return "this" if it is called. If the user try to return a value from the init method, we'll throw an error. But if the user use just the return keyword with no return value, we'll allow that and return "this" instead of `nil`.
