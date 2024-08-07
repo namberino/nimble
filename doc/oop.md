@@ -204,3 +204,19 @@ std::any GetExpr::accept(ExprVisitor& visitor)
     return visitor.visitGetExpr(shared_from_this());
 }
 ```
+
+Get expressions are used for accessing fields within an class's instance.
+
+```cpp
+std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
+{
+    std::any object = evaluate(expr->object);
+
+    if (object.type() == typeid(std::shared_ptr<NblInstance>))
+        return std::any_cast<std::shared_ptr<NblInstance>>(object)->get(expr->name);
+
+    throw RuntimeError(expr->name, "Only instances have properties");
+}
+```
+
+We try to evaluate the expression's object whose property is being accessed. Then we check if the object is an instance of a class. Because only instances can have properties, if we can't cast the object to an instance, we throw a runtime error. If it is an instance, we call the `get()` method from `NblInstance` to access the property. The `get()` method will throw an error if the field being accessed is undefined.
