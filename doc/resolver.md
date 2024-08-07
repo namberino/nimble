@@ -295,6 +295,22 @@ std::any Resolver::visitSetExpr(std::shared_ptr<SetExpr> expr)
 
 We'll also need to resolve the set expressions. We need to do the same thing like we did for the get expression. Since properties are looked up dynamically, we just need to resolve the object and the value being assigned to the specific property.
 
+```cpp
+std::any Resolver::visitThisExpr(std::shared_ptr<ThisExpr> expr)
+{
+    if (current_class == ClassType::NONE)
+    {
+        Error::error(expr->keyword, "Can't use 'this' outside of a class");
+        return {};
+    }
+    resolve_local(expr, expr->keyword);
+
+    return {};
+}
+```
+
+The this expression will first check if where in a class or not, if not then it will throw an error as you can't use this outside of a class. Then we can just resolve it like any other local variables, using "this" as the name for the variable.
+
 ## Resolution interpretation
 
 Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.

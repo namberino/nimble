@@ -251,3 +251,28 @@ std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
 ```
 
 We try to evaluate the expression's object whose field is being accessed. Then we check if the object is an instance of a class. Because only instances can have properties, if we can't cast the object to an instance, we throw a runtime error. If it is an instance, we call the `set()` method from `NblInstance` to access the property. The `set()` method will throw an error if the field being modified is undefined.
+
+## The "this" keyword
+
+The "this" keyword allows us to access the fields and methods inside a class inside the class. It will be bound to the instance instead of the class.
+
+```cpp
+ThisExpr::ThisExpr(Token keyword)
+    : keyword(std::move(keyword)) {}
+
+std::any ThisExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitThisExpr(shared_from_this());
+}
+```
+
+The this expression just needs to hold a keyword, which the parser can recognized. We declare "this" as a variable in that environment and bind it to the instance that the method is being accessed from.
+
+```cpp
+std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
+{
+    return lookup_mut(expr->keyword, expr);
+}
+```
+
+To interpret the this expression, we use the `lookup_mut()` function to grab the variable associated with the keyword.
