@@ -205,7 +205,7 @@ std::any GetExpr::accept(ExprVisitor& visitor)
 }
 ```
 
-Get expressions are used for accessing fields within an class's instance.
+Get expressions are used for accessing fields within a class's instance.
 
 ```cpp
 std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
@@ -220,3 +220,34 @@ std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
 ```
 
 We try to evaluate the expression's object whose property is being accessed. Then we check if the object is an instance of a class. Because only instances can have properties, if we can't cast the object to an instance, we throw a runtime error. If it is an instance, we call the `get()` method from `NblInstance` to access the property. The `get()` method will throw an error if the field being accessed is undefined.
+
+## Set expression
+
+```cpp
+SetExpr::SetExpr(std::shared_ptr<Expr> object, Token name, std::shared_ptr<Expr> value)
+    : object(std::move(object)), name(std::move(name)), value(std::move(value)) {}
+
+std::any SetExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitSetExpr(shared_from_this());
+}
+```
+
+Set expressions are used for setting fields' values within a class's instance.
+
+```cpp
+std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
+{
+    std::any object = evaluate(expr->object);
+
+    if (object.type() != typeid(std::shared_ptr<NblInstance>))
+        throw RuntimeError(expr->name, "Only instances have fields");
+
+    std::any value = evaluate(expr->value);
+    std::any_cast<std::shared_ptr<NblInstance>>(object)->set(expr->name, value);
+
+    return value;
+}
+```
+
+We try to evaluate the expression's object whose field is being accessed. Then we check if the object is an instance of a class. Because only instances can have properties, if we can't cast the object to an instance, we throw a runtime error. If it is an instance, we call the `set()` method from `NblInstance` to access the property. The `set()` method will throw an error if the field being modified is undefined.
