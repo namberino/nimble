@@ -192,3 +192,15 @@ std::string NblInstance::to_string()
 ```
 
 This instance object is a runtime representation of an instance. We also have the `get()` and `set()` methods which is mainly used for getting and setting fields within the created instance. Since all class fields in NIMBLE is public, this makes implementing the get and set methods for the instance object a lot easier. We just find the method and get the value or set the value of it without having to worry about checking for access modifiers.
+
+## Get expression
+
+```cpp
+GetExpr::GetExpr(std::shared_ptr<Expr> object, Token name)
+    : object(std::move(object)), name(std::move(name)) {}
+
+std::any GetExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitGetExpr(shared_from_this());
+}
+```

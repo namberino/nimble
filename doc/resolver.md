@@ -274,6 +274,27 @@ std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
 
 Class statements also follow a similar trajectory to function statements. Since NIMBLE allows superclasses, we do the same thing we did for functions, we use the `enclosing_class` to store the enclosing class type. Then we declare and define the class by name. We then check if the superclass that the current class is inheriting from is the same as the current class's name, if it is then we throw an error. Then we check for superclasses, if there is a superclass, we have to resolve that superclass first before we begin the scope of the current class. Then we can work through the methods defined in the class, we make sure to handle the `init()` function a bit differently since it's an initializer. The declaration for the `init()` function will be an initializer function type. then we end scope of the class (if there's a superclass, we need ot make sure to also end the scope of the superclass too).
 
+```cpp
+std::any Resolver::visitGetExpr(std::shared_ptr<GetExpr> expr)
+{
+    resolve(expr->object);
+    return {};
+}
+```
+
+The get expression is used for getting properties from an object instance, it's pretty simple. Since properties are looked up dynamically, we just have to resolve the object, we don't need to resolve the properties.
+
+```cpp
+std::any Resolver::visitSetExpr(std::shared_ptr<SetExpr> expr)
+{
+    resolve(expr->value);
+    resolve(expr->object);
+    return {};
+}
+```
+
+We'll also need to resolve the set expressions. We need to do the same thing like we did for the get expression. Since properties are looked up dynamically, we just need to resolve the object and the value being assigned to the specific property.
+
 ## Resolution interpretation
 
 Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.
