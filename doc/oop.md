@@ -286,3 +286,34 @@ The constructor does 2 things:
 When a new instance is created, we find the `init()` method. If we find one, we immediately bind and invoke it just like a normal method call. The argument list is forwarded along. Since we bind the init method before we call it, it has access to the "this".
 
 If a function is an initilizer, we return "this" if it is called. If the user try to return a value from the init method, we'll throw an error. But if the user use just the return keyword with no return value, we'll allow that and return "this" instead of `nil`.
+
+## Super expression
+
+```cpp
+SuperExpr::SuperExpr(Token keyword, Token method)
+    : keyword(std::move(keyword)), method(std::move(method)) {}
+
+std::any SuperExpr::accept(ExprVisitor& visitor)
+{
+    return visitor.visitSuperExpr(shared_from_this());
+}
+```
+
+The super expression is pretty similar to the this expression. It's a "magic" variable that allows us to access methods of the superclass. The super expression just contain the super keyword and the name of the method being looked up.
+
+```cpp
+std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
+{
+    int distance = locals[expr];
+    auto superclass = std::any_cast<std::shared_ptr<NblClass>>(environment->get_at(distance, "super"));
+    auto obj = std::any_cast<std::shared_ptr<NblInstance>>(environment->get_at(distance - 1, "this"));
+    std::shared_ptr<NblFunction> method = superclass->find_method(expr->method.lexeme);
+
+    if (method == nullptr) // can't find method
+        throw RuntimeError(expr->method, "Undefined property '" + expr->method.lexeme + "'");
+
+    return method->bind(obj);
+}
+```
+
+We're basically get the distance of the expression in the local environment. We also create a superclass object (for finding the methods) and an object object (for binding the method). If we can't find the method, we throw a runtime error because that means the property is undefined.

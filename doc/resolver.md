@@ -311,6 +311,22 @@ std::any Resolver::visitThisExpr(std::shared_ptr<ThisExpr> expr)
 
 The this expression will first check if where in a class or not, if not then it will throw an error as you can't use this outside of a class. Then we can just resolve it like any other local variables, using "this" as the name for the variable.
 
+```cpp
+std::any Resolver::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
+{
+    // check if we're currently in a scope where super is allowed
+    if (current_class == ClassType::NONE)
+        Error::error(expr->keyword, "Can't use 'super' outside a class");
+    else if (current_class != ClassType::SUBCLASS)
+        Error::error(expr->keyword, "Can't use 'super' in a class with no superclass");
+
+    resolve_local(expr, expr->keyword);
+    return {};
+}
+```
+
+When the class inherit from a superclass, we create a new scope surrounding its methods. We define the "super" there. For resolving, we need to make sure that the user can't use the super keyword outside of a class or in a class that has no superclass. Then we can resolve the keyword locally.
+
 ## Resolution interpretation
 
 Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.
