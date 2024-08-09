@@ -274,6 +274,59 @@ std::any Resolver::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
 
 Class statements also follow a similar trajectory to function statements. Since NIMBLE allows superclasses, we do the same thing we did for functions, we use the `enclosing_class` to store the enclosing class type. Then we declare and define the class by name. We then check if the superclass that the current class is inheriting from is the same as the current class's name, if it is then we throw an error. Then we check for superclasses, if there is a superclass, we have to resolve that superclass first before we begin the scope of the current class. Then we can work through the methods defined in the class, we make sure to handle the `init()` function a bit differently since it's an initializer. The declaration for the `init()` function will be an initializer function type. then we end scope of the class (if there's a superclass, we need ot make sure to also end the scope of the superclass too).
 
+```cpp
+std::any Resolver::visitGetExpr(std::shared_ptr<GetExpr> expr)
+{
+    resolve(expr->object);
+    return {};
+}
+```
+
+The get expression is used for getting properties from an object instance, it's pretty simple. Since properties are looked up dynamically, we just have to resolve the object, we don't need to resolve the properties.
+
+```cpp
+std::any Resolver::visitSetExpr(std::shared_ptr<SetExpr> expr)
+{
+    resolve(expr->value);
+    resolve(expr->object);
+    return {};
+}
+```
+
+We'll also need to resolve the set expressions. We need to do the same thing like we did for the get expression. Since properties are looked up dynamically, we just need to resolve the object and the value being assigned to the specific property.
+
+```cpp
+std::any Resolver::visitThisExpr(std::shared_ptr<ThisExpr> expr)
+{
+    if (current_class == ClassType::NONE)
+    {
+        Error::error(expr->keyword, "Can't use 'this' outside of a class");
+        return {};
+    }
+    resolve_local(expr, expr->keyword);
+
+    return {};
+}
+```
+
+The this expression will first check if where in a class or not, if not then it will throw an error as you can't use this outside of a class. Then we can just resolve it like any other local variables, using "this" as the name for the variable.
+
+```cpp
+std::any Resolver::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
+{
+    // check if we're currently in a scope where super is allowed
+    if (current_class == ClassType::NONE)
+        Error::error(expr->keyword, "Can't use 'super' outside a class");
+    else if (current_class != ClassType::SUBCLASS)
+        Error::error(expr->keyword, "Can't use 'super' in a class with no superclass");
+
+    resolve_local(expr, expr->keyword);
+    return {};
+}
+```
+
+When the class inherit from a superclass, we create a new scope surrounding its methods. We define the "super" there. For resolving, we need to make sure that the user can't use the super keyword outside of a class or in a class that has no superclass. Then we can resolve the keyword locally.
+
 ## Resolution interpretation
 
 Each time the resolver visits a variable, it tells the interpreter how many scopes there are between the current scope and the scope where the variable is defined. This is basically  the number of environments between the current one and the enclosing one where the interpreter can find the variable's value. The resolver pass that number to the interpreter through the interpreter's `resolve()` function.
