@@ -7,6 +7,7 @@
 
 Interpreter::Interpreter()
 {
+    // native functions
     globals->define("clock", std::make_shared<NativeClock>());
     globals->define("time", std::make_shared<NativeTime>());
     globals->define("input", std::make_shared<NativeInput>());
@@ -17,6 +18,7 @@ Interpreter::Interpreter()
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements)
 {
+    // interpret function, statement version
     try
     {
         for (const std::shared_ptr<Stmt>& statement : statements)
@@ -30,6 +32,7 @@ void Interpreter::interpret(const std::vector<std::shared_ptr<Stmt>>& statements
 
 std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
 {
+    // interpret function, expression version
     try
     {
         std::any value = evaluate(expr);
@@ -44,23 +47,27 @@ std::string Interpreter::interpret(const std::shared_ptr<Expr>& expr)
 
 void Interpreter::resolve(std::shared_ptr<Expr> expr, int depth)
 {
+    // resolve local expression
     locals[expr] = depth;
 }
 
 std::any Interpreter::visitBlockStmt(std::shared_ptr<BlockStmt> stmt)
 {
+    // block statement evaluation
     execute_block(stmt->statements, std::make_shared<Environment>(environment));
     return {};
 }
 
 std::any Interpreter::visitExpressionStmt(std::shared_ptr<ExpressionStmt> stmt)
 {
+    // expression statement evaluation
     evaluate(stmt->expression);
     return {};
 }
 
 std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
 {
+    // print statement evaluation
     std::any value = evaluate(stmt->expression);
     std::cout << stringify(value) + "\n";
     return {};
@@ -68,6 +75,7 @@ std::any Interpreter::visitPrintStmt(std::shared_ptr<PrintStmt> stmt)
 
 std::any Interpreter::visitMutStmt(std::shared_ptr<MutStmt> stmt)
 {
+    // mut statement evaluation
     std::any value = nullptr;
 
     if (stmt->initializer != nullptr)
@@ -80,6 +88,7 @@ std::any Interpreter::visitMutStmt(std::shared_ptr<MutStmt> stmt)
 
 std::any Interpreter::visitIfStmt(std::shared_ptr<IfStmt> stmt)
 {
+    // if statement evaluation
     if (is_truthy(evaluate(stmt->condition)))
         execute(stmt->then_branch);
     else if (stmt->else_branch != nullptr)
@@ -90,6 +99,7 @@ std::any Interpreter::visitIfStmt(std::shared_ptr<IfStmt> stmt)
 
 std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 {
+    // while statement evaluation
     try
     {
         while (is_truthy(evaluate(stmt->condition)))
@@ -105,6 +115,7 @@ std::any Interpreter::visitWhileStmt(std::shared_ptr<WhileStmt> stmt)
 
 std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 {
+    // function statement evaluation
     std::string func_name = stmt->name.lexeme;
     auto function = std::make_shared<NblFunction>(func_name, stmt->fn, environment, false);
     environment->define(func_name, function);
@@ -113,6 +124,7 @@ std::any Interpreter::visitFunctionStmt(std::shared_ptr<FunctionStmt> stmt)
 
 std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
 {
+    // return statement evaluation
     std::any value = nullptr;
 
     if (stmt->value != nullptr)
@@ -123,11 +135,13 @@ std::any Interpreter::visitReturnStmt(std::shared_ptr<ReturnStmt> stmt)
 
 std::any Interpreter::visitBreakStmt(std::shared_ptr<BreakStmt> stmt)
 {
+    // break statement evaluation
     throw new BreakException();
 }
 
 std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
 {
+    // class statement evaluation
     std::any superclass;
     if (stmt->superclass != nullptr)
     {
@@ -169,6 +183,7 @@ std::any Interpreter::visitClassStmt(std::shared_ptr<ClassStmt> stmt)
 
 std::any Interpreter::visitImportStmt(std::shared_ptr<ImportStmt> stmt)
 {
+    // import statement evaluation
     std::string target = std::any_cast<std::string>(stmt->target->value);
     run_file(target, *this);
     return {};
@@ -177,6 +192,7 @@ std::any Interpreter::visitImportStmt(std::shared_ptr<ImportStmt> stmt)
 
 std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 {
+    // assign expression evaluation
     std::any value = evaluate(expr->value);
     // environment->assign(expr->name, value);
 
@@ -197,7 +213,7 @@ std::any Interpreter::visitAssignExpr(std::shared_ptr<AssignExpr> expr)
 
 std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
 {
-    // evaluate binary operators
+    // binary expression evaluation
     std::any left = evaluate(expr->left);
     std::any right = evaluate(expr->right);
 
@@ -258,19 +274,19 @@ std::any Interpreter::visitBinaryExpr(std::shared_ptr<BinaryExpr> expr)
 
 std::any Interpreter::visitGroupingExpr(std::shared_ptr<GroupingExpr> expr)
 {
-    // evaluating parentheses
+    // parentheses evaluation
     return evaluate(expr->expression);
 }
 
 std::any Interpreter::visitLiteralExpr(std::shared_ptr<LiteralExpr> expr)
 {
-    // evaluating literals
+    // literal expresison evaluation
     return expr->value;
 }
 
 std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
 {
-    // evaluate unary expressions
+    // unary expression evaluation
     std::any right = evaluate(expr->right);
 
     switch (expr->op.type)
@@ -291,18 +307,13 @@ std::any Interpreter::visitUnaryExpr(std::shared_ptr<UnaryExpr> expr)
 
 std::any Interpreter::visitMutExpr(std::shared_ptr<MutExpr> expr)
 {
-    // std::any value = environment->get(expr->name);
-
-    // if (value.type() == typeid(nullptr))
-    //     throw RuntimeError{expr->name, "Variable not initialized"};
-
-    // return value;
-
+    // mutable expression evaluation
     return lookup_mut(expr->name, expr);
 }
 
 std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
 {
+    // logical expression evaluation
     std::any left = evaluate(expr->left);
 
     if (expr->op.type == OR)
@@ -321,6 +332,7 @@ std::any Interpreter::visitLogicalExpr(std::shared_ptr<LogicalExpr> expr)
 
 std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
 {
+    // call expression evaluation
     std::any callee = evaluate(expr->callee);
     std::vector<std::any> arguments;
 
@@ -377,11 +389,13 @@ std::any Interpreter::visitCallExpr(std::shared_ptr<CallExpr> expr)
 
 std::any Interpreter::visitFunctionExpr(std::shared_ptr<FunctionExpr> expr)
 {
+    // function expression evaluation
     return std::make_shared<NblFunction>("", expr, environment, false);
 }
 
 std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
 {
+    // get expression evaluation
     std::any object = evaluate(expr->object);
 
     if (object.type() == typeid(std::shared_ptr<NblInstance>))
@@ -392,6 +406,7 @@ std::any Interpreter::visitGetExpr(std::shared_ptr<GetExpr> expr)
 
 std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
 {
+    // set expression evaluation
     std::any object = evaluate(expr->object);
 
     if (object.type() != typeid(std::shared_ptr<NblInstance>))
@@ -405,11 +420,13 @@ std::any Interpreter::visitSetExpr(std::shared_ptr<SetExpr> expr)
 
 std::any Interpreter::visitThisExpr(std::shared_ptr<ThisExpr> expr)
 {
+    // this expression evaluation
     return lookup_mut(expr->keyword, expr);
 }
 
 std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
 {
+    // super expression evaluation
     int distance = locals[expr];
     auto superclass = std::any_cast<std::shared_ptr<NblClass>>(environment->get_at(distance, "super"));
     auto obj = std::any_cast<std::shared_ptr<NblInstance>>(environment->get_at(distance - 1, "this"));
@@ -423,6 +440,7 @@ std::any Interpreter::visitSuperExpr(std::shared_ptr<SuperExpr> expr)
 
 std::any Interpreter::visitListExpr(std::shared_ptr<ListExpr> expr)
 {
+    // list expression evaluation
     auto list = std::make_shared<ListType>();
 
     for (std::shared_ptr<Expr>& value : expr->elements)
@@ -433,6 +451,7 @@ std::any Interpreter::visitListExpr(std::shared_ptr<ListExpr> expr)
 
 std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
 {
+    // subscript expression evaluation
     std::any name = evaluate(expr->name);
     std::any index = evaluate(expr->index);
 
@@ -476,6 +495,7 @@ std::any Interpreter::visitSubscriptExpr(std::shared_ptr<SubscriptExpr> expr)
 
 std::any Interpreter::lookup_mut(const Token& name, std::shared_ptr<Expr> expr)
 {
+    // find variable in local or global environment
     auto element = locals.find(expr);
 
     if (element != locals.end())
@@ -497,11 +517,13 @@ std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 
 void Interpreter::execute(std::shared_ptr<Stmt> stmt)
 {
+    // send statement back into interpreter's visitor methods for evaluation
     stmt->accept(*this);
 }
 
 void Interpreter::execute_block(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment)
 {
+    // execute a given block of statements
     std::shared_ptr<Environment> previous_env = this->environment;
 
     try
@@ -522,6 +544,7 @@ void Interpreter::execute_block(const std::vector<std::shared_ptr<Stmt>>& statem
 
 void Interpreter::check_num_operand(const Token& op, const std::any& operand)
 {
+    // check if operand is a number
     if (operand.type() == typeid(double))
         return;
     
@@ -530,6 +553,7 @@ void Interpreter::check_num_operand(const Token& op, const std::any& operand)
 
 void Interpreter::check_num_operands(const Token& op, const std::any& left, const std::any& right)
 {
+    // check if operands are numbers
     if (left.type() == typeid(double) && right.type() == typeid(double))
         return;
     
@@ -538,6 +562,7 @@ void Interpreter::check_num_operands(const Token& op, const std::any& left, cons
 
 bool Interpreter::is_truthy(const std::any& obj)
 {
+    // handle boolean values
     if (obj.type() == typeid(nullptr))
         return false;
     
@@ -549,6 +574,7 @@ bool Interpreter::is_truthy(const std::any& obj)
 
 bool Interpreter::is_equal(const std::any& obj1, const std::any& obj2)
 {
+    // handle equality
     if (obj1.type() == typeid(nullptr) && obj2.type() == typeid(nullptr))
         return true;
 
@@ -569,6 +595,7 @@ bool Interpreter::is_equal(const std::any& obj1, const std::any& obj2)
 
 std::string Interpreter::int_or_double(const std::any& obj)
 {
+    // checking for weather the object is an int or a double
     std::string text;
 
     if (std::any_cast<double>(obj) == static_cast<int>(std::any_cast<double>(obj)))
@@ -590,6 +617,7 @@ std::string Interpreter::int_or_double(const std::any& obj)
 
 std::string Interpreter::stringify(const std::any& obj)
 {
+    // stringifying each types
     if (obj.type() == typeid(nullptr))
         return "nil";
 
