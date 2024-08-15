@@ -5,6 +5,10 @@
 # Licensed under Apache License v2.0
 #------------------------------------#
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 failed=0; # number of failed cases
 
 NBL_FILES=$(find tests -name '*.nbl');
@@ -23,9 +27,10 @@ done;
 
 if [ $failed -eq 0 ]; then
     echo;
-    echo "All test cases passed";
+    echo -e "${GREEN}All test cases passed${NC}";
 else
-    echo "Total failed test cases: $failed";
+    echo;
+    echo -e "${RED}Total failed test cases: $failed${NC}";
 fi;
 
 exit $failed

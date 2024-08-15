@@ -1,0 +1,4 @@
+mut li = [];
+
+li[1] = 1;
+print(li);
