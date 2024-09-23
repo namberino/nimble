@@ -5,6 +5,9 @@
 # Licensed under Apache License v2.0
 #------------------------------------#
 
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 declare -A elapsed_times # associative array (basically a dictionary)
 
 NBL_FILES=$(find benchmark -name '*.nbl')
@@ -29,5 +32,5 @@ echo
 echo "Elapsed time of all benchmarks:"
 
 for program in "${!elapsed_times[@]}"; do
-    echo "$program: ${elapsed_times[$program]}"
+    echo -e "$program: ${GREEN}${elapsed_times[$program]}${NC}"
 done
