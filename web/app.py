@@ -15,7 +15,7 @@ def run_code():
         f.write(code)
     
     try:
-        result = subprocess.run(['../bin/nimble', 'program.nbl'], capture_output=True, text=True, timeout=5)
+        result = subprocess.run(['./bin/nimble', 'program.nbl'], capture_output=True, text=True, timeout=5)
         output = result.stdout
         error = result.stderr
     except subprocess.TimeoutExpired:
