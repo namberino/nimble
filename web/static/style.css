@@ -5,8 +5,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f5f5f5;
+    background-color: #0d0811;
 }
+
 #container {
     display: flex;
     flex-direction: column;
@@ -25,34 +26,38 @@ body {
     margin-bottom: 10px;
     /* background-color: #d37373; */
 }
+
 .CodeMirror {
     flex: 1;
     height: 20rem;
     margin: 0.5vw;
-    background-color: #fff;
+    background-color: #1b1122;
     border: 1px solid #ccc;
     box-sizing: border-box;
     overflow-y: auto;
-    /* color: black; */
+    color: white;
     /* padding: 10px; */
     border-radius: 0.5rem;
 }
+
 .CodeMirror-gutter.CodeMirror-linenumbers {
-    /* background-color: #fff; */
+    background-color: #362244;
     padding-right: 10px;
 }
+
 .CodeMirror-gutter-elt {
     padding: 0 0 0 0;
 }
+
 .code-out {
     flex: 1;
-    height: 20rem;
+    height: 18.7rem;
     margin: 0.5vw;
-    background-color: #fff;
+    background-color: #1b1122;
     border: 1px solid #ccc;
     box-sizing: border-box;
     overflow-y: auto;
-    color: black;
+    color: white;
     padding: 10px;
     border-radius: 0.5rem;
 }
@@ -68,6 +73,7 @@ body {
     border: none;
     border-radius: 5px;
 }
+
 #run-button:hover {
     background-color: #45a049;
 }

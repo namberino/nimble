@@ -7,6 +7,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
     <link rel="stylesheet" href="style.css">
+
+    <link href="codemirror/lib/codemirror.css" rel="stylesheet" />
+
+    <!-- CodeMirror Theme -->
+    <link rel="stylesheet" href="codemirror/theme/ayu-dark.css" />
+    
+    <script src="codemirror/lib/codemirror.js"></script>
+
+    <!-- add an add-on -->
+    <script src="codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="codemirror/addon/selection/active-line.js"></script>
+
+    <!-- add mode of language that we want to syntax highlighting the code -->
+    <script src="codemirror/mode/python/python.js"></script>
 </head>
 <body>
     <div id="container">
@@ -20,7 +34,9 @@
     <script>
         const editor = CodeMirror.fromTextArea(document.querySelector('.code-in'), {
             lineNumbers: true,
-            mode: 'javascript',
+            mode: 'python',
+            theme: 'ayu-dark',
+            matchBrackets: true,
             viewportMargin: Infinity
         });
 
