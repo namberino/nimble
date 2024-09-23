@@ -22,7 +22,7 @@ def run_code():
         error = result.stderr
     except subprocess.TimeoutExpired:
         output = ""
-        error = "Execution timed out."
+        error = "[ERROR] Execution timed out"
     
     os.remove('program.nbl')
     
