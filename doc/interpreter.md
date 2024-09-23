@@ -25,7 +25,7 @@ if (obj1.type() == typeid(bool) && obj2.type() == typeid(bool))
 
 ## Expression evaluation
 
-We'll use the [Visitor patter](https://en.wikipedia.org/wiki/Visitor_pattern) for the interpreter. It takes in an AST, and it recursively traverses it, computes the values, which will eventually get returned.
+We'll use the [Visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern) for the interpreter. It takes in an AST, and it recursively traverses it, computes the values, which will eventually get returned.
 
 ```cpp
 class Interpreter : public ExprVisitor, public StmtVisitor
