@@ -1,24 +1,11 @@
+import "core:math";
+
 // 2d blooming pattern
-fun max(arg1, arg2)
-{
-    if (arg1 >= arg2)
-        return arg1;
-    return arg2;
-}
-
-fun abs(num)
-{
-    if (num < 0)
-        return 0 - num;
-    return num;
-}
-
 fun bloom(n)
 {
     mut arr = [];
     
-    for (mut i = 0; i < n; i += 1)
-    {
+    for (mut i = 0; i < n; i += 1) {
         arr[i] = [];
     }
 
@@ -26,8 +13,7 @@ fun bloom(n)
     mut distance;
 
     // get distance from mid point (the middle value of the middle array)
-    for (mut i = 0; i < n; i += 1)
-    {
+    for (mut i = 0; i < n; i += 1) {
         for (mut j = 0; j < n; j += 1)
         {
             distance = max(abs(i - mid), abs(j - mid));

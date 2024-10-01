@@ -120,3 +120,17 @@ fun sqrt(x)
 
     return guess;
 }
+
+fun max(arg1, arg2)
+{
+    if (arg1 >= arg2)
+        return arg1;
+    return arg2;
+}
+
+fun abs(num)
+{
+    if (num < 0)
+        return 0 - num;
+    return num;
+}
